@@ -33,11 +33,9 @@ xresloader文档
 
 .. _user-docs:
 
-用户文档
------------------------------------------------
-
 .. toctree::
    :maxdepth: 2
+   :caption: 用户文档
 
    users/download
    users/quick_start
@@ -52,11 +50,9 @@ xresloader文档
 
 .. _development-docs:
 
-开发文档
------------------------------------------------
-
 .. toctree::
    :maxdepth: 2
+   :caption: 开发文档
 
    development/dependency
    development/build
@@ -66,16 +62,12 @@ xresloader文档
 
 .. _about-docs:
 
-其他
------------------------------------------------
-
 .. toctree::
+   :caption: 其他
    
    about
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. 
+    * :ref:`genindex`
+    * :ref:`modindex` 
+    * :ref:`search`
