@@ -1,0 +1,5 @@
+*.bat eol=crlf
+*.sh eol=lf
+*.py eol=lf
+*.rst eol=lf
+Makefile eol=lf
