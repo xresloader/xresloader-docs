@@ -1,7 +1,7 @@
-# Build PDF & ePub
+# Build ePub
 formats:
     - epub
-    - pdf
+    - htmlzip
 
 build:
     image: latest
