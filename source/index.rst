@@ -56,7 +56,7 @@ xresloader文档
 
    development/dependency
    development/build
-   development/maven_source
+   development/pkg_source
    development/design_xresloader
    development/design_xresconv
 
