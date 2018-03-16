@@ -31,7 +31,7 @@ proto v2也可以，可以参见 https://github.com/xresloader/xresloader/blob/m
 
 然后使用protoc生成描述文件和用于加载的代码文件: ::
 
-    protoc -I . -o kind.pb --cpp_out=. kind.proto ;
+    protoc -I . -o xresloader/sample/proto_v3/kind.pb --cpp_out=. kind.proto ;
 
 这是最终的 **数据转出目标** 。
 
@@ -120,54 +120,176 @@ Step-4: 配置批量转表配置文件
         </list>
     </root>
 
-对于``work_dir``和文件路径的说明: 
+对于文件路径配置的说明: ``work_dir`` 、 ``xresloader_path`` 和 ``include`` （具体含义请参考 :doc:`./advance_usage` ） 配置的路径是相对于xml文件的路径。其他的涉及路径配置的地方如果不是绝对路径的，都是相对于 ``work_dir`` 的路径。
+
+在查找Excel文件的时候，如果有配置 ``data_src_dir`` ，则会相对于这个配置的路径读取Excel，否则也是相对于 ``work_dir`` 。
 
 Step-5: 运行转表工具
 -----------------------------------------------
 
-转表工具可以把Excel数据源导出成多种输出。下面列举重要的几种，项目可以根据自己的情况选择一种或几种导出方式。比如如果做Web端的GM工具，可以使用导出成xml或者javascript代码。
+下面两种运行转表的工具，一种是命令行工具，另一种是有用户界面的GUI工具。选用一种即可。
 
-.. _export binary:
+我们假设执行环境的目录结构如下:
 
-Step-5-1(推荐): 导出为协议二进制数据
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+* 执行目录:
 
-.. _export text:
+  * sample-conf (批量转表配置所在目录)
 
-Step-5-2(可选): 导出为json、xml、lua代码等文本数据
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    * sample.xml
 
-.. _export enum:
+  * xresloader
 
-Step-5-3(可选): 导出枚举类型成代码
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    * header
+
+      * pb_header.proto    （用于proto v2的转表头结构描述文件，读取数据的时候用）
+      * pb_header_v3.proto （用于proto v3的转表头结构描述文件，读取数据的时候用）
+
+    * sample (数据源)
+
+      * 资源转换示例.xlsx
+      * role_upgrade_cfg.bin  (输出的二进制配置文件，执行转表后自动生成)
+      * xresloader.run.log    (输出的日志文件，执行转表后自动生成，方便万一有错误排查)
+      * proto_v3
+        
+        * kind.pb  （使用protoc生成的二进制协议描述文件）
+
+    * target (下载的xresloader所在目录)
+
+      * xresloader-1.4.1.jar
+
+  * xresconv-cli (命令行转表工具所在目录)
+
+    * xresconv-cli.py
+    * print_color.py
+
+  * xresconv-gui (GUI转表工具所在目录)
+
+    * GUI工具的文件列表
+  
+
+Step-5.1: 命令行批量转表工具
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+    python xresconv-cli/xresconv-cli.py sample-conf/sample.xml
+
+输出如下:
+
+.. image:: ../_static/users/quick_start_cli_sample.png
+
+
+Step-5.2: GUI批量转表工具
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+使用GUI工具，直接加载配置文件，选中要转换的表然后点击开始即可。
+
+.. image:: ../_static/users/quick_start_gui_sample.png
+
 
 Step-6: 加载数据
 -----------------------------------------------
 
-加载数据可以有多种方法，项目可以根据自己的需要选择任意一种或几种合适的加载方法。
+执行完上面一步的转表流程后，我们得到了 ``xresloader/sample/role_upgrade_cfg.bin`` 这个二进制配置文件，接下来把它加载到我们的程序中就可以了。
 
-Step-6-1(推荐): 使用C++加载二进制数据
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+比如我们用C++来加载。首先我们之前执行 ``protoc`` 的时候已经生成了配置协议的代码，然后还需要生成转表工具header的结构的代码。 ::
 
-此加载方式需要上面的 :ref:`export binary`
+    protoc -I xresloader/header --cpp_out=. xresloader/header/pb_header_v3.proto ;
 
-Step-6-2(推荐): 使用lua-pbc加载二进制数据
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+然后你可以选择使用我们封装过的读取库解析或手动解析。
 
-此加载方式需要上面的 :ref:`export binary`
+Step-6.1: 使用读取库解析
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Step-6-3(推荐): 使用C#和DynamicMessage-net加载二进制数据
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+需要先下载读取库。 ::
 
-此加载方式需要上面的 :ref:`export binary`
+    curl -L -k https://raw.githubusercontent.com/xresloader/xresloader/master/loader-binding/cxx/libresloader.h -o libresloader.h
 
-Step-6-4(可选): 使用node.js加载javascript文本数据
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+然后读取的代码sample如下 
 
-此加载方式需要上面的 :ref:`export text`
+::
 
-Step-6-5(可选): 使用lua加载导出的枚举类型
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    #include <cstdio>
+    #include <iostream>
+    #include <fstream>
 
-此加载方式需要上面的 :ref:`export enum`
+    #include "kind.pb.h"
+    #include "libresloader.h"
+
+    int main(int argc, char* argv[]) {
+
+        const char* file_path = "xresloader/sample/role_upgrade_cfg.bin";
+        if (argc > 1) {
+            file_path = argv[1];
+        } else {
+            printf("usage: %s <path to role_upgrade_cfg.bin>\n", argv[0]);
+            return 1;
+        }
+
+        // key - value 型数据读取机制
+        do {
+            typedef xresloader::conf_manager_kv<role_upgrade_cfg, uint32_t, uint32_t> kind_upg_cfg_t;
+            kind_upg_cfg_t upg_mgr;
+            upg_mgr.set_key_handle([](kind_upg_cfg_t::value_type p) {
+                return kind_upg_cfg_t::key_type(p->id(), p->level());
+            });
+
+            upg_mgr.load_file(file_path);
+
+            kind_upg_cfg_t::value_type data1 = upg_mgr.get(10001, 4); // 获取Key 为 10001,4的条目
+            if (NULL == data1) {
+                std::cerr<< "role_upgrade_cfg id: 10001, level: 4 not found, load file "<< file_path<< " failed."<< std::endl;
+                break;
+            }
+
+            printf("%s\n", data1->DebugString().c_str());
+        } while(false);
+
+        // key - list 型数据读取机制
+        do {
+            typedef xresloader::conf_manager_kl<role_upgrade_cfg, uint32_t> kind_upg_cfg_t;
+            kind_upg_cfg_t upg_mgr;
+            upg_mgr.set_key_handle([](kind_upg_cfg_t::value_type p) {
+                return kind_upg_cfg_t::key_type(p->id());
+            });
+
+            upg_mgr.load_file(file_path);
+            printf("role_upgrade_cfg with id=%d has %llu items\n", 10001, static_cast<unsigned long long>(upg_mgr.get_list(10001)->size()));
+
+            kind_upg_cfg_t::value_type data1 = upg_mgr.get(10001, 0); // 获取Key 为 10001 下标为0（就是第一个）条目
+            if (NULL == data1) {
+                std::cerr<< "role_upgrade_cfg id: 10001 , index: 0, not found, load file "<< file_path<< " failed."<< std::endl;
+                break;
+            }
+            
+            printf("%s\n", data1->DebugString().c_str());
+        } while(false);
+
+        return 0;
+    }
+
+Step-6.2: 手动解析
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+手动解析的流程是先用 `xresloader中header <https://github.com/xresloader/xresloader/blob/master/header/pb_header_v3.proto>`_ 里的 ``xresloader_datablocks`` 解析二进制文件，然后用协议的proto解析里面每条 ``data_block`` 字段。
+每个 ``data_block`` 的条目对应配置里协议的每个message。
+
+::
+
+    #include <cstdio>
+    #include <iostream>
+    #include <fstream>
+    #include <google/protobuf/stubs/common.h>
+
+    #if GOOGLE_PROTOBUF_VERSION < 3000000
+    #include "pb_header.pb.h"
+    #else
+    #include "pb_header_v3.pb.h"
+    #endif
+
+    #include "kind.pb.h"
+
+加载数据可以有多种方法，这里提供加载二进制的方法。 更多关于输出类型和加载方式的信息请参见 :doc:`./output_format`
+
+
+
