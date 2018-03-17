@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <global>
+        <work_dir desc="工作目录，相对于当前xml的目录，我们的Excel文件放在这里">.</work_dir>
+        <xresloader_path desc="指向前面下载的 转表工具-xresloader，相对于当前xml的目录">../xresloader/target/xresloader-1.4.2.jar</xresloader_path>
+
+        <proto desc="协议类型，-p选项">protobuf</proto>
+        <output_type desc="输出类型，对饮-t选项，输出二进制">bin</output_type>
+        <proto_file desc="协议描述文件，-f选项">kind.pb</proto_file>
+
+        <output_dir desc="输出目录，-o选项">../sample-data</output_dir>
+        <data_src_dir desc="数据源目录，-d选项"></data_src_dir>
+
+        <java_option desc="java选项-最大内存限制2GB">-Xmx2048m</java_option>
+        <java_option desc="java选项-客户端模式">-client</java_option>
+
+        <default_scheme name="KeyRow" desc="默认scheme模式参数-Key行号，对应上面Id、Level、CostType、CostValue那一行">2</default_scheme>
+    </global>
+    
+    <groups desc="分组信息（可选）">
+        <group id="client" name="客户端"></group>
+        <group id="server" name="服务器"></group>
+    </groups>
+
+    <category desc="类信息（用于GUI工具的树形结构分类显示）">
+        <tree id="all_cats" name="大分类">
+            <tree id="kind" name="角色配置"></tree>
+        </tree>
+    </category>
+
+    <list>
+        <item name="升级表" cat="kind" class="client server">
+            <scheme name="DataSource" desc="数据源(文件名|表名|数据起始行号,数据起始列号)">role_tables.xlsx|upgrade_10001|3,1</scheme>
+            <scheme name="ProtoName" desc="协议名">role_upgrade_cfg</scheme>
+            <scheme name="OutputFile" desc="输出文件名">role_upgrade_cfg.bin</scheme>
+        </item>
+    </list>
+</root>

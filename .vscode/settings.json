@@ -1,4 +1,13 @@
 {
     "restructuredtext.builtDocumentationPath": "${workspaceRoot}/build/html",
-    "restructuredtext.confPath": "${workspaceRoot}/source"
+    "restructuredtext.confPath": "${workspaceRoot}/source",
+    "files.associations": {
+        "*.ejs": "html",
+        "algorithm": "cpp",
+        "iosfwd": "cpp",
+        "fstream": "cpp",
+        "vector": "cpp",
+        "xstring": "cpp",
+        "xutility": "cpp"
+    }
 }

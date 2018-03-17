@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+message role_upgrade_cfg {
+    uint32 Id           = 1;
+    uint32 Level        = 2;
+    uint32 CostType     = 3;
+    int32  CostValue    = 4;
+    int32  ScoreAdd     = 5;
+}

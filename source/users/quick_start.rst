@@ -16,22 +16,17 @@ Step-1: 下载转表工具
 
 Step-2: 配置结构化的protobuf协议并使用protoc
 -----------------------------------------------
-我们需要先写协议描述文件，到时候转出的数据也是按这个结构打包的。比如，`kind.proto`_: ::
+我们需要先写协议描述文件，到时候转出的数据也是按这个结构打包的。比如，
 
-    syntax = "proto3";
-    message role_upgrade_cfg {
-        uint32 Id = 1;
-        uint32 Level = 2;
-        uint32 CostType = 3;
-        int32 CostValue = 4;
-        int32 ScoreAdd = 5;
-    }
+.. literalinclude:: ../sample/quick_start/sample-conf/kind.proto
+    :language: proto
+    :encoding: utf-8
 
 proto v2也可以，可以参见 https://github.com/xresloader/xresloader/blob/master/sample/proto_v2/kind.proto 。
 
 然后使用protoc生成描述文件和用于加载的代码文件: ::
 
-    protoc -I . -o xresloader/sample/proto_v3/kind.pb --cpp_out=. kind.proto ;
+    protoc -I sample-conf -o sample-conf/kind.pb --cpp_out=sample-code sample-conf/kind.proto ;
 
 这是最终的 **数据转出目标** 。
 
@@ -48,25 +43,25 @@ Step-3: 配置Excel数据源
 +-----------+---------+-------------+--------------+
 |   10001   | 1       |             |              |
 +-----------+---------+-------------+--------------+
-|   10001   | 2       | 10001       | 50           |
+|   10001   | 2       | 1001        | 50           |
 +-----------+---------+-------------+--------------+
-|   10001   | 3       | 10001       | 100          |
+|   10001   | 3       | 1001        | 100          |
 +-----------+---------+-------------+--------------+
-|   10001   | 4       | 10001       | 150          |
+|   10001   | 4       | 1001        | 150          |
 +-----------+---------+-------------+--------------+
-|   10001   | 5       | 10001       | 200          |
+|   10001   | 5       | 1001        | 200          |
 +-----------+---------+-------------+--------------+
-|   10001   | 6       | 10001       | 250          |
+|   10001   | 6       | 1001        | 250          |
 +-----------+---------+-------------+--------------+
-|   10001   | 7       | 10001       | 300          |
+|   10001   | 7       | 1001        | 300          |
 +-----------+---------+-------------+--------------+
-|   10001   | 8       | 10001       | 350          |
+|   10001   | 8       | 1001        | 350          |
 +-----------+---------+-------------+--------------+
-|   10001   | 9       | 10001       | 400          |
+|   10001   | 9       | 1001        | 400          |
 +-----------+---------+-------------+--------------+
-|   10001   | 10      | 10001       | 450          |
+|   10001   | 10      | 1001        | 450          |
 +-----------+---------+-------------+--------------+
-|   10001   | 11      | 10001       | 500          |
+|   10001   | 11      | 1001        | 500          |
 +-----------+---------+-------------+--------------+
 
 这是最终的 **数据来源** 。
@@ -79,46 +74,9 @@ Step-4: 配置批量转表配置文件
 编辑配置转表配置，`sample.xml`_ 。这个文件用于告诉批量转表工具，xresloader的位置、工作目录从哪里读协议描述文件，如果映射字段转成什么类型等等。
 简而言之就是把 **数据转出目标** 和 **数据来源** 关联起来。
 
-::
-
-    <?xml version="1.0" encoding="UTF-8"?>
-    <root>
-        <global>
-            <work_dir desc="工作目录，相对于当前xml的目录，我们的Excel文件放在这里">../xresloader/sample</work_dir>
-            <xresloader_path desc="指向前面下载的 转表工具-xresloader，相对于当前xml的目录">../target/xresloader-1.4.1.jar</xresloader_path>
-
-            <proto desc="协议类型，-p选项">protobuf</proto>
-            <output_type desc="输出类型，对饮-t选项，输出二进制">bin</output_type>
-            <proto_file desc="协议描述文件，-f选项">proto_v3/kind.pb</proto_file>
-
-            <output_dir desc="输出目录，-o选项"></output_dir>
-            <data_src_dir desc="数据源目录，-d选项"></data_src_dir>
-
-            <java_option desc="java选项-最大内存限制2GB">-Xmx2048m</java_option>
-            <java_option desc="java选项-客户端模式">-client</java_option>
-
-            <default_scheme name="KeyRow" desc="默认scheme模式参数-Key行号，对应上面Id、Level、CostType、CostValue那一行">2</default_scheme>
-        </global>
-        
-        <groups desc="分组信息（可选）">
-            <group id="client" name="客户端"></group>
-            <group id="server" name="服务器"></group>
-        </groups>
-
-        <category desc="类信息（用于GUI工具的树形结构分类显示）">
-            <tree id="all_cats" name="大分类">
-                <tree id="kind" name="角色配置"></tree>
-            </tree>
-        </category>
-
-        <list>
-            <item name="升级表" cat="kind" class="client server">
-                <scheme name="DataSource" desc="数据源(文件名|表名|数据起始行号,数据起始列号)">资源转换示例.xlsx|upgrade_10001|3,1</scheme>
-                <scheme name="ProtoName" desc="协议名">role_upgrade_cfg</scheme>
-                <scheme name="OutputFile" desc="输出文件名">role_upgrade_cfg.bin</scheme>
-            </item>
-        </list>
-    </root>
+.. literalinclude:: ../sample/quick_start/sample-conf/sample.xml
+    :language: xml
+    :encoding: utf-8
 
 对于文件路径配置的说明: ``work_dir`` 、 ``xresloader_path`` 和 ``include`` （具体含义请参考 :doc:`./advance_usage` ） 配置的路径是相对于xml文件的路径。其他的涉及路径配置的地方如果不是绝对路径的，都是相对于 ``work_dir`` 的路径。
 
@@ -136,6 +94,14 @@ Step-5: 运行转表工具
   * sample-conf (批量转表配置所在目录)
 
     * sample.xml
+    * kind.proto
+    * kind.pb               （使用protoc生成的二进制协议描述文件）
+    * role_tables.xlsx      （Excel数据源）
+    * xresloader.run.log     (输出的日志文件，执行转表后自动生成，方便万一有错误排查)
+
+  * sample-data (转出的配置数据所在目录)
+
+    * role_upgrade_cfg.bin  (输出的二进制配置文件，执行转表后自动生成)
 
   * xresloader
 
@@ -144,18 +110,9 @@ Step-5: 运行转表工具
       * pb_header.proto    （用于proto v2的转表头结构描述文件，读取数据的时候用）
       * pb_header_v3.proto （用于proto v3的转表头结构描述文件，读取数据的时候用）
 
-    * sample (数据源)
-
-      * 资源转换示例.xlsx
-      * role_upgrade_cfg.bin  (输出的二进制配置文件，执行转表后自动生成)
-      * xresloader.run.log    (输出的日志文件，执行转表后自动生成，方便万一有错误排查)
-      * proto_v3
-        
-        * kind.pb  （使用protoc生成的二进制协议描述文件）
-
     * target (下载的xresloader所在目录)
 
-      * xresloader-1.4.1.jar
+      * xresloader-1.4.2.jar
 
   * xresconv-cli (命令行转表工具所在目录)
 
@@ -170,7 +127,7 @@ Step-5: 运行转表工具
 Step-5.1: 命令行批量转表工具
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-::
+.. code-block:: bash
 
     python xresconv-cli/xresconv-cli.py sample-conf/sample.xml
 
@@ -194,7 +151,7 @@ Step-6: 加载数据
 
 比如我们用C++来加载。首先我们之前执行 ``protoc`` 的时候已经生成了配置协议的代码，然后还需要生成转表工具header的结构的代码。 ::
 
-    protoc -I xresloader/header --cpp_out=. xresloader/header/pb_header_v3.proto ;
+    protoc -I xresloader/header --cpp_out=sample-code xresloader/header/pb_header_v3.proto ;
 
 然后你可以选择使用我们封装过的读取库解析或手动解析。
 
@@ -205,91 +162,72 @@ Step-6.1: 使用读取库解析
 
     curl -L -k https://raw.githubusercontent.com/xresloader/xresloader/master/loader-binding/cxx/libresloader.h -o libresloader.h
 
-然后读取的代码sample如下 
+然后读取的代码sample如下（文件名: load_with_libresloader.cpp） 
 
-::
+.. literalinclude:: ../sample/quick_start/sample-code/load_with_libresloader.cpp
+    :language: cpp
+    :encoding: utf-8
 
-    #include <cstdio>
-    #include <iostream>
-    #include <fstream>
+编译和运行：
 
-    #include "kind.pb.h"
-    #include "libresloader.h"
+.. code-block:: bash
 
-    int main(int argc, char* argv[]) {
+    g++ -I . -I<protobuf的include目录> -L<protobuf的lib目录> -std=c++11 -O0 -g -ggdb -Wall load_with_libresloader.cpp *.pb.cc -lprotobuf -o load_with_libresloader.exe && ./load_with_libresloader.exe ../sample-data/role_upgrade_cfg.bin
 
-        const char* file_path = "xresloader/sample/role_upgrade_cfg.bin";
-        if (argc > 1) {
-            file_path = argv[1];
-        } else {
-            printf("usage: %s <path to role_upgrade_cfg.bin>\n", argv[0]);
-            return 1;
-        }
+输出示例：
 
-        // key - value 型数据读取机制
-        do {
-            typedef xresloader::conf_manager_kv<role_upgrade_cfg, uint32_t, uint32_t> kind_upg_cfg_t;
-            kind_upg_cfg_t upg_mgr;
-            upg_mgr.set_key_handle([](kind_upg_cfg_t::value_type p) {
-                return kind_upg_cfg_t::key_type(p->id(), p->level());
-            });
+.. code-block:: bash
 
-            upg_mgr.load_file(file_path);
+    Id: 10001
+    Level: 4
+    CostType: 1001
+    CostValue: 150
 
-            kind_upg_cfg_t::value_type data1 = upg_mgr.get(10001, 4); // 获取Key 为 10001,4的条目
-            if (NULL == data1) {
-                std::cerr<< "role_upgrade_cfg id: 10001, level: 4 not found, load file "<< file_path<< " failed."<< std::endl;
-                break;
-            }
+    role_upgrade_cfg with id=10001 has 11 items
+    Id: 10001
+    Level: 1
 
-            printf("%s\n", data1->DebugString().c_str());
-        } while(false);
-
-        // key - list 型数据读取机制
-        do {
-            typedef xresloader::conf_manager_kl<role_upgrade_cfg, uint32_t> kind_upg_cfg_t;
-            kind_upg_cfg_t upg_mgr;
-            upg_mgr.set_key_handle([](kind_upg_cfg_t::value_type p) {
-                return kind_upg_cfg_t::key_type(p->id());
-            });
-
-            upg_mgr.load_file(file_path);
-            printf("role_upgrade_cfg with id=%d has %llu items\n", 10001, static_cast<unsigned long long>(upg_mgr.get_list(10001)->size()));
-
-            kind_upg_cfg_t::value_type data1 = upg_mgr.get(10001, 0); // 获取Key 为 10001 下标为0（就是第一个）条目
-            if (NULL == data1) {
-                std::cerr<< "role_upgrade_cfg id: 10001 , index: 0, not found, load file "<< file_path<< " failed."<< std::endl;
-                break;
-            }
-            
-            printf("%s\n", data1->DebugString().c_str());
-        } while(false);
-
-        return 0;
-    }
 
 Step-6.2: 手动解析
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 手动解析的流程是先用 `xresloader中header <https://github.com/xresloader/xresloader/blob/master/header/pb_header_v3.proto>`_ 里的 ``xresloader_datablocks`` 解析二进制文件，然后用协议的proto解析里面每条 ``data_block`` 字段。
 每个 ``data_block`` 的条目对应配置里协议的每个message。
+文件名（load_custom.cpp）：
 
-::
+.. literalinclude:: ../sample/quick_start/sample-code/load_custom.cpp
+    :language: cpp
+    :encoding: utf-8
 
-    #include <cstdio>
-    #include <iostream>
-    #include <fstream>
-    #include <google/protobuf/stubs/common.h>
+编译和运行：
 
-    #if GOOGLE_PROTOBUF_VERSION < 3000000
-    #include "pb_header.pb.h"
-    #else
-    #include "pb_header_v3.pb.h"
-    #endif
+.. code-block:: bash
 
-    #include "kind.pb.h"
+    g++ -I . -I<protobuf的include目录> -L<protobuf的lib目录> -std=c++11 -O0 -g -ggdb -Wall load_custom.cpp *.pb.cc -lprotobuf -o load_custom.exe && ./load_custom.exe ../sample-data/role_upgrade_cfg.bin
+
+输出示例：
+
+.. code-block:: bash
+
+    ========================
+    data header: xres_ver: "1.4.2"
+    data_ver: "1.4.2.20180317040504"
+    count: 11
+    hash_code: "md5:7bbe88cca1eb23ebdce75b0e10b88b4a"
+
+    ========================
+    role_upgrade_cfg => index 0: Id: 10001 Level: 1
+    role_upgrade_cfg => index 1: Id: 10001 Level: 2 CostType: 1001 CostValue: 50
+    role_upgrade_cfg => index 2: Id: 10001 Level: 3 CostType: 1001 CostValue: 100
+    role_upgrade_cfg => index 3: Id: 10001 Level: 4 CostType: 1001 CostValue: 150
+    role_upgrade_cfg => index 4: Id: 10001 Level: 5 CostType: 1001 CostValue: 200
+    role_upgrade_cfg => index 5: Id: 10001 Level: 6 CostType: 1001 CostValue: 250
+    role_upgrade_cfg => index 6: Id: 10001 Level: 7 CostType: 1001 CostValue: 300
+    role_upgrade_cfg => index 7: Id: 10001 Level: 8 CostType: 1001 CostValue: 350
+    role_upgrade_cfg => index 8: Id: 10001 Level: 9 CostType: 1001 CostValue: 400
+    role_upgrade_cfg => index 9: Id: 10001 Level: 10 CostType: 1001 CostValue: 450
+    role_upgrade_cfg => index 10: Id: 10001 Level: 11 CostType: 1001 CostValue: 500
+
 
 加载数据可以有多种方法，这里提供加载二进制的方法。 更多关于输出类型和加载方式的信息请参见 :doc:`./output_format`
-
-
 
