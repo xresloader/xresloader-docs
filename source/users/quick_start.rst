@@ -1,9 +1,11 @@
 快速上手
 ===============
 
-.. _kind.proto: https://github.com/xresloader/xresloader/blob/master/sample/proto_v3/kind.proto
-.. _资源转换示例.xlsx: https://github.com/xresloader/xresloader/blob/master/sample/%E8%B5%84%E6%BA%90%E8%BD%AC%E6%8D%A2%E7%A4%BA%E4%BE%8B.xlsx
-.. _sample.xml: https://github.com/xresloader/xresconv-conf/blob/master/sample.xml
+.. _kind.proto: https://github.com/xresloader/xresloader-docs/blob/master/source/sample/quick_start/sample-conf/kind.proto
+.. _role_tables.xlsx: https://github.com/xresloader/xresloader-docs/blob/master/source/sample/quick_start/sample-conf/role_tables.xlsx
+.. _sample.xml: https://github.com/xresloader/xresloader-docs/blob/master/source/sample/quick_start/sample-conf/sample.xml
+.. _load_with_libresloader.cpp: https://github.com/xresloader/xresloader-docs/blob/master/source/sample/quick_start/sample-code/load_with_libresloader.cpp
+.. _load_custom.cpp: https://github.com/xresloader/xresloader-docs/blob/master/source/sample/quick_start/sample-code/load_custom.cpp
 
 Step-1: 下载转表工具
 -----------------------------------------------
@@ -16,7 +18,7 @@ Step-1: 下载转表工具
 
 Step-2: 配置结构化的protobuf协议并使用protoc
 -----------------------------------------------
-我们需要先写协议描述文件，到时候转出的数据也是按这个结构打包的。比如，
+我们需要先写协议描述文件，到时候转出的数据也是按这个结构打包的。比如： `kind.proto`_ 
 
 .. literalinclude:: ../sample/quick_start/sample-conf/kind.proto
     :language: proto
@@ -33,7 +35,7 @@ proto v2也可以，可以参见 https://github.com/xresloader/xresloader/blob/m
 Step-3: 配置Excel数据源
 -----------------------------------------------
 
-按照协议的配置编辑Excel文件，`资源转换示例.xlsx`_ ，我们使用表名 ``upgrade_10001`` 。
+按照协议的配置编辑Excel文件，`role_tables.xlsx`_ ，我们使用表名 ``upgrade_10001`` 。
 第一行设为描述，第二行设置为字段映射列，后面是数据(具体设置请参照 :ref:`quick-start-configure-sheme`)。
 
 +-----------+---------+-------------+--------------+
@@ -71,7 +73,7 @@ Step-3: 配置Excel数据源
 Step-4: 配置批量转表配置文件
 -----------------------------------------------
 
-编辑配置转表配置，`sample.xml`_ 。这个文件用于告诉批量转表工具，xresloader的位置、工作目录从哪里读协议描述文件，如果映射字段转成什么类型等等。
+编辑配置转表配置， `sample.xml`_ 。这个文件用于告诉批量转表工具，xresloader的位置、工作目录从哪里读协议描述文件，如果映射字段转成什么类型等等。
 简而言之就是把 **数据转出目标** 和 **数据来源** 关联起来。
 
 .. literalinclude:: ../sample/quick_start/sample-conf/sample.xml
@@ -162,7 +164,7 @@ Step-6.1: 使用读取库解析
 
     curl -L -k https://raw.githubusercontent.com/xresloader/xresloader/master/loader-binding/cxx/libresloader.h -o libresloader.h
 
-然后读取的代码sample如下（文件名: load_with_libresloader.cpp） 
+然后读取的代码sample如下（文件名: `load_with_libresloader.cpp`_ ） 
 
 .. literalinclude:: ../sample/quick_start/sample-code/load_with_libresloader.cpp
     :language: cpp
@@ -192,8 +194,7 @@ Step-6.2: 手动解析
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 手动解析的流程是先用 `xresloader中header <https://github.com/xresloader/xresloader/blob/master/header/pb_header_v3.proto>`_ 里的 ``xresloader_datablocks`` 解析二进制文件，然后用协议的proto解析里面每条 ``data_block`` 字段。
-每个 ``data_block`` 的条目对应配置里协议的每个message。
-文件名（load_custom.cpp）：
+每个 ``data_block`` 的条目对应配置里协议的每个message。（文件名: `load_custom.cpp`_ ）：
 
 .. literalinclude:: ../sample/quick_start/sample-code/load_custom.cpp
     :language: cpp
@@ -229,5 +230,6 @@ Step-6.2: 手动解析
     role_upgrade_cfg => index 10: Id: 10001 Level: 11 CostType: 1001 CostValue: 500
 
 
-加载数据可以有多种方法，这里提供加载二进制的方法。 更多关于输出类型和加载方式的信息请参见 :doc:`./output_format`
+加载数据可以有多种方法，这里提供加载二进制的方法。 更多关于输出类型和加载方式的信息请参见 :doc:`./output_format` 。
 
+上面的历程和配置可以在 https://github.com/xresloader/xresloader-docs/tree/master/source/sample/quick_start 查看。

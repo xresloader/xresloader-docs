@@ -3,89 +3,11 @@
 
 .. _xresconv-conf: https://github.com/xresloader/xresconv-conf
 
-批量转表工具都以 `xresconv-conf`_ 作为配置规范。具体的配置和功能点如下 ::
+批量转表工具都以 `xresconv-conf`_ 作为配置规范。具体的配置和功能点如下：
 
-    <?xml version="1.0" encoding="UTF-8"?>
-    <root>
-        <include desc="可以包含其他文件配置，然后本文件里的配置将会覆盖或合并配置，相对于当前xml的目录">sample.xml</include>
-        <global>
-            <work_dir desc="工作目录，相对于当前xml的目录">../xresloader/sample</work_dir>
-            <xresloader_path desc="xresloader地址，相对于当前xml的目录">../target/xresloader-1.4.1.jar</xresloader_path>
-
-            <proto desc="协议类型，对应xresloader的-p选项">protobuf</proto>
-            <output_type desc="输出类型，对应xresloader的-t选项">json</output_type>
-            <proto_file desc="协议描述文件，对应xresloader的-f选项">proto_v3/kind.pb</proto_file>
-
-            <output_dir desc="输出目录，对应xresloader的-o选项"></output_dir>
-            <data_src_dir desc="数据源（Excel查找）目录，对应xresloader的-d选项"></data_src_dir>
-            <data_version desc="数据版本号，对应xresloader的留空则自动生成">1.0.0.0</data_version>
-
-            <rename desc="重命名规则，正则表达式：/搜索模式/替换内容/，对应xresloader的-n选项">/(?i)\.bin$/\.json/</rename>
-
-            <!-- java_option标签是传递给java -jar的java选项 -->
-            <java_option desc="java选项-最大内存限制2GB">-Xmx2048m</java_option>
-            <java_option desc="java选项-客户端模式">-client</java_option>
-
-            <!-- default_scheme 是下面直接填写scheme时的默认参数。如果后面的scheme标签设置两相同的name，则该条目会覆盖默认配置 -->
-            <default_scheme name="KeyRow" desc="默认scheme模式参数-Key行号">2</default_scheme>
-            <default_scheme name="MacroSource" desc="默认scheme模式参数-Key行号">资源转换示例.xlsx|macro|2,1</default_scheme>
-        </global>
-
-        <gui>
-            <!-- 
-                set_name标签用于GUI工具修改树形节点的显示数据,便于策划核对具体的表名。
-                传入的参数结构是，如下。修改里面的数据可以改变显示的内容。
-                item_data: {
-                    id: ID,
-                    file: 文件名,
-                    scheme: 涉及的scheme表名称,
-                    name: 该条目名称,
-                    cat: 该条目的分类,
-                    options: [ 选项列表 ],
-                    desc: 描述信息,
-                    scheme_data: { 转换规则数据 }
-                }
-            -->
-            <set_name desc="这个脚本用于GUI工具修改树形节点的显示数据,便于策划核对具体的表名">
-                (function(item_data){
-                    if (item_data.file) {
-                        // 这个示例是给显示名称附加不带后缀的文件名
-                        item_data.name += " (" + item_data.file.match(/([^.]+)\.\w+$/)[1] + ")"
-                    }
-                    return item_data;
-                })
-            </set_name>
-        </gui>
-        
-        <groups desc="分组信息，保留，暂未被使用">
-            <group id="client" name="客户端"></group>
-            <group id="server" name="服务器"></group>
-        </groups>
-
-        <category desc="分类信息，这个用于GUI工具做树形结构的分类">
-            <tree id="all_cats" name="大分类">
-                <tree id="kind" name="角色配置"></tree>
-            </tree>
-            <tree id="test" name="测试"></tree>
-        </category>
-
-        <!-- 转换列表 -->
-        <list>
-            <item file="描述转换规则的Excel文件名" scheme="描述转换规则的表名" name="显示名称" cat="分类" class="分组">
-                <option desc="附加选项" name="附加选项名称">附加选项内容</option>
-                <!-- 当这里使用scheme来设置转换规则时，不要设置item标签的file属性和scheme属性 -->
-                <scheme name="描述转换规则的Key" desc="描述">描述转换规则的Value用|分割主配置、次配置和补充配置</scheme>
-            </item>
-            <item file="资源转换示例.xlsx" scheme="scheme_upgrade" name="升级表" cat="kind" class="client server">
-                <option desc="自定义选项" name="移除空列表项">--disable-empty-list</option>
-            </item>
-            <item name="嵌套数组测试" cat="test" class="client server">
-                <scheme name="DataSource" desc="数据源(文件名|表名|数据起始行号,数据起始列号)">资源转换示例.xlsx|arr_in_arr|3,1</scheme>
-                <scheme name="ProtoName" desc="协议名">arr_in_arr_cfg</scheme>
-                <scheme name="OutputFile" desc="输出文件名">arr_in_arr_cfg.bin</scheme>
-            </item>
-        </list>
-    </root>
+.. literalinclude:: ../sample/xresconv_conf.xml
+    :language: xml
+    :encoding: utf-8
 
 流程如下:
 
