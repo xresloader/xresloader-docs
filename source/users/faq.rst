@@ -1,2 +1,68 @@
 FAQ
 ===============
+
+哪里有完整的示例？
+-------------------------------------------------------------------------------------------------------
+
+转表功能和二进制数据读取的示例见： https://github.com/xresloader/xresloader/tree/master/sample
+
+文本和Msgpack数据读取示例见： https://github.com/xresloader/xresloader/tree/master/loader-binding
+
+批量转表配置的示例见： https://github.com/xresloader/xresconv-conf
+
+为什么会读到很多空数据？
+-------------------------------------------------------------------------------------------------------
+
+Excel里编辑过的单元格即便删除了也会留下不可见的样式配置，这时候会导致转出的数据有空行。可以通过在Excel里删除行解决
+
+
+为什么Excel里填的时间，但是转出来是一个负数？
+-------------------------------------------------------------------------------------------------------
+
+Excel里的日期时间类型转成协议里整数时会转为Unix时间戳，但是Excel的时间是以1900年1月0号为基准的，这意味着如果时间格式是 ``hh:mm:ss`` 的话，``49:30:01`` 会被转为 ``1900-1-2 1:31:01`` 。
+时间戳因为是相对于 ``1970-01-01 00:00:00`` 的秒数，所以会是一个绝对值很大的负数。
+
+
+Windows下控制台里执行执行会报文件编码错误？（java.nio.charset.UnsupportedCharsetException: cp65001）
+-------------------------------------------------------------------------------------------------------
+
+这个问题涉及的几个Exception是： 
+
+.. code-block:: bash
+
+    ERROR StatusLogger Unable to inject fields into builder class for plugin type class org.apache.logging.log4j.core.appender.ConsoleAppender, element Console.
+    java.nio.charset.UnsupportedCharsetException: cp65001
+            at java.nio.charset.Charset.forName(Unknown Source)
+            at org.apache.logging.log4j.util.PropertiesUtil.getCharsetProperty(PropertiesUtil.java:146)
+            at org.apache.logging.log4j.util.PropertiesUtil.getCharsetProperty(PropertiesUtil.java:134)
+            at org.apache.logging.log4j.core.appender.ConsoleAppender$Target.getCharset(ConsoleAppender.java:85)
+            at org.apache.logging.log4j.core.appender.ConsoleAppender$Target$1.getDefaultCharset(ConsoleAppender.java:71)
+            at org.apache.logging.log4j.core.appender.ConsoleAppender$Builder.build(ConsoleAppender.java:218)
+            at org.apache.logging.log4j.core.appender.ConsoleAppender$Builder.build(ConsoleAppender.java:185)
+            at org.apache.logging.log4j.core.config.plugins.util.PluginBuilder.build(PluginBuilder.java:122)
+    ...
+
+和
+
+.. code-block:: bash
+
+    ERROR StatusLogger Unable to invoke factory method in class class org.apache.logging.log4j.core.appender.ConsoleAppender for element Console.
+    java.lang.IllegalStateException: No factory method found for class org.apache.logging.log4j.core.appender.ConsoleAppender
+            at org.apache.logging.log4j.core.config.plugins.util.PluginBuilder.findFactoryMethod(PluginBuilder.java:224)
+            at org.apache.logging.log4j.core.config.plugins.util.PluginBuilder.build(PluginBuilder.java:130)
+            at org.apache.logging.log4j.core.config.AbstractConfiguration.createPluginObject(AbstractConfiguration.java:952)
+            at org.apache.logging.log4j.core.config.AbstractConfiguration.createConfiguration(AbstractConfiguration.java:892)
+            at org.apache.logging.log4j.core.config.AbstractConfiguration.createConfiguration(AbstractConfiguration.java:884)
+            at org.apache.logging.log4j.core.config.AbstractConfiguration.doConfigure(AbstractConfiguration.java:508)
+            at org.apache.logging.log4j.core.config.AbstractConfiguration.initialize(AbstractConfiguration.java:232)
+            at org.apache.logging.log4j.core.config.AbstractConfiguration.start(AbstractConfiguration.java:244)
+            at org.apache.logging.log4j.core.LoggerContext.setConfiguration(LoggerContext.java:545)
+            at org.apache.logging.log4j.core.LoggerContext.reconfigure(LoggerContext.java:617)
+            at org.apache.logging.log4j.core.LoggerContext.reconfigure(LoggerContext.java:634)
+            at org.apache.logging.log4j.core.LoggerContext.start(LoggerContext.java:229)
+    ...
+
+这是因为在Windows控制台中，如果编码是UTF-8，java获取编码时会获取到cp65001，而这个编码java本身是不识别的。这种情况可以按下面的方法解决：
+
++ 第一种: 执行xresloader之前先执行 chcp 936，切换到GBK编码
++ 第二种: 在powershell里执行

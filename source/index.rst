@@ -6,7 +6,12 @@
 xresloader文档
 ===============================================
 
-`xresloader`_ 是一组用于把Excel数据结构化并导出为程序可读的数据文件的导表工具集。它包含了一系列的工具、协议描述和数据读取代码。
+`xresloader`_ 是一组用于把Excel数据结构化并导出为程序可读的数据文件的导表工具集。它包含了一系列跨平台的工具、协议描述和数据读取代码。
+
+`xresloader`_ 可以把Excel数据按开发者指定的结构输出成 **基于协议的二进制** 、**Msgpack二进制** 、**Lua代码** 、**Javascript代码** 、**XML** 和 **JSON** 等格式。并且提供一系列读取数据的方法。
+
+同时为了方便开发者在不同的开发环境和平台中使用同一份配置， `xresloader`_  还提供了把协议里的某些枚举量导出成协议层所没有原生支持的代码的功能。
+比如，我们可以把protobuf描述的枚举类型导出成 ``json`` 或者 ``lua`` 代码，方便项目中使用。
 
 +----------------------------------------------+--------------------------------------------------------------------------------------+
 |                    构建环境                  |                               Linux (Oracle JDK 8)                                   |
@@ -42,10 +47,9 @@ xresloader文档
    users/xresloader_core
    users/data_mapping
    users/output_format
-   users/data_loading
+   users/xresconv
    users/data_types
    users/advance_usage
-   users/xresconv
    users/faq
 
 .. _development-docs:

@@ -10,7 +10,7 @@
 Step-1: 下载转表工具
 -----------------------------------------------
 
-#. 打开 :doc:`download` 。下载最新版本的 **转表工具-xresloader** (xresloader-\*.jar)。
+#. 打开 :doc:`./download` 。下载最新版本的 **转表工具-xresloader** (xresloader-\*.jar)。
 #. 如果要使用命令行版本的批量转换工具则要额外下载 **命令行批量转表工具-xresconv-cli**
 #. 如果要使用GUI版本的批量转换工具则要额外下载 **GUI批量转表工具-xresconv-gui**
 #. 下载或自己编译protobuf官方的protoc工具，可以去 https://github.com/google/protobuf/releases 下载预编译好的protoc
@@ -80,7 +80,7 @@ Step-4: 配置批量转表配置文件
     :language: xml
     :encoding: utf-8
 
-对于文件路径配置的说明: ``work_dir`` 、 ``xresloader_path`` 和 ``include`` （具体含义请参考 :doc:`./advance_usage` ） 配置的路径是相对于xml文件的路径。其他的涉及路径配置的地方如果不是绝对路径的，都是相对于 ``work_dir`` 的路径。
+对于文件路径配置的说明: ``work_dir`` 、 ``xresloader_path`` 和 ``include`` 配置的路径是相对于xml文件的路径。其他的涉及路径配置的地方如果不是绝对路径的，都是相对于 ``work_dir`` 的路径。（具体含义请参考 :doc:`./xresconv` ）
 
 在查找Excel文件的时候，如果有配置 ``data_src_dir`` ，则会相对于这个配置的路径读取Excel，否则也是相对于 ``work_dir`` 。
 
