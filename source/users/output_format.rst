@@ -1,13 +1,11 @@
 数据的输出类型和数据加载
 =============================================
 
-所有输出的数据的结构都是按照 https://github.com/xresloader/xresloader/blob/master/header/pb_header_v3.proto 的 ``xresloader_datablocks`` 的结构。
+所有输出的数据的结构都是按照 https://github.com/xresloader/xresloader/blob/master/header/pb_header_v3.proto 的 ``xresloader_datablocks`` 的结构。 ::
 
-转表功能和二进制数据读取的示例见： https://github.com/xresloader/xresloader/tree/master/sample
+> 转表功能和二进制数据读取的示例： https://github.com/xresloader/xresloader/tree/master/sample
+> 文本和Msgpack数据读取示例： https://github.com/xresloader/xresloader/tree/master/loader-binding
 
-文本和Msgpack数据读取示例见： https://github.com/xresloader/xresloader/tree/master/loader-binding
-
-下面我们对转出数据和加载进一步说明。
 
 输出类型
 -----------------------------------------------
@@ -28,16 +26,23 @@
 导出为json、xml、lua代码等文本数据 (可选)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+对应 ``-t json`` 、  ``-t xml`` 、 ``-t lua`` 。 
+
+对于文本数据，可以通过 ``--pretty 缩进数量`` 来设置格式化输出。
+
 .. _output-format-export msgpack:
 
 导出为Msgpack打包的二进制数据 (可选)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+对应 ``-t msgpack``
 
 .. _output-format-export enum:
 
 导出枚举类型成代码 (可选)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+对于导出的代码，可以通过 ``--pretty 缩进数量`` 来设置格式化输出。
 
 数据加载
 -----------------------------------------------
