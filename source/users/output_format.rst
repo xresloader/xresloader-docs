@@ -176,22 +176,89 @@ Lua代码目标:
 数据加载
 -----------------------------------------------
 
-加载数据可以有多种方法，项目可以根据自己的需要选择任意一种或几种合适的加载方法。
+前面小节我们大致展示了转出数据的结构，以此比较容易理解加载的方式。本小节则是对一些环境和语言的简单加载库。
 
 Step-6-1(推荐): 使用C++加载二进制数据
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 此加载方式需要上面的 :ref:`output-format-export binary`
 
+在 :ref:`快速上手-Step-6.1: 使用读取库解析 <quick_start-load-with-libresloader>` 里我们已经给出了这种加载方式的具体使用，这里不再复述。
+这里提供的方式也支持protobuf的lite模式。
+
 Step-6-2(推荐): 使用lua-pbc加载二进制数据
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 此加载方式需要上面的 :ref:`output-format-export binary`
 
+对于一些中使用lua的项目，也可以选择使用 `pbc <protobuf-lite>`_ 来加载数据。
+我们在 https://github.com/xresloader/xresloader/tree/master/loader-binding/pbc 有使用pbc进行加载的manager封装。
+在 https://github.com/owent-utils/lua/tree/master/src/data 里有对多项数据集的封装。这两部分都依赖 https://github.com/owent-utils/lua 仓库里提供的utility层。
+
+简要的加载代码如下:
+
+.. code-block:: lua
+
+    -- 加载lua加载器
+    local class = require('utils.class')
+    local loader = require('utils.loader')
+
+    -- 必须保证pbc已经载入
+    local pbc = protobuf
+    pbc.register(io.open('pb_header.pb', 'rb'):read('a'))   -- 注册转表头描述文件
+    pbc.register(io.open('用户协议.pb', 'rb'):read('a'))    -- 注册转表协议描述文件
+
+    local cfg = loader.load('data.pbc_config_data_set')
+
+    -- 设置路径规则 (一定要带一个%s)
+    -- 当读取协议message类型为PROTO的配置时，实际查找的协议名称为string.format(rule, PROTO)
+    -- 比如protobuf的package名称是config,那么这里rule填 config.%s
+    cfg:set_path_rule('%s')
+
+    -- 设置配置列表加载文件
+    -- cfg:set_list('data.conf_list') -- cfg:reload() 会在清空配置数据后执行require('data.conf_list')
+
+简要的配置清单代码（ ``data/conf_list.lua`` ）如下:
+
+.. code-block:: lua
+
+    local class = require('utils.class')
+    local loader = require('utils.loader')
+    local cfg = loader.load('data.pbc_config_data_set')
+
+    -- role_cfg, 第二个参数是个函数，返回key，这样读入的数据可以按key-value模式组织起来
+    cfg:load_buffer_kv('role_cfg', io.open('role_cfg.bin', 'rb'):read('a'), function(k, v)
+        return v.id or k
+    end)
+
+    -- 第三个参数是个别名
+    cfg:load_buffer_kv('role_cfg', io.open('role_cfg.bin', 'rb'):read('a'), function(k, v)
+        return v.id or k
+    end, 'alias_name')
+
+    -- 这后面的时读取，不是加载
+    -- 别名和非别名的数据一样的
+    vardump(cfg:get('role_cfg'):get(10002))     -- dump id=10002的role_cfg表的数据
+    vardump(cfg:get('alias_name'):get(10002))   -- dump id=10002的role_cfg表的数据
+
+    -- 直接读取里面的字段
+    print(string.format('kind id=%d, name=%s, dep_test.name=%s', kind.id, kind.name, kind.dep_test.name))
+
+
+| proto v3请注意: pbc不支持[packed=true]属性。在proto v3中，所有的repeated整数都默认是[packed=true]，要使用pbc解码请注意这些field要显示申明为[packed=false]
+| 或者使用我修改过的 `pbc的proto_v3分支 <https://github.com/owent-contrib/pbc/tree/proto_v3>`_ 。
+| 
+| 主要接口注册形式
+| pbc_config_manager:load_buffer_kv(协议名, 二进制, function(序号, 转出的lua table) return key的值 end, 别名) -- 读取key-value型数据接口
+| pbc_config_manager:load_buffer_kl(协议名, 二进制, function(序号, 转出的lua table) return key的值 end, 别名) -- 读取key-list型数据接口
+
 Step-6-3(推荐): 使用C#和DynamicMessage-net加载二进制数据
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 此加载方式需要上面的 :ref:`output-format-export binary`
+
+为了方便Unity能够不依赖反射动态获取类型和读取配置，我们提供了 `DynamicMessage-net <https://github.com/xresloader/DynamicMessage-net>`_ 项目。
+这个项目依赖 `protobuf-net <https://github.com/mgravell/protobuf-net>`_ 的底层。 详见项目主页: https://github.com/xresloader/DynamicMessage-net
 
 Step-6-4(可选): 使用node.js加载javascript文本数据
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
