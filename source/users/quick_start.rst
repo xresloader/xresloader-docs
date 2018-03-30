@@ -114,7 +114,7 @@ Step-5: 运行转表工具
 
     * target (下载的xresloader所在目录)
 
-      * xresloader-1.4.2.jar
+      * xresloader-1.4.3.jar
 
   * xresconv-cli (命令行转表工具所在目录)
 
@@ -213,8 +213,8 @@ Step-6.2: 手动解析
 .. code-block:: bash
 
     ========================
-    data header: xres_ver: "1.4.2"
-    data_ver: "1.4.2.20180317040504"
+    data header: xres_ver: "1.4.3"
+    data_ver: "1.4.3.20180317040504"
     count: 11
     hash_code: "md5:7bbe88cca1eb23ebdce75b0e10b88b4a"
 
