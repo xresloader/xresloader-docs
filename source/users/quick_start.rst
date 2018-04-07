@@ -235,3 +235,10 @@ Step-6.2: 手动解析
 加载数据可以有多种方法，这里提供加载二进制的方法。 更多关于输出类型和加载方式的信息请参见 :doc:`./output_format` 。
 
 上面的历程和配置可以在 https://github.com/xresloader/xresloader-docs/tree/master/source/sample/quick_start 查看。
+
+
+使用proto v2加载二进制数据的特别注意事项
+-----------------------------------------------
+需要额外注意一点的是，如果使用proto v2生成的代码或pb加载转出的数据，如果有 ``repeated`` 的数字字段，需要在proto文件里显式指明 ``packed`` 属性。
+
+详见 :ref:`output-format-proto v2 and proto v3`

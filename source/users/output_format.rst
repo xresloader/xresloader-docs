@@ -209,6 +209,33 @@ Lua目标代码（标准形式）:
 
 其他语言和格式导出选项也类似上面的Lua的结构，具体请参考输出的文件内容加载。
 
+.. _output-format-proto v2 and proto v3:
+
+Proto v2和Proto v3
+-----------------------------------------------
+转表工具同时支持proto v2和proto v3，但是转出是使用的proto v3模式。而对于proto v2和proto v3仅在数字类型的 ``repeated`` 字段上有些许区别。
+
+详见： https://developers.google.com/protocol-buffers/docs/proto3#specifying-field-rules
+
+简单地说，就是proto v2里数字类型的 ``repeated`` 字段默认是 ``[ packed = false ]`` ，而在proto v3里是 ``[ packed = false ]`` 。
+这可能导致转出的数据无法正常读取。解决方法也很简单，那就是对数字类型的 ``repeated`` 字段手动指定是否是packed。如：
+
+.. code-block:: proto
+    message arr_in_arr {
+        optional string name = 1;
+        repeated int32 int_arr = 2 [ packed = true ];
+        repeated string str_arr = 3;
+    }
+
+或proto v3版本。
+
+.. code-block:: proto
+    message arr_in_arr {
+        string name = 1;
+        repeated int32 int_arr = 2 [ packed = true ];
+        repeated string str_arr = 3;
+    }
+
 数据加载
 -----------------------------------------------
 
