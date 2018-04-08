@@ -49,7 +49,7 @@ extensions = [
     'sphinx.ext.mathjax',
     
     # 3rd party extensions
-    'sphinxcontrib.fulltoc',
+    # 'sphinxcontrib.fulltoc',
 
     # cloud's extensions
     'cloud_sptheme.ext.autodoc_sections',
