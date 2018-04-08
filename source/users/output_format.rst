@@ -217,10 +217,12 @@ Proto v2和Proto v3
 
 详见： https://developers.google.com/protocol-buffers/docs/proto3#specifying-field-rules
 
-简单地说，就是proto v2里数字类型的 ``repeated`` 字段默认是 ``[ packed = false ]`` ，而在proto v3里是 ``[ packed = false ]`` 。
+简单地说，就是proto v2里数字类型的 ``repeated`` 字段默认是 ``[ packed = false ]`` 。打包结构是每个项目一个Key-Value数据对。
+而在proto v3里是 ``[ packed = false ]`` 。打包结构是Key-Value个数N，而后紧挨着N个Value。
 这可能导致转出的数据无法正常读取。解决方法也很简单，那就是对数字类型的 ``repeated`` 字段手动指定是否是packed。如：
 
 .. code-block:: proto
+
     message arr_in_arr {
         optional string name = 1;
         repeated int32 int_arr = 2 [ packed = true ];
@@ -230,6 +232,7 @@ Proto v2和Proto v3
 或proto v3版本。
 
 .. code-block:: proto
+
     message arr_in_arr {
         string name = 1;
         repeated int32 int_arr = 2 [ packed = true ];

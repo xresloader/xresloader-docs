@@ -1,8 +1,3 @@
-.. xresloader-document documentation master file, created by
-   sphinx-quickstart on Tue Feb 27 14:29:08 2018.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 xresloader文档
 ===============================================
 
@@ -17,10 +12,12 @@ xresloader文档
 |                    构建环境                  |                               Linux (Oracle JDK 8)                                   |
 +==============================================+======================================================================================+
 |         `xresloader`_ 当前构建状态           | .. image:: https://travis-ci.org/xresloader/xresloader.svg?branch=master             |
-|                                              |    :alt: Build Status                                                                |
+|                                              |    :alt: Build Status                                                                | 
+|                                              |    :target: https://travis-ci.org/xresloader/xresloader                              |
 +----------------------------------------------+--------------------------------------------------------------------------------------+
 |                  文档构建状态                | .. image:: https://readthedocs.org/projects/xresloader-docs/badge/?version=latest    |
 |                                              |    :alt: Documentation Status                                                        |
+|                                              |    :target: https://readthedocs.org/projects/xresloader-docs/                        |
 +----------------------------------------------+--------------------------------------------------------------------------------------+
 
 .. _xresloader: https://github.com/xresloader
