@@ -110,7 +110,8 @@ html_theme = 'cloud'
 #
 html_theme_options = { 
     "roottarget": "index",
-    "logotarget": "_static/logo.png"
+    "logotarget": "_static/logo.png",
+    "externalrefs": False
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,

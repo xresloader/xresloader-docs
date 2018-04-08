@@ -12,6 +12,14 @@
 前者用于服务器和客户端发布流程的集成，后者主要提供给临时转表和策划验证数据时可以拿来转出部分数据。
 这两个工具都以 `批量转表配置模板仓库-xresconv-conf <xresconv-conf>`_ 中的配置为配置规范。
 
+.. image:: ../_static/users/quick_start_cli_sample.png
+
+以上为 `命令行批量转表工具-xresconv-cli <xresconv-cli>`_ 的输出示例。
+
+.. image:: ../_static/users/quick_start_gui_sample.png
+
+以上为 `GUI批量转表工具-xresconv-gui <xresconv-gui>`_ 的输出示例。
+
 我们在 :ref:`快速上手-配置批量转表配置文件 <quick-start-configure-sheme>` 章节里也提供了一个简单的例子：
 
 .. literalinclude:: ../sample/quick_start/sample-conf/sample.xml
