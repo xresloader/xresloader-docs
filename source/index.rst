@@ -17,6 +17,8 @@ xresloader文档
 * 支持空数据压缩（裁剪）或保留定长数组
 * 支持基于正则表达式分词的字段名映射转换规则
 * 支持设置数据版本号
+* Lua输出支持全局导出或导出为 ``require`` 模块或导出为 ``module`` 模块。
+* Javascript输出支持全局导出或导出为 ``nodejs`` 模块或导出为 ``AMD`` 模块。
 * 提供CLI批量转换工具（支持python 2.7/python 3 @ Windows、macOS、Linux）
 * 提供GUI批量转换工具（支持Windows、macOS、Linux）
 * CLI/GUI批量转换工具支持include来实现配置复用
