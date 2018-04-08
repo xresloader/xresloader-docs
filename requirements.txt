@@ -1,9 +1,9 @@
-setuptools>=39.0.1
-pip>=9.0.3
 sphinx>=1.7.2
 sphinx-autobuild>=0.7.1
 sphinx-rtd-theme>=0.3.0
 recommonmark>=0.4.0
 cloud-sptheme>=1.9.4
 readthedocs-sphinx-ext>=0.5.9
-sphinxcontrib-fulltoc>=1.2.0
+# NOTE: switched to custom branch until https://github.com/dreamhost/sphinxcontrib-fulltoc/issues/10 is fixed
+# sphinxcontrib-fulltoc>=1.2.0
+git+https://github.com/eli-collins/sphinxcontrib-fulltoc.git
