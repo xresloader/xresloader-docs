@@ -2,7 +2,7 @@
     "editor.fontFamily": "Noto Sans Mono CJK SC, YaHei Consolas Hybrid,Source Code Pro,Microsoft YaHei,Consolas,serif",
     "editor.fontSize": 16,
     "restructuredtext.builtDocumentationPath": "${workspaceRoot}/build/html",
-    "restructuredtext.confPath": "${workspaceRoot}/source",
+    "restructuredtext.confPath": "${workspaceFolder}\\source",
     "restructuredtext.linter.extraArgs": [],
     "files.associations": {
         "*.ejs": "html",

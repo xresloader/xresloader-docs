@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    com::owent::xresloader::pb::xresloader_datablocks data_wrapper;
+    org::xresloader::pb::xresloader_datablocks data_wrapper;
     std::fstream fin;
     fin.open(file_path, std::ios::in | std::ios::binary);
     if (!fin.is_open()) {
@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     if (false == data_wrapper.ParseFromIstream(&fin)) {
-        printf("parse com::owent::xresloader::pb::xresloader_datablocks failed. %s\n", data_wrapper.InitializationErrorString().c_str());
+        printf("parse org::xresloader::pb::xresloader_datablocks failed. %s\n", data_wrapper.InitializationErrorString().c_str());
         return 1;
     }
 

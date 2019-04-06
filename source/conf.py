@@ -23,7 +23,7 @@ from recommonmark.parser import CommonMarkParser
 # -- Project information -----------------------------------------------------
 
 project = 'xresloader-document'
-copyright = '2018, owent'
+copyright = '2019, owent'
 author = 'owent'
 
 # The short X.Y version
@@ -67,12 +67,15 @@ templates_path = ['_templates']
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 #
-source_suffix = ['.rst', '.md']
+#source_suffix = ['.rst', '.md']
+#add_source_suffix('.rst', 'restructuredtext')
+#add_source_suffix('.md', 'markdown')
 # source_suffix = '.rst'
 
-source_parsers = {
-    '.md': CommonMarkParser,
-}
+#source_parsers = {
+#    '.md': CommonMarkParser,
+#}
+#add_source_parser(CommonMarkParser)
 
 # The master toctree document.
 master_doc = 'index'
@@ -102,7 +105,7 @@ pygments_style = 'sphinx'
 html_theme = 'cloud'
 
 # set the theme path to point to cloud's theme data
-# html_theme_path = [csp.get_theme_dir()]
+html_theme_path = [csp.get_theme_dir()]
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -232,3 +235,7 @@ issue_tracker_url = "gh:xresloader/xresloader"
 # custom styles
 def setup(app):
     app.add_stylesheet('css/custom.css')  # may also be an URL
+    app.add_source_suffix('.rst', 'restructuredtext')
+    app.add_source_suffix('.md', 'markdown')
+    app.add_source_parser(CommonMarkParser)
+
