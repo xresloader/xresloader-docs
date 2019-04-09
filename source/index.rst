@@ -51,7 +51,7 @@ xresloader文档
 .. _user-docs:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: 用户文档
 
    users/download
@@ -67,7 +67,7 @@ xresloader文档
 .. _development-docs:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: 开发文档
 
    development/dependency

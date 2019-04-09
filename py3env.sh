@@ -11,6 +11,9 @@ if [ ! -e "$SCRIPT_DIR/py3env/bin/pip3" ]; then
 fi
 
 echo "#!/bin/bash
-export PATH=$SCRIPT_DIR/py3env/bin:\$PATH ;
+
+export PATH=\"$SCRIPT_DIR/py3env/bin:\$PATH\" ;
+
+\"\$@\"
     " > $SCRIPT_DIR/py3env/source.sh ;
 

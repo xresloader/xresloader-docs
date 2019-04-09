@@ -35,7 +35,7 @@ Json的数据格式是:
 .. code-block:: json
 
     [{
-      "count": 数据条目数量,
+      "count": "(数字)数据条目数量",
       "xres_ver":"xresloader版本号",
       "hash_code":"文本输出无hash码",
       "data_ver":"数据版本号"
@@ -74,13 +74,13 @@ Lua和Javacript的输出方式和输出设置有关，也很容易看懂，这�
 
     return {
         [1] = {
-            xres_ver = "xresloader版本号",
-            hash_code = "文本输出无hash码",
-            data_ver = "数据版本号",
-            count = 数据条目数量,
+            xres_ver    = "xresloader版本号",
+            hash_code   = "文本输出无hash码",
+            data_ver    = "数据版本号",
+            count        = 0, -- 数据条目数量,
         },
-        协议名 = {
-            { Excel数据Key: Excel数据内容 } -- 每行一条，数据内容
+        PROTO_NAME = {
+            { ["Excel数据Key"] = "Excel数据内容" }, -- 每行一条，数据内容
         }
     }
 
@@ -120,6 +120,24 @@ xresloader从2.0.0版本开始支持导出UE所支持的CSV或者JSON格式数�
 导出UE数据后，我们还会导出对应加载数据的UE C++类代码，具体可用的控制选项参见 :ref:`data-mapping-available-options` 。我们可以通过以下代码加载：
 
 生成完数据后我们在输出目录生成一个 **UnreaImportSettings.json** 文件，用于 **UEEditor-Cmd** 的导入命令。
+
+比如我们UE安装在环境变量 ``$UNREAL_ENGINE_ROOT`` 里，工程UE文件位于 ``$UNREAL_PROJECT_DIR/ShootingGame.uproject`` 。
+然后导出目录是 ``$XRESLOADER_OUTPUT_DIR`` 那么我们可以通过
+
+.. code-block:: bash
+
+    java -jar -client -t ue-json -o $XRESLOADER_OUTPUT_DIR -f sample-conf/kind.pb                           \
+        -m DataSource=role_tables.xlsx|upgrade_10001|3,1 -m ProtoName=role_upgrade_cfg                      \
+        -m OutputFile=RoleUpgradeCfg.json -m KeyRow=2                                                       \
+        -m UeCfg-CodeOutput=$UNREAL_PROJECT_DIR/Source/ShooterGame|Public/Config|Private/Config
+
+来生成配置和代码。如果结构变化，可能需要重新生成工程编译工程的动态库。最后可以再通过UE的命令行工具重新导入资源(以Win64为例)，如果之前导入过编辑器里回自动检测到然后提示刷新：
+
+.. code-block:: bash
+
+    $UNREAL_ENGINE_ROOT/Engine/Binaries/Win64/UE4Editor-Cmd.exe $UNREAL_PROJECT_DIR/ShootingGame.uproject   \
+        -run=ImportAssets -importsettings=$XRESLOADER_OUTPUT_DIR/UnreaImportSettings.json                   \
+        -AllowCommandletRendering -nosourcecontrol
 
 .. _output-format-export enum:
 
