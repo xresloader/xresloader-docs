@@ -110,12 +110,23 @@ Lua和Javacript的输出方式和输出设置有关，也很容易看懂，这�
 
 使用Msgpack的话， https://github.com/xresloader/xresloader/tree/master/loader-binding/msgpack 里有python2和node.js的读取示例。
 
+.. _output-format-export ue:
+
+导出为UE支持的CSV或JSON数据和代码 (可选)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+xresloader从2.0.0版本开始支持导出UE所支持的CSV或者JSON格式数据，使用 ``-t ue-csv``  或 ``-t ue-json`` 可以指定导出的UE支持的数据格式内容。
+
+导出UE数据后，我们还会导出对应加载数据的UE C++类代码，具体可用的控制选项参见 :ref:`data-mapping-available-options` 。我们可以通过以下代码加载：
+
+生成完数据后我们在输出目录生成一个 **UnreaImportSettings.json** 文件，用于 **UEEditor-Cmd** 的导入命令。
+
 .. _output-format-export enum:
 
 导出枚举类型成代码 (可选)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-对应 ``-c`` 然后可以使用 ``-t json`` 、  ``-t xml`` 、 ``-t lua``  、 ``-t js`` 来指定按哪种方式输出枚举量。
+对应 ``-c`` 然后可以使用 ``-t json`` 、  ``-t xml`` 、 ``-t lua``  、 ``-t js``  、 ``-t ue-csv``  、 ``-t ue-json`` 来指定按哪种方式输出枚举量。
 比如把protobuf协议里的枚举输出成Lua代码，proto文件：
 
 .. code-block:: proto
