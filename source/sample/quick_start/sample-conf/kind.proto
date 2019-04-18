@@ -1,9 +1,15 @@
 syntax = "proto3";
 
+import "xresloader.proto";
+import "xresloader_ue.proto";
+
 message role_upgrade_cfg {
-    uint32 Id           = 1;
-    uint32 Level        = 2;
-    uint32 CostType     = 3;
-    int32  CostValue    = 4;
-    int32  ScoreAdd     = 5;
+  uint32 Id = 1;
+  uint32 Level = 2;
+  uint32 CostType = 3 [
+    (org.xresloader.verifier) = "cost_type",
+    (org.xresloader.field_description) = "Refer to cost_type"
+  ];
+  int32 CostValue = 4;
+  int32 ScoreAdd = 5;
 }

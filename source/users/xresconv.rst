@@ -45,22 +45,51 @@
 + ``//root/list/item/option`` : 运行 `xresloader`_ 的额外附加参数（详见 :doc:`./xresloader_core` ）。比如使用 ``--enable-empty-list`` 可以不移除Excel里的空数据，仅对这个条目生效。可多个。
 
 
-其他得配置看内容应该比较容易理解，唯一有个仅用于 `GUI工具 <xresconv-gui>`_ 的配置： ``//root/gui/set_name`` 需要特别说明一下。
-这是里面必须是一个有效的javascript函数，参数只有一个，结构是
+GUI批量转表工具的特殊事件
+---------------------------------------------
+
+其他得配置看内容应该比较容易理解，但是 `GUI工具 <xresconv-gui>`_ 还有一些额外的配置，遍域用来做工具集成，需要特别说明一下
+
+第一个是 ``//root/gui/set_name`` 这是里面必须是一个有效的nodejs代码，传入的参数是：
 
 .. code-block:: javascript
 
     {
-        id: "ID",
-        file: "文件名",
-        scheme: "涉及的scheme表名称",
-        name: "该条目名称，将显示在GUI得树形展示区",
-        cat: "该条目的分类",
-        options: [ "选项列表，对应option配置" ],
-        desc: 描述信息,
-        scheme_data: { "转换规则数据，对应scheme和default_scheme配置" }
+        item_data: {
+            id: "条目ID",
+            file: "数据源文件",
+            scheme: "数据源scheme表名",
+            name: "描述名称",
+            cat: "分类名称",
+            options: ["额外选项"],
+            desc: "描述信息",
+            scheme_data: {"元数据Key": "元数据Value"}
+        }
     }
 
-这个结构。在 `GUI工具 <xresconv-gui>`_ 显示每个条目的时候会运行这个函数并传入上述结构，在函数离我们可以通过改变 ``name`` 和 ``desc`` 来改变 `GUI工具 <xresconv-gui>`_ 工具的显示内容。
+这个结构。在 `GUI工具 <xresconv-gui>`_ 显示每个条目的时候会运行这个函数并传入上述结构，在函数里我们可以通过改变 ``name`` 和 ``desc`` 来改变 `GUI工具 <xresconv-gui>`_ 工具的显示内容。
 
 比如 `批量转表配置模板仓库-xresconv-conf <xresconv-conf>`_ 中的 ``sample.xml`` 文件，我们给所有条目的名字附加上了不带后缀的文件名。
+
+另外还有 ``//root/gui/on_before_convert`` 和 ``//root/gui/on_after_convert`` ，用于在开始转表流程的前和后执行自定义脚本，便于流程集成。
+在这是里面必须是一个有效的nodejs代码，其中 ``//root/gui/on_before_convert[timeout]`` 和 ``//root/gui/on_after_convert[timeout]`` 可以用于控制超时时间，单位是毫秒。
+传入的参数是：
+
+.. code-block:: javascript
+
+    {
+        work_dir: "执行xresloader的工作目录",
+        xresloader_path: "xresloader目录",
+        global_options: {"全局选项": "VALUE"},
+        selected_nodes: ["选中要执行转表的节点集合"],
+        run_seq: "执行序号",
+        alert_warning: function(content, title, options) {}, // 警告弹框， options 结构是 {yes: 点击是按钮回调, no: 点击否按钮回调, on_close: 关闭后回调}
+        alert_error: function(content, title) {}, // 错误弹框
+        log_info: function (content) {}, // 打印info日志
+        log_error: function (content) {}, // 打印info日志
+        resolve: function (value) {}, // 通知上层执行结束,相当于Promise的resolve
+        reject: function(reason) {}, // 通知上层执行失败,相当于Promise的reject
+        require: function (name) {} // 相当于 nodejs的 require(name) 用于导入nodejs 模块
+    }
+
+在 `批量转表配置模板仓库-xresconv-conf <xresconv-conf>`_ 中的 ``sample.xml`` 文件中也有示例。

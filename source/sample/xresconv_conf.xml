@@ -27,28 +27,80 @@
 
     <gui>
         <!-- 
-            set_name标签用于GUI工具修改树形节点的显示数据,便于策划核对具体的表名。
-            传入的参数结构是，如下。修改里面的数据可以改变显示的内容。
-            item_data: {
-                id: ID,
-                file: 文件名,
-                scheme: 涉及的scheme表名称,
-                name: 该条目名称,
-                cat: 该条目的分类,
-                options: [ 选项列表 ],
-                desc: 描述信息,
-                scheme_data: { 转换规则数据 }
+            set_name标签用于GUI工具生成每个树形节点时执行的事件（nodejs）脚本，可以用于修改显示数据,便于策划核对具体的表名。
+            传入的参数结构如下。修改里面的数据可以改变显示的内容。
+            {
+                item_data: {
+                    id: id,
+                    file: "数据源文件",
+                    scheme: "数据源scheme表名",
+                    name: "描述名称",
+                    cat: "分类名称",
+                    options: ["额外选项"],
+                    desc: "描述信息",
+                    scheme_data: {"元数据Key": "元数据Value"}
+                }
             }
         -->
         <set_name desc="这个脚本用于GUI工具修改树形节点的显示数据,便于策划核对具体的表名">
-            (function(item_data){
-                if (item_data.file) {
-                    // 这个示例是给显示名称附加不带后缀的文件名
-                    item_data.name += " (" + item_data.file.match(/([^.]+)\.\w+$/)[1] + ")"
-                }
-                return item_data;
-            })
+            if (item_data.file) {
+                // 这个示例是给显示名称附加不带后缀的文件名
+                item_data.name += " (" + item_data.file.match(/([^.]+)\.\w+$/)[1] + ")"
+            }
+            return item_data;
         </set_name>
+
+        <!-- 
+            on_before_convert和on_after_convert标签用于GUI工具执行转表前和后执行一段（nodejs）脚本，方便用于一些自动化功能的集成。
+            传入的参数结构如下:
+            {
+                work_dir: "执行xresloader的工作目录",
+                xresloader_path: "xresloader目录",
+                global_options: {"全局选项": "VALUE"},
+                selected_nodes: ["选中要执行转表的节点集合"],
+                run_seq: "执行序号",
+                alert_warning: function(content, title, options) {}, // 警告弹框， options 结构是 {yes: 点击是按钮回调, no: 点击否按钮回调, on_close: 关闭后回调}
+                alert_error: function(content, title) {}, // 错误弹框
+                log_info: function (content) {}, // 打印info日志
+                log_error: function (content) {}, // 打印info日志
+                resolve: function (value) {}, // 通知上层执行结束,相当于Promise的resolve
+                reject: function(reason) {}, // 通知上层执行失败,相当于Promise的reject
+                require: function (name) {} // 相当于 nodejs的 require(name) 用于导入nodejs 模块
+            }
+        -->
+        <on_before_convert type="text/javascript" timeout="15000" description="事件执行结束必须调用resolve(value)或reject(reason)函数，以触发进行下一步">
+            // 这里可以执行nodejs代码，比如下面是Windows平台执行 echo work_dir
+            var os = require("os");
+            var spawn = require("child_process").spawn;
+            if (os.type().substr(0, 7).toLowerCase() == "windows") {
+                var exec = spawn("cmd.exe", ["/c", "echo " + work_dir], {
+                    cwd: work_dir,
+                    encoding: 'utf-8'
+                });
+                exec.stdout.on("data", function(data) {
+                    log_info(data);
+                });
+                exec.stderr.on("data", function(data) {
+                    log_error(data);
+                });
+                exec.on("error", function(data) {
+                    log_error(data.toString());
+                    reject("执行失败" + data.toString());
+                });
+                exec.on("exit", function(code) {
+                    if (code === 0) {
+                        resolve();
+                    } else {
+                        reject("执行失败");
+                    }
+                });
+            } else {
+                resolve();
+            }
+        </on_before_convert>
+        <on_after_convert type="text/javascript" timeout="60000" description="事件执行结束必须调用resolve(value)或reject(reason)函数，以触发进行下一步">
+            // 同上
+        </on_after_convert>
     </gui>
     
     <groups desc="分组信息，保留，暂未被使用">
