@@ -25,17 +25,31 @@ xresloader文档
 * 提供GUI批量转换工具（支持Windows、macOS、Linux）
 * CLI/GUI批量转换工具支持include来实现配置复用
 
-+----------------------------------------------+--------------------------------------------------------------------------------------+
-|                    构建环境                  |                               Linux (Oracle JDK 8)                                   |
-+==============================================+======================================================================================+
-|         `xresloader`_ 当前构建状态           | .. image:: https://travis-ci.org/xresloader/xresloader.svg?branch=master             |
-|                                              |    :alt: Build Status                                                                | 
-|                                              |    :target: https://travis-ci.org/xresloader/xresloader                              |
-+----------------------------------------------+--------------------------------------------------------------------------------------+
-|                  文档构建状态                | .. image:: https://readthedocs.org/projects/xresloader-docs/badge/?version=latest    |
-|                                              |    :alt: Documentation Status                                                        |
-|                                              |    :target: https://readthedocs.org/projects/xresloader-docs/                        |
-+----------------------------------------------+--------------------------------------------------------------------------------------+
++--------------------+---------------------------------------------+
+|   构建环境         |                构建状态                     |
++====================+=============================================+
+|   `xresloader`_    | Linux (Oracle JDK 8): |xresloader-trivis|   |
++--------------------+---------------------------------------------+
+|   `xresconv-cli`_  | 直接下载发布包即可，无需构建打包            |
++--------------------+---------------------------------------------+
+|   `xresconv-gui`_  | Windows: |xresconv-gui-appveyor|            |
+|                    | macOS&Linux: |xresconv-gui-trivis|          |
++--------------------+---------------------------------------------+
+|    文档            | |xresloader-docs|                           |
++--------------------+---------------------------------------------+
+
+.. |xresloader-trivis|     image:: https://travis-ci.org/xresloader/xresloader.svg?branch=master
+                           :alt: Build Status
+                           :target: https://travis-ci.org/xresloader/xresloader
+.. |xresconv-gui-appveyor| image:: https://ci.appveyor.com/api/projects/status/jla48prtf6brkgnf?svg=true
+                           :alt: Build Status
+                           :target: https://ci.appveyor.com/project/owt5008137/xresconv-gui
+.. |xresconv-gui-trivis|   image:: https://api.travis-ci.org/xresloader/xresconv-gui.svg?branch=master
+                           :alt: Build Status
+                           :target: https://travis-ci.org/xresloader/xresconv-gui
+.. |xresloader-docs|       image:: https://readthedocs.org/projects/xresloader-docs/badge/?version=latest
+                           :alt: Documentation Status
+                           :target: https://readthedocs.org/projects/xresloader-docs/
 
 .. _xresloader: https://github.com/xresloader
 .. _xresloader-core: https://github.com/xresloader/xresloader

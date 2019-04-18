@@ -3,6 +3,10 @@
 
 .. _xresloader: https://github.com/xresloader/xresloader
 .. _xresloader sample: https://github.com/xresloader/xresloader/tree/master/sample
+.. _xresloader sample proto_v3 kind.proto: https://github.com/xresloader/xresloader/tree/master/sample
+.. _xresloader header extensions: https://github.com/xresloader/xresloader/tree/master/header/extensions
+.. _xresloader header extensions v2: https://github.com/xresloader/xresloader/tree/master/header/extensions/v2
+.. _xresloader header extensions v3: https://github.com/xresloader/xresloader/tree/master/header/extensions/v3
 
 元数据替换（别名/宏）
 ---------------------------------------------
@@ -89,10 +93,10 @@
 Protobuf 插件支持
 ---------------------------------------------
 
+项目中可以导入 `xresloader header extensions`_ 目录， 然后通过导入 `xresloader header extensions v2`_ 或 `xresloader header extensions v3`_ 中的相应proto文件，就可以获得额外的插件扩展支持。
+
 Protobuf插件 - Message插件
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-项目中可以导入 [header/extensions](header/extensions) 目录， 然后通过导入 [header/v2](header/extensions/v2) 或 [header/v2](header/extensions/v3) 中的相应proto文件来支持额外的插件扩展支持。
 
 +--------------------------------+----------------------------------------------+
 |            插件名称            |                   插件功能                   |
@@ -102,7 +106,7 @@ Protobuf插件 - Message插件
 |    org.xresloader.ue.helper    |         生成UE Utility代码的类名后缀         |
 +--------------------------------+----------------------------------------------+
 
-比如 `xresloader sample`_ 里， ``proto_v3/kind.proto`` 内的 ``arr_in_arr_cfg`` 这一列配置了相关字段，会影响到一些输出。
+比如 `xresloader sample proto_v3 kind.proto`_ 里， ``arr_in_arr_cfg`` 配置了相关字段，会影响到一些输出。
 
 Protobuf插件 - Field插件
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -119,7 +123,7 @@ Protobuf插件 - Field插件
 |   org.xresloader.ue.ueTypeName   | 生成UE代码时，如果指定了这个字段，那么生成的字段类型将是 ```TSoftObjectPtr<ueTypeName>``` , 并且支持蓝图中直接引用 |
 +----------------------------------+--------------------------------------------------------------------------------------------------------------------+
 
-比如 `xresloader sample`_ 里， ``proto_v3/kind.proto`` 内的 ``role_upgrade_cfg.CostType`` 这一列配置验证器引射到协议的 ``cost_type`` 和 协议描述字段。
+比如 `xresloader sample proto_v3 kind.proto`_ 里， ``role_upgrade_cfg`` 内的 ``CostType`` 这一列配置验证器引射到协议的 ``cost_type`` 和 协议描述字段。
 
 仅导出部分字段
 ---------------------------------------------
