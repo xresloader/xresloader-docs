@@ -2,6 +2,8 @@
 =============================================
 
 .. _xresloader sample: https://github.com/xresloader/xresloader/tree/master/sample
+.. _xresloader sample ue csv: https://github.com/xresloader/xresloader/tree/master/sample/proto_v3/csv/Public/Config
+.. _xresloader sample ue json: https://github.com/xresloader/xresloader/tree/master/sample/proto_v3/json/Public/Config
 
 所有输出的数据的结构都是按照 https://github.com/xresloader/xresloader/blob/master/header/pb_header_v3.proto 的 ``xresloader_datablocks`` 的结构。 ::
 
@@ -117,7 +119,11 @@ Lua和Javacript的输出方式和输出设置有关，也很容易看懂，这�
 
 xresloader从2.0.0版本开始支持导出UE所支持的CSV或者JSON格式数据，使用 ``-t ue-csv``  或 ``-t ue-json`` 可以指定导出的UE支持的数据格式内容。
 
-导出UE数据后，我们还会导出对应加载数据的UE C++类代码，具体可用的控制选项参见 :ref:`data-mapping-available-options` 。我们可以通过以下代码加载：
+导出UE数据后，我们还会导出对应加载数据的UE C++类代码，具体可用的控制选项参见 :ref:`data-mapping-available-options` 。
+
+输出的代码有两种模型，一种是扁平模型，会把所有热  **repeated** 字段和 **message** 类型平铺到输出的类里。另一种是保留原始结构的嵌套模式。
+目前 ``-t ue-csv`` 使用的是扁平模式， ``-t ue-json`` 使用的是嵌套模式。 
+`xresloader sample ue csv`_ 和 `xresloader sample ue json`_ 中的是两种模式的输出代码，可以很容易看出来两者的差异和相应插件的功能。
 
 生成完数据后我们在输出目录生成一个 **UnreaImportSettings.json** 文件，用于 **UEEditor-Cmd** 的导入命令。
 
