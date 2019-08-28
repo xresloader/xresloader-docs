@@ -9,6 +9,13 @@
 添加mirror节点到settings.xml里的mirrors即可。比如 ::
 
     <mirror>
+        <id>tencent-cloud</id>
+        <mirrorOf>central</mirrorOf>
+        <name>Tencent Cloud Mirror.</name>
+        <url>http://mirrors.cloud.tencent.com/nexus/repository/maven-public/</url>
+    </mirror>
+
+    <mirror>
         <id>aliyun</id>
         <mirrorOf>central</mirrorOf>
         <name>Aliyun Mirror.</name>
@@ -68,6 +75,7 @@
 ::
 
     npm config set registry "http://registry.npmjs.org/"
+    npm config set registry https://mirrors.tencent.com/npm/
     npm config set registry https://registry.npm.taobao.org/
     npm install -g cnpm --registry=https://registry.npm.taobao.org
 
