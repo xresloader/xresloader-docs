@@ -17,7 +17,7 @@ import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
 # import sphinx_rtd_theme
-import cloud_sptheme as csp
+import sphinx_readable_theme
 from recommonmark.parser import CommonMarkParser
 
 # -- Project information -----------------------------------------------------
@@ -102,19 +102,18 @@ pygments_style = 'sphinx'
 # a list of builtin themes.
 #
 # html_theme = 'sphinx_rtd_theme'
-html_theme = 'cloud'
+html_theme = 'readable'
 
 # set the theme path to point to cloud's theme data
-html_theme_path = [csp.get_theme_dir()]
+html_theme_path = [sphinx_readable_theme.get_html_theme_path()] # [csp.get_theme_dir()]
+
+html_logo = "_static/logo.png"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
 html_theme_options = { 
-    "roottarget": "index",
-    "logotarget": "_static/logo.png",
-    "externalrefs": False
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -131,8 +130,6 @@ html_static_path = ['_static']
 # 'searchbox.html']``.
 #
 # html_sidebars = {}
-
-html_logo = "_static/logo.png"
 
 # -- Options for HTMLHelp output ---------------------------------------------
 

@@ -1,3 +1,39 @@
-body li, body dd, body p {
+body li,
+body dd,
+body p {
     text-align: left !important;
+}
+
+/************ patch readable.css for hihger resolution **************/
+div.document {
+    max-width: 1440px;
+}
+
+div.body {
+    max-width: 1210px;
+}
+
+div.sphinxsidebar {
+    width: 320px;
+}
+
+div.bodywrapper {
+    margin: 0 0 0 320px;
+}
+
+/* copy from readable.css */
+
+@media screen and (max-width: 870px) {
+
+    div.document {
+        width: auto;
+    }
+
+    div.bodywrapper {
+        margin: 0;
+    }
+
+    div.sphinxsidebar {
+        width: auto;
+    }
 }
