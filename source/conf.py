@@ -52,12 +52,12 @@ extensions = [
     # 'sphinxcontrib.fulltoc',
 
     # cloud's extensions
-    'cloud_sptheme.ext.autodoc_sections',
-    'cloud_sptheme.ext.relbar_links',
-    'cloud_sptheme.ext.escaped_samp_literals',
-    'cloud_sptheme.ext.issue_tracker',
-    'cloud_sptheme.ext.table_styling',
-    'cloud_sptheme.ext.index_styling',
+    # 'cloud_sptheme.ext.autodoc_sections',
+    # 'cloud_sptheme.ext.relbar_links',
+    # 'cloud_sptheme.ext.escaped_samp_literals',
+    # 'cloud_sptheme.ext.issue_tracker',
+    # 'cloud_sptheme.ext.table_styling',
+    # 'cloud_sptheme.ext.index_styling',
     # 'cloud_sptheme.ext.role_index',  # NOTE: used only to provide example role index
 ]
 
