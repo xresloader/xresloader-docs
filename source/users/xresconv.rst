@@ -7,18 +7,18 @@
 .. _xresconv-conf: https://github.com/xresloader/xresconv-conf
 
 在实际项目中，我们一般会同时涉及几十甚至上百张表。为了统一配置，我们提供了批量转表工具。
-批量转表分为 `命令行批量转表工具-xresconv-cli <xresconv-cli>`_ 和 `GUI批量转表工具-xresconv-gui <xresconv-gui>`_ 两个工具。
+批量转表分为 命令行批量转表工具-`xresconv-cli`_ 和 GUI批量转表工具-`xresconv-gui`_ 两个工具。
 
 前者用于服务器和客户端发布流程的集成，后者主要提供给临时转表和策划验证数据时可以拿来转出部分数据。
 这两个工具都以 `批量转表配置模板仓库-xresconv-conf <xresconv-conf>`_ 中的配置为配置规范。
 
 .. image:: ../_static/users/quick_start_cli_sample.png
 
-以上为 `命令行批量转表工具-xresconv-cli <xresconv-cli>`_ 的输出示例。
+以上为 命令行批量转表工具-`xresconv-cli`_ 的输出示例。
 
 .. image:: ../_static/users/quick_start_gui_sample.png
 
-以上为 `GUI批量转表工具-xresconv-gui <xresconv-gui>`_ 的输出示例。
+以上为 GUI批量转表工具-`xresconv-gui`_ 的输出示例。
 
 我们在 :ref:`快速上手-配置批量转表配置文件 <quick-start-configure-sheme>` 章节里也提供了一个简单的例子：
 
@@ -32,7 +32,7 @@
     :language: xml
     :encoding: utf-8
 
-如上时所有支持的标签的说明及示例配置。
+如上是所有支持的标签的说明及示例配置。
 
 除了前面章节提及过的字段外，还有一些特别的配置。
 
@@ -48,13 +48,14 @@
 GUI批量转表工具的特殊事件
 ---------------------------------------------
 
-其他得配置看内容应该比较容易理解，但是 `GUI工具 <xresconv-gui>`_ 还有一些额外的配置，遍域用来做工具集成，需要特别说明一下
+其他得配置看内容应该比较容易理解，但是 GUI工具 `xresconv-gui`_ 还有一些额外的配置，遍域用来做工具集成，需要特别说明一下
 
 第一个是 ``//root/gui/set_name`` 这是里面必须是一个有效的nodejs代码，传入的参数是：
 
 .. code-block:: javascript
 
     {
+        work_dir: "工作目录",
         item_data: {
             id: "条目ID",
             file: "数据源文件",
@@ -64,10 +65,11 @@ GUI批量转表工具的特殊事件
             options: ["额外选项"],
             desc: "描述信息",
             scheme_data: {"元数据Key": "元数据Value"}
-        }
+        },
+        configure_file: "载入的配置文件路径"
     }
 
-这个结构。在 `GUI工具 <xresconv-gui>`_ 显示每个条目的时候会运行这个函数并传入上述结构，在函数里我们可以通过改变 ``name`` 和 ``desc`` 来改变 `GUI工具 <xresconv-gui>`_ 工具的显示内容。
+这个结构。在 GUI工具 `xresconv-gui`_ 显示每个条目的时候会运行这个函数并传入上述结构，在函数里我们可以通过改变 ``name`` 和 ``desc`` 来改变 GUI工具 `xresconv-gui`_ 工具的显示内容。
 
 比如 `批量转表配置模板仓库-xresconv-conf <xresconv-conf>`_ 中的 ``sample.xml`` 文件，我们给所有条目的名字附加上了不带后缀的文件名。
 
@@ -79,6 +81,7 @@ GUI批量转表工具的特殊事件
 
     {
         work_dir: "执行xresloader的工作目录",
+        configure_file: "载入的配置文件路径",
         xresloader_path: "xresloader目录",
         global_options: {"全局选项": "VALUE"},
         selected_nodes: ["选中要执行转表的节点集合"],

@@ -18,5 +18,6 @@
     "python.formatting.autopep8Path": "${workspaceFolder}/py3env/bin/autopep8",
     "python.linting.pep8Path": "${workspaceFolder}/py3env/bin/pep8",
     "python.linting.pydocstylePath": "${workspaceFolder}/py3env/bin/pydocstyle",
-    "python.pythonPath": "${workspaceFolder}/py3env/bin/python"
+    "python.pythonPath": "${workspaceFolder}/py3env/bin/python",
+    "restructuredtext.confPath": "${workspaceFolder}/source"
 }
