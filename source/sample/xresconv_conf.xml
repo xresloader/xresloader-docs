@@ -6,14 +6,15 @@
         <xresloader_path desc="xresloader地址，相对于当前xml的目录">../target/xresloader-1.4.3.jar</xresloader_path>
 
         <proto desc="协议类型，对应xresloader的-p选项">protobuf</proto>
-        <output_type desc="输出类型，对应xresloader的-t选项">json</output_type>
+        <output_type desc="输出类型，-t选项，支持多个同时配置多种输出">bin</output_type>
+        <output_type desc="多种输出时可以额外定义某个节点的重命名规则" rename="/(?i)\.bin$/\.json/">json</output_type>
         <proto_file desc="协议描述文件，对应xresloader的-f选项">proto_v3/kind.pb</proto_file>
 
         <output_dir desc="输出目录，对应xresloader的-o选项"></output_dir>
         <data_src_dir desc="数据源（Excel查找）目录，对应xresloader的-d选项"></data_src_dir>
         <data_version desc="数据版本号，对应xresloader的--data-version选项，留空则自动生成">1.0.0.0</data_version>
 
-        <rename desc="重命名规则，正则表达式：/搜索模式/替换内容/，对应xresloader的-n选项">/(?i)\.bin$/\.json/</rename>
+        <rename desc="重命名规则，正则表达式：/搜索模式/替换内容/，对应xresloader的-n选项, 如果在output_type里设置了rename，以output_type里的rename为准，否则使用这里的全局配置" placeholder="/(?i)\.bin$/\.json/"></rename>
 
         <!-- java_option标签是传递给java -jar的java选项 -->
         <java_option desc="java附加选项">这里的选项会在运行xresloader-*.jar时附加到java控制参数列表中</java_option>
