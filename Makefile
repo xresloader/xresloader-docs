@@ -14,7 +14,17 @@ help:
 
 .PHONY: help Makefile
 
+# COPY_FILES = $(SOURCEDIR)/LICENSE.txt $(SOURCEDIR)/LICENSE.md
+# 
+# all: $(COPY_FILES)
+# 
+# $(SOURCEDIR)/LICENSE.txt: LICENSE.txt
+# $(SOURCEDIR)/LICENSE.md: LICENSE.md
+# 
+# $(SOURCEDIR)/%:
+#     cp -f $< $@
+
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
-%: Makefile
+%: Makefile # COPY_FILES
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)

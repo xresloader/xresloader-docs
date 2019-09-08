@@ -97,6 +97,7 @@ xresloader文档
 .. toctree::
    :caption: 其他
 
+   LICENSE
    about
 
 .. 
