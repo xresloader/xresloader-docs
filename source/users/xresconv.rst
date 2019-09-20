@@ -55,7 +55,8 @@ GUI批量转表工具的特殊事件
 .. code-block:: javascript
 
     {
-        work_dir: "工作目录",
+        work_dir: "工作目录(要求版本>=2.2.0)",
+        configure_file: "载入的配置文件路径(要求版本>=2.2.0)",
         item_data: {
             id: "条目ID",
             file: "数据源文件",
@@ -66,7 +67,10 @@ GUI批量转表工具的特殊事件
             desc: "描述信息",
             scheme_data: {"元数据Key": "元数据Value"}
         },
-        configure_file: "载入的配置文件路径"
+        alert_warning: function(content, title, options) {},    // (要求版本>=2.2.0) 警告弹框， options 结构是 {yes: 点击是按钮回调, no: 点击否按钮回调, on_close: 关闭后回调}
+        alert_error: function(content, title) {},               // (要求版本>=2.2.0) 错误弹框
+        log_info: function (content) {},                        // (要求版本>=2.2.0) 打印info日志
+        log_error: function (content) {}                        // (要求版本>=2.2.0) 打印info日志
     }
 
 这个结构。在 GUI工具 `xresconv-gui`_ 显示每个条目的时候会运行这个函数并传入上述结构，在函数里我们可以通过改变 ``name`` 和 ``desc`` 来改变 GUI工具 `xresconv-gui`_ 工具的显示内容。
@@ -81,18 +85,18 @@ GUI批量转表工具的特殊事件
 
     {
         work_dir: "执行xresloader的工作目录",
-        configure_file: "载入的配置文件路径",
+        configure_file: "载入的配置文件路径(要求版本>=2.2.0)",
         xresloader_path: "xresloader目录",
         global_options: {"全局选项": "VALUE"},
         selected_nodes: ["选中要执行转表的节点集合"],
         run_seq: "执行序号",
-        alert_warning: function(content, title, options) {}, // 警告弹框， options 结构是 {yes: 点击是按钮回调, no: 点击否按钮回调, on_close: 关闭后回调}
-        alert_error: function(content, title) {}, // 错误弹框
-        log_info: function (content) {}, // 打印info日志
-        log_error: function (content) {}, // 打印info日志
-        resolve: function (value) {}, // 通知上层执行结束,相当于Promise的resolve
-        reject: function(reason) {}, // 通知上层执行失败,相当于Promise的reject
-        require: function (name) {} // 相当于 nodejs的 require(name) 用于导入nodejs 模块
+        alert_warning: function(content, title, options) {},    // 警告弹框， options 结构是 {yes: 点击是按钮回调, no: 点击否按钮回调, on_close: 关闭后回调}
+        alert_error: function(content, title) {},               // 错误弹框
+        log_info: function (content) {},                        // 打印info日志
+        log_error: function (content) {},                       // 打印info日志
+        resolve: function (value) {},                           // 通知上层执行结束,相当于Promise的resolve
+        reject: function(reason) {},                            // 通知上层执行失败,相当于Promise的reject
+        require: function (name) {}                             // 相当于 nodejs的 require(name) 用于导入nodejs 模块
     }
 
 在 `批量转表配置模板仓库-xresconv-conf <xresconv-conf>`_ 中的 ``sample.xml`` 文件中也有示例。

@@ -42,6 +42,7 @@ release = 'https://xresloader.atframe.work'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'recommonmark',
     # standard sphinx extensions
     'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
@@ -67,10 +68,11 @@ templates_path = ['_templates']
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 #
-#source_suffix = ['.rst', '.md']
-#add_source_suffix('.rst', 'restructuredtext')
-#add_source_suffix('.md', 'markdown')
-# source_suffix = '.rst'
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.txt': 'markdown',
+    '.md': 'markdown',
+}
 
 #source_parsers = {
 #    '.md': CommonMarkParser,
@@ -120,6 +122,10 @@ html_theme_options = {
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+html_css_files = ['css/custom.css']
+
+html_js_files = []
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
@@ -230,9 +236,9 @@ issue_tracker_url = "gh:xresloader/xresloader"
 
 
 # custom styles
-def setup(app):
-    app.add_stylesheet('css/custom.css')  # may also be an URL
-    app.add_source_suffix('.rst', 'restructuredtext')
-    app.add_source_suffix('.md', 'markdown')
-    app.add_source_parser(CommonMarkParser)
+# def setup(app):
+#     app.add_stylesheet('css/custom.css')  # may also be an URL
+#     app.add_source_suffix('.rst', 'restructuredtext')
+#     app.add_source_suffix('.md', 'markdown')
+#     app.add_source_parser(CommonMarkParser)
 
