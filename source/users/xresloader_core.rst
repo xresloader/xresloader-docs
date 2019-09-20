@@ -13,8 +13,8 @@
 
 .. image:: ../_static/development/xresconv_process.png
 
-无论GUI工具还是CLI工具还是数据和配置，最终都是汇聚到调用 `xresloader转表引擎 <xresloader>`_ 命令进行汇总和执行转换。
-本章节主要是针对 `xresloader转表引擎 <xresloader>`_ 的说明。
+无论GUI工具还是CLI工具还是数据和配置，最终都是汇聚到调用 `xresloader`_ 转表引擎命令进行汇总和执行转换。
+本章节主要是针对 `xresloader`_ 转表引擎的说明。
 
 xresloader-可用参数列表
 ---------------------------------------------
