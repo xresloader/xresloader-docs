@@ -10,6 +10,7 @@ xresloader文档
 * 完整支持协议结构，包括嵌套结构和数组嵌套
 * 同时支持protobuf proto v2 和 proto v3
 * 支持导出proto枚举值到lua/javascript代码和json/xml数据
+* 支持导出proto描述信息值到lua/javascript代码和json/xml数据（支持自定义插件，方便用户根据proto描述自定义反射功能）
 * 支持导出 UnrealEngine 支持的json或csv格式，支持自动生成和导出 UnrealEngine 的 ``DataTable`` 加载代码
 * 支持别名表，用于给数据内容使用一个易读的名字
 * 支持验证器，可以在数据里直接填写proto字段名或枚举名，或者验证填入数据的是否有效
@@ -28,28 +29,31 @@ xresloader文档
 +--------------------+---------------------------------------------+
 |   构建环境         |                构建状态                     |
 +====================+=============================================+
-|   `xresloader`_    | Linux (OpenJDK 8): |xresloader-trivis|      |
+|   `xresloader`_    | Linux (OpenJDK 8): |xresloader-ci|          |
 +--------------------+---------------------------------------------+
 |   `xresconv-cli`_  | 直接下载发布包即可，无需构建打包            |
 +--------------------+---------------------------------------------+
-|   `xresconv-gui`_  | Windows: |xresconv-gui-appveyor|            |
-|                    | macOS&Linux: |xresconv-gui-trivis|          |
+|   `xresconv-gui`_  | |xresconv-gui-ci|                           |
 +--------------------+---------------------------------------------+
 |    文档            | |xresloader-docs|                           |
 +--------------------+---------------------------------------------+
 
-.. |xresloader-trivis|     image:: https://travis-ci.org/xresloader/xresloader.svg?branch=master
+.. |xresloader-ci|         image:: https://github.com/xresloader/xresloader/workflows/Master%20Building/badge.svg
                            :alt: Build Status
-                           :target: https://travis-ci.org/xresloader/xresloader
-.. |xresconv-gui-appveyor| image:: https://ci.appveyor.com/api/projects/status/jla48prtf6brkgnf?svg=true
+                           :target: https://github.com/xresloader/xresloader/actions?query=workflow%3A%22Master+Building%22
+.. |xresconv-gui-ci|       image:: https://github.com/xresloader/xresconv-gui/workflows/build/badge.svg
                            :alt: Build Status
-                           :target: https://ci.appveyor.com/project/owt5008137/xresconv-gui
-.. |xresconv-gui-trivis|   image:: https://api.travis-ci.org/xresloader/xresconv-gui.svg?branch=master
-                           :alt: Build Status
-                           :target: https://travis-ci.org/xresloader/xresconv-gui
+                           :target: https://github.com/xresloader/xresconv-gui/actions?query=workflow%3Abuild
 .. |xresloader-docs|       image:: https://readthedocs.org/projects/xresloader-docs/badge/?version=latest
                            :alt: Documentation Status
                            :target: https://readthedocs.org/projects/xresloader-docs/
+
+.. image:: https://img.shields.io/github/v/release/xresloader/xresloader
+.. image:: https://img.shields.io/github/languages/code-size/xresloader/xresloader
+.. image:: https://img.shields.io/github/repo-size/xresloader/xresloader
+.. image:: https://img.shields.io/github/downloads/xresloader/xresloader/total
+.. image:: https://img.shields.io/github/forks/xresloader/xresloader?style=social
+.. image:: https://img.shields.io/github/stars/xresloader/xresloader?style=social
 
 .. _xresloader: https://github.com/xresloader
 .. _xresloader-core: https://github.com/xresloader/xresloader
