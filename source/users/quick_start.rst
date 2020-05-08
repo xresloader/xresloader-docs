@@ -135,7 +135,7 @@ Step-5.1: 命令行批量转表工具
 
 输出如下:
 
-.. image:: ../_static/users/quick_start_cli_sample.png
+.. image:: ../_static/users/quick_start_cli_sample.gif
 
 
 Step-5.2: GUI批量转表工具
@@ -143,7 +143,7 @@ Step-5.2: GUI批量转表工具
 
 使用GUI工具，直接加载配置文件，选中要转换的表然后点击开始即可。
 
-.. image:: ../_static/users/quick_start_gui_sample.png
+.. image:: ../_static/users/quick_start_gui_sample.gif
 
 
 Step-6: 加载数据

@@ -12,11 +12,11 @@
 前者用于服务器和客户端发布流程的集成，后者主要提供给临时转表和策划验证数据时可以拿来转出部分数据。
 这两个工具都以 `批量转表配置模板仓库-xresconv-conf <xresconv-conf>`_ 中的配置为配置规范。
 
-.. image:: ../_static/users/quick_start_cli_sample.png
+.. image:: ../_static/users/quick_start_cli_sample.gif
 
 以上为 命令行批量转表工具-`xresconv-cli`_ 的输出示例。
 
-.. image:: ../_static/users/quick_start_gui_sample.png
+.. image:: ../_static/users/quick_start_gui_sample.gif
 
 以上为 GUI批量转表工具-`xresconv-gui`_ 的输出示例。
 
