@@ -153,6 +153,24 @@ xresloader从2.0.0版本开始支持导出UE所支持的CSV或者JSON格式数�
         -run=ImportAssets -importsettings=$XRESLOADER_OUTPUT_DIR/UnreaImportSettings.json                   \
         -AllowCommandletRendering -nosourcecontrol
 
+然后需要增加蓝图接口获取Helper
+
+.. code-block:: cpp
+
+    URoleUpgradeCfgHelper* UMyBlueprintFunctionLibrary::GetRoleUpgradeCfg()
+    {
+        UClass* clazz = URoleUpgradeCfgHelper::StaticClass();
+        if (nullptr == clazz) {
+            return nullptr;
+        }
+
+        return clazz->GetDefaultObject<URoleUpgradeCfgHelper>();
+    }
+
+就可以在蓝图中使用了:
+
+.. image:: ../_static/users/ue-blueprint.png
+
 .. _output-format-export enum:
 
 导出枚举类型成代码 (可选)
