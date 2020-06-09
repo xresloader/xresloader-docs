@@ -172,7 +172,7 @@ xresloader从2.0.0版本开始支持导出UE所支持的CSV或者JSON格式数�
 .. image:: ../_static/users/ue-blueprint.png
 
 如果我们希望在Excel里配置引用UE内的资源文件，可以使用 ``org.xresloader.ue.ue_type_name`` 插件和 ``org.xresloader.ue.ue_type_is_class`` 插件。
-前者会把UE的输出代码转为 ```TSoftObjectPtr<ue_type_name>``` 来指向UE内的资源，后者会把UE的输出代码转为 ```TSoftClassPtr<ue_type_name>``` 来指向UE内的类型。
+前者会把UE的输出代码转为 ``TSoftObjectPtr<ue_type_name>`` 来指向UE内的资源，后者会把UE的输出代码转为 ``TSoftClassPtr<ue_type_name>`` 来指向UE内的类型。
 
 比如我们配置字段:
 

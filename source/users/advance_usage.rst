@@ -4,9 +4,9 @@
 .. _xresloader: https://github.com/xresloader/xresloader
 .. _xresloader sample: https://github.com/xresloader/xresloader/tree/master/sample
 .. _`xresloader/sample/proto_v3/kind.proto`: https://github.com/xresloader/xresloader/blob/master/sample/proto_v3/kind.proto
-.. _xresloader header extensions: https://github.com/xresloader/xresloader/tree/master/header/extensions
-.. _xresloader header extensions v2: https://github.com/xresloader/xresloader/tree/master/header/extensions/v2
-.. _xresloader header extensions v3: https://github.com/xresloader/xresloader/tree/master/header/extensions/v3
+.. _`xresloader/header/extensions`: https://github.com/xresloader/xresloader/tree/master/header/extensions
+.. _`xresloader/header/extensions/v2`: https://github.com/xresloader/xresloader/tree/master/header/extensions/v2
+.. _`xresloader/header/extensions/v3`: https://github.com/xresloader/xresloader/tree/master/header/extensions/v3
 
 文本替换（别名/宏）
 -----------------------------------------------------
@@ -93,7 +93,7 @@
 Protobuf 插件支持
 -----------------------------------------------------
 
-项目中可以导入 `xresloader header extensions`_ 目录， 然后通过导入 `xresloader header extensions v2`_ 或 `xresloader header extensions v3`_ 中的相应proto文件，就可以获得额外的插件扩展支持。
+项目中可以导入 `xresloader/header/extensions`_ 目录， 然后通过导入 `xresloader/header/extensions/v2`_ 或 `xresloader/header/extensions/v3`_ 中的相应proto文件，就可以获得额外的插件扩展支持。
 
 > 注意: 使用插件功能时　生成pb的时候也要导入插件的proto文件和protobuf官方include目录里的 google/protobuf/descriptor.proto 文件。
 
