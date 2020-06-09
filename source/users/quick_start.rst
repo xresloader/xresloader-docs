@@ -97,40 +97,27 @@ Step-5: 运行转表工具
 
 我们假设执行环境的目录结构如下:
 
-* 执行目录:
+.. code-block:: bash
 
-  * sample-conf (批量转表配置所在目录)
-
-    * sample.xml
-    * kind.proto
-    * kind.pb               （使用protoc生成的二进制协议描述文件）
-    * role_tables.xlsx      （Excel数据源）
-    * xresloader.run.log     (输出的日志文件，执行转表后自动生成，方便万一有错误排查)
-
-  * sample-data (转出的配置数据所在目录)
-
-    * role_upgrade_cfg.bin  (输出的二进制配置文件，执行转表后自动生成)
-
-  * xresloader
-
-    * header
-
-      * pb_header.proto    （用于proto v2的转表头结构描述文件，读取数据的时候用）
-      * pb_header_v3.proto （用于proto v3的转表头结构描述文件，读取数据的时候用）
-
-    * target (下载的xresloader所在目录)
-
-      * xresloader-1.4.3.jar
-
-  * xresconv-cli (命令行转表工具所在目录)
-
-    * xresconv-cli.py
-    * print_color.py
-
-  * xresconv-gui (GUI转表工具所在目录)
-
-    * GUI工具的文件列表
-  
+    sample-conf (批量转表配置所在目录)
+      sample.xml
+      kind.proto
+      kind.pb               （使用protoc生成的二进制协议描述文件）
+      role_tables.xlsx      （Excel数据源）
+      xresloader.run.log     (输出的日志文件，执行转表后自动生成，方便万一有错误排查)
+    sample-data (转出的配置数据所在目录)
+      role_upgrade_cfg.bin  (输出的二进制配置文件，执行转表后自动生成)
+    xresloader                
+      header                (可在 https://github.com/xresloader/xresloader/releases 下载 protocols.zip 获得)
+        pb_header.proto    （用于proto v2的转表头结构描述文件，读取数据的时候用）
+        pb_header_v3.proto （用于proto v3的转表头结构描述文件，读取数据的时候用）
+      target                (可在 https://github.com/xresloader/xresloader/releases 下载 xresloader-\*.jar 获得)
+        xresloader-2.8.0.jar
+    xresconv-cli              (命令行转表工具所在目录，可在 https://github.com/xresloader/xresconv-cli/releases 下载 )
+      xresconv-cli.py
+      print_color.py
+    xresconv-gui              (GUI转表工具所在目录，可在 https://github.com/xresloader/xresconv-gui/releases 下载 )
+      GUI工具的文件列表...
 
 Step-5.1: 命令行批量转表工具
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
