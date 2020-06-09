@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 import "xresloader.proto";
+// xresloader的发布页面 https://github.com/xresloader/xresloader/releases 下载 protocols.zip ，即可获取xresloader.proto
 
 enum cost_type {
   EN_CT_UNKNOWN = 0;

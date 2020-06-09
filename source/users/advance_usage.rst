@@ -3,13 +3,13 @@
 
 .. _xresloader: https://github.com/xresloader/xresloader
 .. _xresloader sample: https://github.com/xresloader/xresloader/tree/master/sample
-.. _xresloader sample proto_v3 kind.proto: https://github.com/xresloader/xresloader/tree/master/sample
+.. _`xresloader/sample/proto_v3/kind.proto`: https://github.com/xresloader/xresloader/blob/master/sample/proto_v3/kind.proto
 .. _xresloader header extensions: https://github.com/xresloader/xresloader/tree/master/header/extensions
 .. _xresloader header extensions v2: https://github.com/xresloader/xresloader/tree/master/header/extensions/v2
 .. _xresloader header extensions v3: https://github.com/xresloader/xresloader/tree/master/header/extensions/v3
 
 文本替换（别名/宏）
----------------------------------------------
+-----------------------------------------------------
 
 为了便于理解，我们支持配置一组别名的表。在 ``MacroSource`` 中，主配置为文件名，次配置为表明，补充配置为Key-Value的开始行号和列号。比如：
 
@@ -32,14 +32,14 @@
 +--------+-------+
 
 多表数据合并
----------------------------------------------
+-----------------------------------------------------
 
 如果Excel的多个表的结构相同（列对应的字段相同）。则我们可以通过配置多个 ``DataSource`` 来让 `xresloader`_ 对多个表进行数据合并。这样我们可以把数据按类型分布在几个表中并在转换的时候最后合并。
 
 详见 `xresloader sample`_ 中 ``资源转换示例.xlsx`` 的 ``scheme_upgrade`` 、 ``upgrade_10001`` 和 ``upgrade_10002`` 表。
 
 数据验证器
----------------------------------------------
+-----------------------------------------------------
 
 `xresloader`_ 提供了一个基于协议描述得高级功能- **数据验证器** 。用于限制输入数据的范围。 
 **数据验证器** 的使用方法是在Excel的字段名后面跟 ``@`` 符号，然后输入协议名称或者数字范围 ``A-B`` ，多个验证器可以用 ``|`` 隔开。 
@@ -91,7 +91,7 @@
 这时在转出数据的时候，转出的数据是 ``unit_attribute.hp`` 的字段编号 ``1`` 。
 
 Protobuf 插件支持
----------------------------------------------
+-----------------------------------------------------
 
 项目中可以导入 `xresloader header extensions`_ 目录， 然后通过导入 `xresloader header extensions v2`_ 或 `xresloader header extensions v3`_ 中的相应proto文件，就可以获得额外的插件扩展支持。
 
@@ -114,7 +114,7 @@ Protobuf插件 - Message插件
 | org.xresloader.ue.not_data_table         |   bool  | 生成UE Utility代码时，不生产加载代码，这用于带name字段的依赖类型                                |
 +------------------------------------------+---------+-------------------------------------------------------------------------------------------------+
 
-比如 `xresloader sample proto_v3 kind.proto`_ 里， ``arr_in_arr_cfg`` 配置了相关字段，会影响到一些输出。
+比如 `xresloader/sample/proto_v3/kind.proto`_ 里， ``arr_in_arr_cfg`` 配置了相关字段，会影响到一些输出。
 
 Protobuf插件 - Field插件
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -185,7 +185,7 @@ Protobuf插件 - EnumValue插件
 |    org.xresloader.enum_alias         |  string |                                   枚举值别名，可用于验证器和Excel中直接填别名                                        |
 +--------------------------------------+---------+----------------------------------------------------------------------------------------------------------------------+
 
-比如 `xresloader sample proto_v3 kind.proto`_ 里， ``role_upgrade_cfg`` 内的 ``CostType`` 这一列配置验证器引射到协议的 ``cost_type`` 和 协议描述字段。
+比如 `xresloader/sample/proto_v3/kind.proto`_ 里， ``role_upgrade_cfg`` 内的 ``CostType`` 这一列配置验证器引射到协议的 ``cost_type`` 和 协议描述字段。
 
 .. literalinclude:: ../sample/quick_start/sample-conf/kind.proto
     :language: proto
@@ -222,15 +222,112 @@ Protobuf插件 - Oneof插件(2.8.0版本及以上)
 即，我们可能会有一个 ``role_server`` 和 ``role_client`` 。这两个数据结构不一样，但指向同一个数据源。
 
 批量转表的include标签
----------------------------------------------
+-----------------------------------------------------
 
 公式支持
----------------------------------------------
+-----------------------------------------------------
 
 `xresloader`_ 支持公式功能，但是不建议使用跨文件公式。是因为有些平台里，文件的引用可能会使用绝对路径，这时候如果改变一个文件中的值会影响另一个文件。
 而另一个文件计算公式的时候读取失败，则会用之前的数据缓存（Excel中对所有公式的计算结果有缓存）。这时候数据可能滞后，但是是没有提示的。可能会引起困惑。
 
 定长数组
----------------------------------------------
+-----------------------------------------------------
 
 详见 :ref:`数据类型说明-定长数组 <data-types-stable-array>` 章节。
+
+Plain模式（需要 `xresloader`_ 2.7.0及以上）
+-----------------------------------------------------
+
+为了方便某些特殊场景使用，从 `xresloader`_ 2.7.0版本开始，我们开支支持Plain模式。
+Plain模式的配置方式允许把数字和字符串数组和整个message配置在一个单元格里，多个元素或者多个字段按分隔符分割。分隔符支持多个候选项，实际执行会采用按输入的字符串中，第一个找到的候选项。
+默认的分隔符候选项是 ``,;|`` 。
+
+Plain模式不需要额外配置，当数组元素没有配置下标或者配置的映射字段直接指向一个message时，将自动使用Plain模式解析。
+
+比如对于以下协议：
+
+.. code-block:: proto
+
+  message cfg {
+      int32 id = 1;
+      plain_message plain_msg = 2;
+      repeated int32 plain_arr = 3;
+  }
+
+  message plain_message {
+      int32 id = 1;
+      repeated int32 param = 2;
+  }
+
+如果Excel配置是如下形式:
+
++------------+------------+------------+
+|   配置ID   |  Plain结构 | Plain数组  |
++============+============+============+
+|  id        | plain_msg  | plain_arr  |
++------------+------------+------------+
+| 101        | 101\|1,2,3 | 7;8;9      |
++------------+------------+------------+
+
+那么对于 ``plain_msg`` 字段输入的字符串是 ``101|1,2,3`` ，第一个 ``|`` 会作为 ``plain_msg`` 的字段分隔符， ``,`` 会作为 ``plain_msg.param`` 的数组分隔符。 
+而对于 ``plain_arr`` 字段输入的字符串是 ``7;8;9`` , ``;`` 会作为数组分隔符。
+
+如果想要指定自定义分隔符，特别是对 ``repeated message`` 要区分message的分隔符和数组的分隔符，可以使用使用 ``org.xresloader.field_separator`` 插件和 ``org.xresloader.msg_separator`` 插件。
+需要注意的是，对于数组（repeated）的字段，字段分隔符仅接受通过 ``org.xresloader.field_separator`` 指定，而非数组的复杂数据结构（非repeated message） ``org.xresloader.field_separator`` 插件和 ``org.xresloader.msg_separator`` 都可以用于指定分隔符。
+
+同时，在Plain模式中，message字段解析是严格按照配置的field number的顺序。
+
+更多详情请参考 `xresloader sample`_ 的 ``arr_in_arr`` 表，对应协议是 `xresloader/sample/proto_v3/kind.proto`_ 中的 ``message arr_in_arr_cfg`` 。
+
+**``UE-Csv`` 和 ``UE-Json`` 输出的Plain模式需要 `xresloader`_ 2.8.0及以上。**
+
+Oneof/Union支持（需要 `xresloader`_ 2.8.0及以上）
+-----------------------------------------------------
+
+`xresloader`_ 对Oneof的支持和Plain模式类似，并且只能通过Plain模式一样的方法配置，可以使用 ``org.xresloader.oneof_separator`` 插件指定自定义分隔符。
+
+Oneof/Union支持的配置方法是直接在Excel字段映射中配置oneof的名字。输入字符串中第一组为字段的名字、数字标识（field number）或别名，第二组为对应的类型的Plain模式输入。比如:
+
+.. code-block:: proto
+
+  // 常量类型
+  enum cost_type {
+      EN_CT_UNKNOWN              = 0;
+      EN_CT_MONEY                = 10001 [(org.xresloader.enum_alias) = "金币"];
+      EN_CT_DIAMOND              = 10101 [(org.xresloader.enum_alias) = "钻石"];
+  }
+  message cfg {
+    int32 id = 1;
+    oneof reward {
+      plain_message msg       = 11 [ (org.xresloader.field_alias) = "嵌套结构" ];
+      int64         user_exp  = 12 [ (org.xresloader.field_alias) = "数字类型" ];
+      string        note      = 13 [ (org.xresloader.field_alias) = "描述文本" ];
+      cost_type     enum_type = 14 [ (org.xresloader.field_alias) = "货币类型" ];
+    }
+  }
+  message plain_message {
+      int32 id = 1;
+      repeated int32 param = 2;
+  }
+
+以下输入都是允许的：
+
++------------+-------------------------+
+|   配置ID   |  Oneof结构              |
++============+=========================+
+| id         | reward                  |
++------------+-------------------------+
+| 1001       | msg\|101;1,2,3          |
++------------+-------------------------+
+| 1002       | 数字类型\|100           |
++------------+-------------------------+
+| 1003       | 13\|Hello World         |
++------------+-------------------------+
+| 1004       | enum_type\|金币         |
++------------+-------------------------+
+| 1005       | 货币类型\|EN_CT_DIAMOND |
++------------+-------------------------+
+
+需要特别注意的是，和Plain模式一样，message字段解析是严格按照配置的field number的顺序，如果message里有嵌套的oneof，那么oneof的输入位置是第一个相关字段的位置，并且该oneof里后续的字段不需要配置。
+
+更多详情请参考 `xresloader sample`_ 的 ``test_oneof`` 表，对应协议是 `xresloader/sample/proto_v3/kind.proto`_ 中的 ``message event_cfg`` 。

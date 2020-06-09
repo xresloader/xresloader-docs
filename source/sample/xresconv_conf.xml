@@ -3,7 +3,7 @@
     <include desc="可以包含其他文件配置，然后本文件里的配置将会覆盖或合并配置，相对于当前xml的目录">sample.xml</include>
     <global>
         <work_dir desc="工作目录，相对于当前xml的目录">../xresloader/sample</work_dir>
-        <xresloader_path desc="xresloader地址，相对于当前xml的目录">../target/xresloader-2.7.1.jar</xresloader_path>
+        <xresloader_path desc="xresloader地址，相对于当前xml的目录">../target/xresloader-2.8.0.jar</xresloader_path>
 
         <proto desc="协议类型，对应xresloader的-p选项">protobuf</proto>
         <output_type desc="输出类型，-t选项，支持多个同时配置多种输出">bin</output_type>
@@ -24,6 +24,8 @@
         <!-- default_scheme 是下面直接填写scheme时的默认参数。如果后面的scheme标签设置两相同的name，则该条目会覆盖默认配置 -->
         <default_scheme name="KeyRow" desc="默认scheme模式参数-Key行号">2</default_scheme>
         <default_scheme name="MacroSource" desc="默认scheme模式参数-Key行号">资源转换示例.xlsx|macro|2,1</default_scheme>
+
+        <option desc="全局自定义选项" name="美化文本输出，缩进为2个空格">--pretty 2</option>
     </global>
 
     <gui>

@@ -15,6 +15,7 @@
         <java_option desc="java选项-客户端模式">-client</java_option>
 
         <default_scheme name="KeyRow" desc="默认scheme模式参数-Key行号，对应上面Id、Level、CostType、CostValue那一行">2</default_scheme>
+        <option desc="全局自定义选项" name="美化文本输出，缩进为2个空格">--pretty 2</option>
     </global>
     
     <groups desc="分组信息（可选）">

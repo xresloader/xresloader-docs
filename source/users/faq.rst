@@ -35,11 +35,7 @@ Windows下控制台里执行执行会报文件编码错误？（java.nio.charset
             at java.nio.charset.Charset.forName(Unknown Source)
             at org.apache.logging.log4j.util.PropertiesUtil.getCharsetProperty(PropertiesUtil.java:146)
             at org.apache.logging.log4j.util.PropertiesUtil.getCharsetProperty(PropertiesUtil.java:134)
-            at org.apache.logging.log4j.core.appender.ConsoleAppender$Target.getCharset(ConsoleAppender.java:85)
-            at org.apache.logging.log4j.core.appender.ConsoleAppender$Target$1.getDefaultCharset(ConsoleAppender.java:71)
-            at org.apache.logging.log4j.core.appender.ConsoleAppender$Builder.build(ConsoleAppender.java:218)
-            at org.apache.logging.log4j.core.appender.ConsoleAppender$Builder.build(ConsoleAppender.java:185)
-            at org.apache.logging.log4j.core.config.plugins.util.PluginBuilder.build(PluginBuilder.java:122)
+            ...
     ...
 
 和
@@ -51,15 +47,7 @@ Windows下控制台里执行执行会报文件编码错误？（java.nio.charset
             at org.apache.logging.log4j.core.config.plugins.util.PluginBuilder.findFactoryMethod(PluginBuilder.java:224)
             at org.apache.logging.log4j.core.config.plugins.util.PluginBuilder.build(PluginBuilder.java:130)
             at org.apache.logging.log4j.core.config.AbstractConfiguration.createPluginObject(AbstractConfiguration.java:952)
-            at org.apache.logging.log4j.core.config.AbstractConfiguration.createConfiguration(AbstractConfiguration.java:892)
-            at org.apache.logging.log4j.core.config.AbstractConfiguration.createConfiguration(AbstractConfiguration.java:884)
-            at org.apache.logging.log4j.core.config.AbstractConfiguration.doConfigure(AbstractConfiguration.java:508)
-            at org.apache.logging.log4j.core.config.AbstractConfiguration.initialize(AbstractConfiguration.java:232)
-            at org.apache.logging.log4j.core.config.AbstractConfiguration.start(AbstractConfiguration.java:244)
-            at org.apache.logging.log4j.core.LoggerContext.setConfiguration(LoggerContext.java:545)
-            at org.apache.logging.log4j.core.LoggerContext.reconfigure(LoggerContext.java:617)
-            at org.apache.logging.log4j.core.LoggerContext.reconfigure(LoggerContext.java:634)
-            at org.apache.logging.log4j.core.LoggerContext.start(LoggerContext.java:229)
+            ...
     ...
 
 这是因为在Windows控制台中，如果编码是UTF-8，java获取编码时会获取到cp65001，而这个编码java本身是不识别的。这种情况可以按下面的方法解决：
@@ -92,3 +80,24 @@ proto v2版本API解析repeated的整数或浮点数类型字段失败(Wire Type
 repeated的数值类型在proto v2里默认是 ``[ packed = false ]`` 而在proto v3里是 ``[ packed = true ]`` 。解决方法是显式指定打包方式。
 
 详见 :ref:`output-format-proto v2 and proto v3` 。
+
+为什么在proto里定义的是一个无符号(unsigned)类型(uint32、uint64等)，实际输出的UE代码是有符号(signed)的(int32/int64)？
+----------------------------------------------------------------------------------------------------------------
+
+因为有一些语言是没有无符号(unsigned)类型的，为了统一数据类型，我们统一转换为有符号类型，转换方式和protobuf的java版SDK保持一致。如果需要使用大于int32最大值的uint32类型，请用int64代替。
+
+为什么 ``UE-Csv`` 和 ``UE-Json`` 输出的代码会多一个 ``Name`` 字段?
+----------------------------------------------------------------------------------------------------------------
+
+因为对 ``UE-Json`` 输出中， ``Name`` 是一个特殊字段，也用于UE中内置的接口的查找索引。所以为了统一输出的数据结构（ 这样无论是 ``UE-Csv`` 还是 ``UE-Json`` 都可以用相同的代码结构来导入 ），我们对 ``UE-Csv`` 和 ``UE-Json`` 统一自动生成 ``Name`` 字段。但是如果用户自定义了 ``Name`` 字段， 我们会使用用户自定义的 ``Name`` 字段。
+
+要如何配置可以让Excel里的数据指向UE的类型或资源
+----------------------------------------------------------------------------------------------------------------
+
+可以使用 ``org.xresloader.ue.ue_type_name`` 插件和 ``org.xresloader.ue.ue_type_is_class`` 插件。详见： :ref:`output-format-export ue`
+
+为什么UE的代码输出里对 ``oneof`` 的case输出使用 ``FString`` 的字段名而不使用 ``UEnum()``
+----------------------------------------------------------------------------------------------------------------
+
+主要是因为（当前版本4.X）UE的 ``UEnum()`` 的支持仅支持基于 ``uint8`` 的，但是protobuf的field number是 ``int32`` 。为了兼容性所以没有使用 ``UEnum()`` 。 
+如果输出int32的话再UE里不太好操作，所以输出了字符串类型，方便蓝图里或UE代码里通过UE内置的反射机制访问。

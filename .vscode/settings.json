@@ -1,23 +1,23 @@
 {
-    "editor.fontFamily": "Noto Sans Mono CJK SC, YaHei Consolas Hybrid,Source Code Pro,Microsoft YaHei,Consolas,serif",
-    "editor.fontSize": 16,
-    "restructuredtext.builtDocumentationPath": "${workspaceRoot}/build/html",
-    "restructuredtext.linter.extraArgs": [],
-    "files.associations": {
-        "*.ejs": "html",
-        "algorithm": "cpp",
-        "iosfwd": "cpp",
-        "fstream": "cpp",
-        "vector": "cpp",
-        "xstring": "cpp",
-        "xutility": "cpp"
-    },
-    "python.linting.pylintPath": "${workspaceFolder}/py3env/bin/pylint",
-    "python.linting.flake8Path": "${workspaceFolder}/py3env/bin/flake8",
-    "python.formatting.yapfPath": "${workspaceFolder}/py3env/bin/yapf",
-    "python.formatting.autopep8Path": "${workspaceFolder}/py3env/bin/autopep8",
-    "python.linting.pycodestylePath": "${workspaceFolder}/py3env/bin/pep8",
-    "python.linting.pydocstylePath": "${workspaceFolder}/py3env/bin/pydocstyle",
-    "python.pythonPath": "${workspaceFolder}/py3env/bin/python",
-    "restructuredtext.confPath": "${workspaceFolder}\\source"
+  "editor.fontFamily": "Noto Sans Mono CJK SC, YaHei Consolas Hybrid,Source Code Pro,Microsoft YaHei,Consolas,serif",
+  "editor.fontSize": 16,
+  "restructuredtext.builtDocumentationPath": "${workspaceRoot}/build/html",
+  "restructuredtext.linter.extraArgs": [],
+  "files.associations": {
+    "*.ejs": "html",
+    "algorithm": "cpp",
+    "iosfwd": "cpp",
+    "fstream": "cpp",
+    "vector": "cpp",
+    "xstring": "cpp",
+    "xutility": "cpp"
+  },
+  // "python.linting.pylintPath": "${workspaceFolder}/py3env/bin/pylint",
+  // "python.linting.flake8Path": "${workspaceFolder}/py3env/bin/flake8",
+  // "python.formatting.yapfPath": "${workspaceFolder}/py3env/bin/yapf",
+  // "python.formatting.autopep8Path": "${workspaceFolder}/py3env/bin/autopep8",
+  // "python.linting.pycodestylePath": "${workspaceFolder}/py3env/bin/pep8",
+  // "python.linting.pydocstylePath": "${workspaceFolder}/py3env/bin/pydocstyle",
+  // "python.pythonPath": "${workspaceFolder}/py3env/bin/python",
+  "restructuredtext.confPath": "${workspaceFolder}\\source"
 }

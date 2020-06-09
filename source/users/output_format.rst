@@ -171,6 +171,36 @@ xresloader从2.0.0版本开始支持导出UE所支持的CSV或者JSON格式数�
 
 .. image:: ../_static/users/ue-blueprint.png
 
+如果我们希望在Excel里配置引用UE内的资源文件，可以使用 ``org.xresloader.ue.ue_type_name`` 插件和 ``org.xresloader.ue.ue_type_is_class`` 插件。
+前者会把UE的输出代码转为 ```TSoftObjectPtr<ue_type_name>``` 来指向UE内的资源，后者会把UE的输出代码转为 ```TSoftClassPtr<ue_type_name>``` 来指向UE内的类型。
+
+比如我们配置字段:
+
+.. code-block:: proto
+
+  message monster_role {
+      option (org.xresloader.ue.helper)       = "helper";
+      option (org.xresloader.msg_description) = "怪物角色表";
+
+      int32  monster_id = 1  [ (org.xresloader.ue.key_tag) = 1 ];
+      string pawn_class = 13 [ (org.xresloader.ue.ue_type_name) = "APawn", (org.xresloader.ue.ue_type_is_class) = true, (org.xresloader.field_description) = "机器人Pawn类型" ]; // 默认的蓝图类
+
+  }
+
+那么我们可以在Excel中配置:
+
++------------+-------------------------------------------------------------------------+
+|   怪物ID   |                               默认的蓝图类                              |
++============+=========================================================================+
+| monster_id | pawn_class                                                              |
++------------+-------------------------------------------------------------------------+
+| 2001       | Blueprint'/Game/Blueprints/Pawns/BotPawnDemo.BotPawnDemo_C'             |
++------------+-------------------------------------------------------------------------+
+| 2002       | Blueprint'/Game/Blueprints/Pawns/BotPawnDemo_range.BotPawnDemo_range_C' |
++------------+-------------------------------------------------------------------------+
+| 2003       | Blueprint'/Game/Blueprints/Pawns/BotPawn_Melee.BotPawn_Melee_C'         |
++------------+-------------------------------------------------------------------------+
+
 .. _output-format-export enum:
 
 导出枚举类型成代码 (可选)
