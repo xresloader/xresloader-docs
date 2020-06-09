@@ -7,13 +7,19 @@
 .. _load_with_libresloader.cpp: https://github.com/xresloader/xresloader-docs/blob/master/source/sample/quick_start/sample-code/load_with_libresloader.cpp
 .. _load_custom.cpp: https://github.com/xresloader/xresloader-docs/blob/master/source/sample/quick_start/sample-code/load_custom.cpp
 
+.. _OpenJDK: https://developers.redhat.com/products/openjdk/download
+.. _AdoptopenJDK: https://developers.redhat.com/products/openjdk/download
+.. _LibericaJDK: https://bell-sw.com/
+.. _Zulu: https://www.azul.com/downloads/zulu-community/
+
 Step-1: 下载转表工具
 -----------------------------------------------
 
+#. 下载JRE/JDK 8或以上(推荐下载64位的: `AdoptopenJDK`_/`LibericaJDK`_/`OpenJDK`_/`Zulu`_)
 #. 打开 :doc:`./download` 。下载最新版本的 **转表工具-xresloader** (xresloader-\*.jar)。
-#. 如果要使用命令行版本的批量转换工具则要额外下载 **命令行批量转表工具-xresconv-cli**
-#. 如果要使用GUI版本的批量转换工具则要额外下载 **GUI批量转表工具-xresconv-gui**
 #. 下载或自己编译protobuf官方的protoc工具，可以去 https://github.com/google/protobuf/releases 下载预编译好的protoc
+#. [可选/推荐] 如果要使用命令行版本的批量转换工具则要额外下载 **命令行批量转表工具-xresconv-cli**
+#. [可选/推荐] 如果要使用GUI版本的批量转换工具则要额外下载 **GUI批量转表工具-xresconv-gui**
 
 
 Step-2: 配置结构化的protobuf协议并使用protoc
