@@ -34,7 +34,7 @@ proto v2也可以，可以参见 https://github.com/xresloader/xresloader/blob/m
 
 然后使用protoc生成描述文件和用于加载的代码文件: ::
 
-    protoc -I sample-conf -o sample-conf/kind.pb --cpp_out=sample-code sample-conf/kind.proto ;
+    protoc -o sample-conf/kind.pb --cpp_out sample-code -I sample-conf -I <xresloader协议目录>/extensions/v3 -I <xresloader协议目录>/extensions sample-conf/kind.proto <xresloader协议目录>/extensions/google/protobuf/descriptor.proto <xresloader协议目录>/extensions/v3/xresloader.proto <xresloader协议目录>/extensions/v3/xresloader_ue.proto;
 
 这是最终的 **数据转出目标** 。
 

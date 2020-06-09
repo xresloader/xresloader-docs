@@ -18,7 +18,7 @@
 .. _xresconv-gui release: https://github.com/xresloader/xresconv-gui/releases
 .. _xresconv-conf: https://github.com/xresloader/xresconv-conf
 
-- **转表工具-xresloader** 下载任意jar文件即可
+- **转表工具-xresloader** 下载jar文件即可，如果要使用插件，请下载 *protocols.zip*
 - **命令行批量转表工具-xresconv-cli** 下载压缩包并使用里面的*xresconv-cli.py*文件
 - **GUI批量转表工具-xresconv-gui** 下载对应平台的发布包即可
 - **批量转表配置模板仓库-xresconv-conf** 是给 `xresconv-cli release`_ 或 `xresconv-gui release`_ 使用的配置列表文件。
