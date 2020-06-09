@@ -1,39 +1,47 @@
 body li,
 body dd,
-body p {
-    text-align: left !important;
+body li p {
+  text-align: left !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin: auto auto;
+}
+
+body {
+  font-family: "Noto Sans Mono", "DejaVu Sans Mono", "Noto Mono",
+    "Noto Sans Mono CJK SC", "YaHei Consolas Hybrid", "Source Code Pro",
+    "Microsoft YaHei", "Noto Sans CJK SC", "Consolas", "Georgia", serif;
 }
 
 /************ patch readable.css for hihger resolution **************/
 div.document {
-    max-width: 1440px;
+  max-width: 1440px;
 }
 
 div.body {
-    max-width: 1210px;
+  max-width: 1210px;
 }
 
 div.sphinxsidebar {
-    width: 320px;
+  width: 320px;
 }
 
 div.bodywrapper {
-    margin: 0 0 0 320px;
+  margin: 0 0 0 320px;
 }
 
 /* copy from readable.css */
 
 @media screen and (max-width: 870px) {
+  div.document {
+    width: auto;
+  }
 
-    div.document {
-        width: auto;
-    }
+  div.bodywrapper {
+    margin: 0;
+  }
 
-    div.bodywrapper {
-        margin: 0;
-    }
-
-    div.sphinxsidebar {
-        width: auto;
-    }
+  div.sphinxsidebar {
+    width: auto;
+  }
 }
