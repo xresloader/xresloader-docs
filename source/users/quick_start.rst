@@ -8,7 +8,7 @@
 .. _load_custom.cpp: https://github.com/xresloader/xresloader-docs/blob/master/source/sample/quick_start/sample-code/load_custom.cpp
 
 .. _OpenJDK: https://developers.redhat.com/products/openjdk/download
-.. _AdoptopenJDK: https://developers.redhat.com/products/openjdk/download
+.. _AdoptopenJDK: https://adoptopenjdk.net/
 .. _LibericaJDK: https://bell-sw.com/
 .. _Zulu: https://www.azul.com/downloads/zulu-community/
 
