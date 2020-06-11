@@ -140,7 +140,7 @@ xresloader从2.0.0版本开始支持导出UE所支持的CSV或者JSON格式数�
 
 .. code-block:: bash
 
-    java -jar -client -t ue-json -o $XRESLOADER_OUTPUT_DIR -f sample-conf/kind.pb                           \
+    java -client -jar xresloader.jar -t ue-json -o $XRESLOADER_OUTPUT_DIR -f sample-conf/kind.pb                           \
         -m DataSource=role_tables.xlsx|upgrade_10001|3,1 -m ProtoName=role_upgrade_cfg                      \
         -m OutputFile=RoleUpgradeCfg.json -m KeyRow=2                                                       \
         -m UeCfg-CodeOutput=$UNREAL_PROJECT_DIR/Source/ShooterGame|Public/Config|Private/Config
