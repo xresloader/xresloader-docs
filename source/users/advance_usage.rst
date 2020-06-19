@@ -331,3 +331,73 @@ Oneof/Union支持的配置方法是直接在Excel字段映射中配置oneof的�
 需要特别注意的是，和Plain模式一样，message字段解析是严格按照配置的field number的顺序，如果message里有嵌套的oneof，那么oneof的输入位置是第一个相关字段的位置，并且该oneof里后续的字段不需要配置。
 
 更多详情请参考 `xresloader sample`_ 的 ``test_oneof`` 表，对应协议是 `xresloader/sample/proto_v3/kind.proto`_ 中的 ``message event_cfg`` 。
+
+Map类型支持（需要 `xresloader`_ 2.9.0及以上）
+-----------------------------------------------------
+
+从 `xresloader`_ 2.9.0 版本开始，我们支持使用 protobuf 内置的map类型。map类型的数据输入配置和数组类似，与其不同的是，我们增加了内置的 ``key`` 和 ``value`` 字段用于通过标准模式指定元素的``key`` 和 ``value``。
+当然我们也可以使用Plain模式的输入。比如以下的协议:
+
+.. code-block:: proto
+
+    message dep2_cfg {
+        uint32 id = 1;
+        string level = 2;
+    }
+    message arr_in_arr_cfg {
+        option (org.xresloader.ue.helper)       = "helper";
+        option (org.xresloader.msg_description) = "Test arr_in_arr_cfg";
+
+        uint32   id                       = 1 [ (org.xresloader.ue.key_tag) = 1, (org.xresloader.field_description) = "This is a Key" ];
+        map<int32, string>    test_map_is = 7;
+        map<string, dep2_cfg> test_map_sm = 8 [ (org.xresloader.field_separator) = "|" ]; 
+    }
+
+我们接受如下的Excel输入:
+
++------------+-------------------------+-------------------------+-------------------------+-------------------------+-------------------------------+
+|   配置ID   |  Map嵌套模式[0].key     |  Map嵌套模式[0].value   |  Map嵌套模式[1].key     |  Map嵌套模式[1].value   |  MapPlain模式                 |
++============+=========================+=========================+=========================+=========================+===============================+
+| id         | test_map_is[0].key      | test_map_is[0].value    | test_map_is[1].key      | test_map_is[1].value    | test_map_sm                   |
++------------+-------------------------+-------------------------+-------------------------+-------------------------+-------------------------------+
+| 1001       | 10                      | Map嵌套模式[0].value    | 11                      | Map嵌套模式[1].value    | aa;111,112\|特殊:字符;121,122 |
++------------+-------------------------+-------------------------+-------------------------+-------------------------+-------------------------------+
+| 1002       | 20                      | Map嵌套模式[0].value    | 21                      | Map嵌套模式[1].value    | ba;211,212\|特殊.字符;221,222 |
++------------+-------------------------+-------------------------+-------------------------+-------------------------+-------------------------------+
+| 1003       | 30                      | Map嵌套模式[0].value    | 31                      | Map嵌套模式[1].value    | ca;311,312\|cb;321,322        |
++------------+-------------------------+-------------------------+-------------------------+-------------------------+-------------------------------+
+
+对于 ```UE-Csv``` 和 ```UE-Json``` 模式的输出，我们会输入如下的代码：
+
+.. code-block:: cpp
+
+    USTRUCT(BlueprintType)
+    struct FArrInArrCfg : public FTableRowBase
+    {
+        GENERATED_USTRUCT_BODY()
+
+        // Start of fields
+        /** Field Type: STRING, Name: Name, Index: 0. This field is generated for UE Editor compatible. **/
+        UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XResConfig")
+        FName Name;
+
+        // This is a Key
+        /** Field Type: INT, Name: Id, Index: 1 **/
+        UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XResConfig")
+        int32 Id;
+
+        /** Field Type: MESSAGE, Name: TestMapIs, Index: 7 **/
+        UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XResConfig")
+        TMap< int32, FString > TestMapIs;
+
+        /** Field Type: MESSAGE, Name: TestMapSm, Index: 8 **/
+        UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XResConfig")
+        TMap< FString, FDep2Cfg > TestMapSm;
+
+    };
+
+特别的对于 ``xml`` 类型的输出，由于map中的key的数据可能会不符合 ``xml`` 的tag的规则，所以我们对于map输出的数据中 ``tagName`` 采用类型名， 即 ``string`` , ``int32`` , ``int64`` 。
+然后增加 ``key`` 属性用于指示map中key的内容，增加 ``type`` 属性指示类型名。
+
+
+更多详情请参考 `xresloader sample`_ 的 ``arr_in_arr`` 表，对应协议是 `xresloader/sample/proto_v3/kind.proto`_ 中的 ``message arr_in_arr_cfg`` 。
