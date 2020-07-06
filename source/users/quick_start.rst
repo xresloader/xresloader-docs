@@ -6,6 +6,7 @@
 .. _sample.xml: https://github.com/xresloader/xresloader-docs/blob/master/source/sample/quick_start/sample-conf/sample.xml
 .. _load_with_libresloader.cpp: https://github.com/xresloader/xresloader-docs/blob/master/source/sample/quick_start/sample-code/load_with_libresloader.cpp
 .. _load_custom.cpp: https://github.com/xresloader/xresloader-docs/blob/master/source/sample/quick_start/sample-code/load_custom.cpp
+.. _`xres-code-generator`: https://github.com/xresloader/xres-code-generator
 
 .. _OpenJDK: https://developers.redhat.com/products/openjdk/download
 .. _AdoptopenJDK: https://adoptopenjdk.net/
@@ -152,37 +153,10 @@ Step-6: 加载数据
 
 .. _quick_start-load-with-libresloader:
 
-Step-6.1: 使用读取库解析
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Step-6.1: （推荐）使用 `xres-code-generator`_ 生成解析代码(C++/Lua)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-需要先下载读取库。 ::
-
-    curl -L -k https://raw.githubusercontent.com/xresloader/xresloader/master/loader-binding/cxx/libresloader.h -o libresloader.h
-
-然后读取的代码sample如下（文件名: `load_with_libresloader.cpp`_ ） 
-
-.. literalinclude:: ../sample/quick_start/sample-code/load_with_libresloader.cpp
-    :language: cpp
-    :encoding: utf-8
-
-编译和运行：
-
-.. code-block:: bash
-
-    g++ -I . -I<protobuf的include目录> -L<protobuf的lib目录> -std=c++11 -O0 -g -ggdb -Wall load_with_libresloader.cpp *.pb.cc -lprotobuf -o load_with_libresloader.exe && ./load_with_libresloader.exe ../sample-data/role_upgrade_cfg.bin
-
-输出示例：
-
-.. code-block:: bash
-
-    Id: 10001
-    Level: 4
-    CostType: 1001
-    CostValue: 150
-
-    role_upgrade_cfg with id=10001 has 11 items
-    Id: 10001
-    Level: 1
+对于C++和Lua，我们推荐使用 `xres-code-generator`_ 生成解析代码。（未来会开发更多的语言支持）。详见： :ref:`xres_code_generator` 。
 
 
 Step-6.2: 手动解析
@@ -227,8 +201,40 @@ Step-6.2: 手动解析
 
 加载数据可以有多种方法，这里提供加载二进制的方法。 更多关于输出类型和加载方式的信息请参见 :doc:`./output_format` 。
 
-上面的历程和配置可以在 https://github.com/xresloader/xresloader-docs/tree/master/source/sample/quick_start 查看。
+Step-6.3: （老式接口，不推荐，请考虑使用上面6.1的加载方法）使用读取库模板解析
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+需要先下载读取库。 ::
+
+    curl -L -k https://raw.githubusercontent.com/xresloader/xresloader/master/loader-binding/cxx/libresloader.h -o libresloader.h
+
+然后读取的代码sample如下（文件名: `load_with_libresloader.cpp`_ ） 
+
+.. literalinclude:: ../sample/quick_start/sample-code/load_with_libresloader.cpp
+    :language: cpp
+    :encoding: utf-8
+
+编译和运行：
+
+.. code-block:: bash
+
+    g++ -I . -I<protobuf的include目录> -L<protobuf的lib目录> -std=c++11 -O0 -g -ggdb -Wall load_with_libresloader.cpp *.pb.cc -lprotobuf -o load_with_libresloader.exe && ./load_with_libresloader.exe ../sample-data/role_upgrade_cfg.bin
+
+输出示例：
+
+.. code-block:: bash
+
+    Id: 10001
+    Level: 4
+    CostType: 1001
+    CostValue: 150
+
+    role_upgrade_cfg with id=10001 has 11 items
+    Id: 10001
+    Level: 1
+
+
+上面的例程和配置可以在 https://github.com/xresloader/xresloader-docs/tree/master/source/sample/quick_start 查看。
 
 使用proto v2加载二进制数据的特别注意事项
 -----------------------------------------------

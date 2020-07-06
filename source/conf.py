@@ -12,18 +12,19 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+import datetime
 import os
 import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
 # import sphinx_rtd_theme
-import sphinx_readable_theme
+# import sphinx_readable_theme
 from recommonmark.parser import CommonMarkParser
 
 # -- Project information -----------------------------------------------------
 
 project = 'xresloader-document'
-copyright = '2019, owent'
+copyright = '{0}, xresloader'.format(datetime.datetime.now().year)
 author = 'owent'
 
 # The short X.Y version
@@ -48,6 +49,7 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
     'sphinx.ext.mathjax',
+    'sphinx_rtd_theme'
     
     # 3rd party extensions
     # 'sphinxcontrib.fulltoc',
@@ -103,11 +105,11 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-# html_theme = 'sphinx_rtd_theme'
-html_theme = 'readable'
+html_theme = 'sphinx_rtd_theme'
+# html_theme = 'readable'
 
 # set the theme path to point to cloud's theme data
-html_theme_path = [sphinx_readable_theme.get_html_theme_path()] # [csp.get_theme_dir()]
+# html_theme_path = [sphinx_readable_theme.get_html_theme_path()] # [csp.get_theme_dir()]
 
 html_logo = "_static/logo.png"
 
@@ -236,9 +238,11 @@ issue_tracker_url = "gh:xresloader/xresloader"
 
 
 # custom styles
-# def setup(app):
-#     app.add_stylesheet('css/custom.css')  # may also be an URL
-#     app.add_source_suffix('.rst', 'restructuredtext')
-#     app.add_source_suffix('.md', 'markdown')
-#     app.add_source_parser(CommonMarkParser)
+def setup(app):
+    app.add_config_value('recommonmark_config', {
+        'enable_auto_toc_tree': True,
+        'enable_math': True,
+        'enable_inline_math': True
+    }, True)
+
 

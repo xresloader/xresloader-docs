@@ -82,6 +82,7 @@ xresloader文档
    users/output_format
    users/xresconv
    users/data_types
+   users/xres_code_generator
    users/advance_usage
    users/faq
 

@@ -7,13 +7,25 @@ body li p {
   margin: auto auto;
 }
 
+body ul li {
+  padding: 0;
+}
+
+/*
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans:wght@400;700&display=swap');
+*/
+
 body {
-  font-family: "Noto Sans Mono", "DejaVu Sans Mono", "Noto Mono",
-    "Noto Sans Mono CJK SC", "YaHei Consolas Hybrid", "Source Code Pro",
-    "Microsoft YaHei", "Noto Sans CJK SC", "Consolas", "Georgia", serif;
+  font-family: "Noto Sans CJK SC", "Noto Sans", "DejaVu Sans Mono", "Noto Mono",
+    "Fira Code", "YaHei Consolas Hybrid", "Source Code Pro", Consolas, Arial,
+    sans-serif;
 }
 
 /************ patch readable.css for hihger resolution **************/
+div.wy-nav-content {
+  max-width: 100%;
+}
+/*
 div.document {
   max-width: 1440px;
 }
@@ -29,9 +41,9 @@ div.sphinxsidebar {
 div.bodywrapper {
   margin: 0 0 0 320px;
 }
-
+*/
 /* copy from readable.css */
-
+/*
 @media screen and (max-width: 870px) {
   div.document {
     width: auto;
@@ -45,3 +57,4 @@ div.bodywrapper {
     width: auto;
   }
 }
+*/
