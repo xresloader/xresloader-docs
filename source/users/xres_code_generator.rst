@@ -132,6 +132,42 @@ Lua
 
 使用示例可参见 `xres-code-generator/sample`_ ，使用 ``sample_gen.sh`` 可生成协议代码和加载示例代码。
 
+C#
+------------
+
+1. 使用模板 ``template/ConfigSet.cs.mako`` 和 ``template/ConfigSetManager.cs.mako`` 生成加载代码
+
+.. code-block:: bash
+
+    REPO_DIR=$PATH_TO_xres_code_generator;
+    mkdir -p "$REPO_DIR/sample/pbcs";
+
+    python "$REPO_DIR/tools/find_protoc.py" -I "$REPO_DIR/sample/proto" -I "$REPO_DIR/pb_extension" "$REPO_DIR/sample/proto/"*.proto -o "$REPO_DIR/sample/sample.pb" ;
+
+    python "$REPO_DIR/xrescode-gen.py" -i "$REPO_DIR/template" -p "$REPO_DIR/sample/sample.pb" -o "$REPO_DIR/sample/pbcs"   \
+        -g "$REPO_DIR/template/ConfigSet.cs.mako"                                                                           \
+        -l "$REPO_DIR/template/ConfigSetManager.cs.mako"                                                                    \
+        "$@"
+
+2. 使用 ``ConfigSetManager`` 访问数据.
+
+.. code-block:: csharp
+
+    using System;
+    using excel;
+    class Program {
+        static void Main(string[] args) {
+            ConfigSetManager.Instance.Reload();
+            // 当前C#数据集全部生成的单例类.
+            // 如果后续有需要再添加ConfigGroup管理等功能.
+            var table = config_set_role_upgrade_cfg.Instance.GetByIdLevel(10001, 3);
+            if (table != null) {
+                Console.WriteLine(table.ToString());
+            }
+        }
+    }
+
+
 自定义模板和更多语言
 ------------------------
 

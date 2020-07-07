@@ -25,36 +25,3 @@ body {
 div.wy-nav-content {
   max-width: 100%;
 }
-/*
-div.document {
-  max-width: 1440px;
-}
-
-div.body {
-  max-width: 1210px;
-}
-
-div.sphinxsidebar {
-  width: 320px;
-}
-
-div.bodywrapper {
-  margin: 0 0 0 320px;
-}
-*/
-/* copy from readable.css */
-/*
-@media screen and (max-width: 870px) {
-  div.document {
-    width: auto;
-  }
-
-  div.bodywrapper {
-    margin: 0;
-  }
-
-  div.sphinxsidebar {
-    width: auto;
-  }
-}
-*/
