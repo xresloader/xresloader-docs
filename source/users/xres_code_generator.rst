@@ -5,6 +5,7 @@
 .. _`xres-code-generator/template/common/lua`: https://github.com/xresloader/xres-code-generator/tree/master/template/common/lua
 .. _`mako`: https://www.makotemplates.org/
 .. _xresloader: https://github.com/xresloader
+.. _`xres-code-generator 插件`: https://github.com/xresloader/xres-code-generator/blob/master/pb_extension/xrescode_extensions_v3.proto
 
 .. _xres_code_generator:
 
@@ -15,8 +16,41 @@
 
 仓库地址: https://github.com/xresloader/xres-code-generator
 
-C++
-------------
+
+第一步，在proto文件中声明加载器和索引类型
+------------------------------------------------
+
+导入 ``import "xrescode_extensions_v3.proto";`` 然后声明loader。更多可选项见: `xres-code-generator 插件`_
+
+.. code-block:: proto
+
+    syntax = "proto3";
+
+    import "xrescode_extensions_v3.proto";
+
+    message role_upgrade_cfg {
+        option (xrescode.loader) = {
+            file_path : "role_upgrade_cfg.bytes"
+            indexes : {
+                fields : "Id"
+                index_type : EN_INDEX_KL // Key - List 类型索引，映射关系为: (Id) => list<role_upgrade_cfg>
+            }
+            indexes : {
+                fields : "Id"
+                fields : "Level"
+                index_type : EN_INDEX_KV // Key - Value 类型索引，映射关系为: (Id, Level) => role_upgrade_cfg
+            }
+            // 允许多个索引，索引命名是所有的 [fields 字段].join("_")，也可以通过name属性自定义
+            tags : "client"
+            tags : "server"
+        };
+
+        int32  CostValue = 4;
+        int32  ScoreAdd  = 5;
+    }
+
+生成C++加载代码
+------------------------
 
 1. 从 `xres-code-generator/template/common/cpp`_ 拷贝公共代码
 2. 使用模板 ``template/config_manager.h.mako`` , ``template/config_manager.cpp.mako`` , ``template/config_easy_api.h.mako`` , ``template/config_easy_api.cpp.mako`` , ``template/config_set.h.mako`` , ``template/config_set.cpp.mako`` 生成加载代码
@@ -89,8 +123,8 @@ C++
 
 使用示例可参见 `xres-code-generator/sample`_ ，使用 ``sample_gen.sh`` 可生成协议代码和加载示例代码。
 
-Lua
-------------
+生成Lua加载代码
+------------------------
 
 1. 从 `xres-code-generator/template/common/lua`_ 拷贝公共代码
 2. 使用模板 ``template/DataTableCustomIndex.lua.mako`` 和 ``template/DataTableCustomIndex53.lua.mako`` 生成加载代码
@@ -126,14 +160,26 @@ Lua
     local role_upgrade_cfg = excel_config_service:Get("role_upgrade_cfg")
     local data = role_upgrade_cfg:GetByIndex('id_level', 10001, 3) -- using the Key-Value index: id_level
     for k,v in pairs(data) do
-        print(string.format("%s=%s\n", k, tostring(v)))
+        print(string.format("\t%s=%s", k, tostring(v)))
+    end
+
+    -- 也可以通过DataTableService.GetCurrentGroup(self)获取分组和DataTableService.GetByGroup(self, group, loader_name)来实现配置分组和多版本功能
+    local current_group = excel_config_service:GetCurrentGroup()
+    local role_upgrade_cfg2 = excel_config_service:GetByGroup(current_group, "role_upgrade_cfg")
+    local data2 = role_upgrade_cfg:GetByIndex('id', 10001) -- using the Key-List index: id
+    print("=======================")
+    for _,v1 in ipairs(data2) do
+        print(string.format("\tid: %s, level: %s", tostring(v1.Id), tostring(v1.Level)))
+        for k,v2 in pairs(v1) do
+            print(string.format("\t\t%s=%s", k, tostring(v2)))
+        end
     end
 
 
 使用示例可参见 `xres-code-generator/sample`_ ，使用 ``sample_gen.sh`` 可生成协议代码和加载示例代码。
 
-C#
-------------
+生成C#加载代码
+------------------------
 
 1. 使用模板 ``template/ConfigSet.cs.mako`` 和 ``template/ConfigSetManager.cs.mako`` 生成加载代码
 
