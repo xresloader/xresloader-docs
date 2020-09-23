@@ -156,7 +156,7 @@ Step-6: 加载数据
 Step-6.1: （推荐）使用 `xres-code-generator`_ 生成解析代码(C++/Lua)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-对于C++和Lua，我们推荐使用 `xres-code-generator`_ 生成解析代码。（未来会开发更多的语言支持）。详见： :ref:`xres_code_generator` 。
+对于C++、Lua和C#，我们推荐使用 `xres-code-generator`_ 生成解析代码。（未来会开发更多的语言支持）。详见： :ref:`xres_code_generator` 。
 
 
 Step-6.2: 手动解析

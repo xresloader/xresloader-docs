@@ -4,6 +4,7 @@
 .. _xresloader sample: https://github.com/xresloader/xresloader/tree/master/sample
 .. _xresloader sample ue csv: https://github.com/xresloader/xresloader/tree/master/sample/proto_v3/csv/Public/Config
 .. _xresloader sample ue json: https://github.com/xresloader/xresloader/tree/master/sample/proto_v3/json/Public/Config
+.. _`xres-code-generator`: https://github.com/xresloader/xres-code-generator
 
 所有输出的数据的结构都是按照 https://github.com/xresloader/xresloader/blob/master/header/pb_header_v3.proto 的 ``xresloader_datablocks`` 的结构。 ::
 
@@ -445,7 +446,13 @@ Proto v2和Proto v3
 
 前面小节我们大致展示了转出数据的结构，以此比较容易理解加载的方式。本小节则是对一些环境和语言的简单加载库。
 
-方式-1(推荐): 使用C++加载二进制数据
+方式-1(推荐): （推荐）使用 `xres-code-generator`_ 生成解析代码(C++/Lua)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+对于C++、Lua和C#，我们推荐使用 `xres-code-generator`_ 生成解析代码。（未来会开发更多的语言支持）。详见： :ref:`xres_code_generator` 。
+
+
+方式-2(可选): 使用C++加载二进制数据
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 此加载方式需要上面的 :ref:`output-format-export binary`
@@ -453,7 +460,7 @@ Proto v2和Proto v3
 在 :ref:`快速上手-方式.1: 使用读取库解析 <quick_start-load-with-libresloader>` 里我们已经给出了这种加载方式的具体使用，这里不再复述。
 这里提供的方式也支持protobuf的lite模式。
 
-方式-2(推荐): 使用lua-pbc加载二进制数据
+方式-3(可选): 使用lua-pbc加载二进制数据
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 此加载方式需要上面的 :ref:`output-format-export binary`
@@ -519,7 +526,7 @@ Proto v2和Proto v3
 | pbc_config_manager:load_buffer_kv(协议名, 二进制, function(序号, 转出的lua table) return key的值 end, 别名) -- 读取key-value型数据接口
 | pbc_config_manager:load_buffer_kl(协议名, 二进制, function(序号, 转出的lua table) return key的值 end, 别名) -- 读取key-list型数据接口
 
-方式-3(推荐): 使用C#和DynamicMessage-net加载二进制数据
+方式-4(可选): 使用C#和DynamicMessage-net加载二进制数据
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 此加载方式需要上面的 :ref:`output-format-export binary`
@@ -527,14 +534,14 @@ Proto v2和Proto v3
 为了方便Unity能够不依赖反射动态获取类型和读取配置，我们提供了 `DynamicMessage-net <https://github.com/xresloader/DynamicMessage-net>`_ 项目。
 这个项目依赖 `protobuf-net <https://github.com/mgravell/protobuf-net>`_ 的底层。 详见项目主页: https://github.com/xresloader/DynamicMessage-net
 
-方式-4(可选): 加载msgpack文本数据
+方式-5(可选): 加载msgpack文本数据
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 此加载方式需要上面的 :ref:`output-format-export msgpack`
 
 Msgpack的支持库语言和库很多，我们就不依依列举了。我们有一些python和node.js上的简单示例可以参见 https://github.com/xresloader/xresloader/tree/master/loader-binding/msgpack 。
 
-方式-5(可选): 使用node.js加载javascript文本数据
+方式-6(可选): 使用node.js加载javascript文本数据
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 此加载方式需要上面的 :ref:`output-format-export text`
@@ -561,7 +568,7 @@ Msgpack的支持库语言和库很多，我们就不依依列举了。我们有�
 
 详见： https://github.com/xresloader/xresloader/tree/master/loader-binding/javascript
 
-方式-6(可选): 使用lua加载导出的枚举类型
+方式-7(可选): 使用lua加载导出的枚举类型
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 上面 :ref:`output-format-export enum` 提到，我们可以把一些枚举类型放在proto文件里统一维护，然后不同的使用者导出成不同目标语言的代码。
