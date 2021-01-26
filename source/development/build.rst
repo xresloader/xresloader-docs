@@ -28,9 +28,10 @@
 公有仓库地址
 ^^^^^^^^^^^^^^^^^^^^^
 
-#. **http://maven.aliyun.com/nexus/#view-repositories**
+#. https://mirrors.tencent.com/nexus/repository/maven-public/
+#. http://maven.aliyun.com/nexus/#view-repositories
+#. http://mvnrepository.com/
 #. **`http://search.maven.org/ <http://search.maven.org/#browse>`_**
-#. **http://mvnrepository.com/**
 #. http://repository.jboss.com/maven2/
 #. http://repository.sonatype.org/content/groups/public/
 #. http://mirrors.ibiblio.org/pub/mirrors/maven2/org/acegisecurity/

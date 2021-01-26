@@ -93,5 +93,9 @@
             alert_warning("自定义转表完成后事件，可以执行任意nodejs脚本");
             resolve();
         </on_after_convert>
+        <script name="自定义脚本" desc="用于自定义按钮" type="text/javascript">
+            // 同上
+            resolve();
+        </script>
     </gui>
 </root>
