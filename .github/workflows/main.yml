@@ -26,6 +26,7 @@ jobs:
           python3 -m pip install --user --upgrade -r requirements.txt;
           sphinx-build -b html -a source output;
           echo "xresloader.atframe.work" > output/CNAME ;
+          echo "" > output/.nojekyll
       - name: Deploy
         if: ${{ github.event_name == 'push' }}
         env:
@@ -36,7 +37,7 @@ jobs:
           cd output ;
           git config --global init.defaultBranch main ;
           git init ;
-          git add . ;
+          git add . .nojekyll ;
           mkdir -p $HOME/.ssh ;
           chmod 700 $HOME/.ssh ;
           echo "$DOCUMENT_DEPLOY_KEY" > $HOME/.ssh/deploy.key ;
