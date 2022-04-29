@@ -79,7 +79,7 @@ GUI事件 - 显示转表项名称 ``//root/gui/set_name``
 
 配置示例:
 
-.. code-block:: html
+.. code-block:: xml
 
     <gui>
         <set_name description="设置转表项的名字字段，每个转表项会调用一次">
@@ -108,7 +108,7 @@ GUI事件 - 显示转表项名称 ``//root/gui/set_name``
             tags: ["tag列表"],     // 版本 >= 2.2.3
             classes: ["class列表"] // 版本 >= 2.2.3
         },
-        data: {}，                                              // 绑定在事件上的私有数据,可用于保存全局状态, 版本 >= 2.3.0
+        data: {},                                               // 绑定在事件上的私有数据,可用于保存全局状态, 版本 >= 2.3.0
         alert_warning: function(content, title, options) {},    // (要求版本>=2.2.0) 警告弹框， options 结构是 {yes: 点击是按钮回调, no: 点击否按钮回调, on_close: 关闭后回调}
         alert_error: function(content, title) {},               // (要求版本>=2.2.0) 错误弹框
         log_info: function (content) {},                        // (要求版本>=2.2.0) 打印info日志
@@ -182,7 +182,7 @@ GUI事件 - 转表前事件和转表成功后事件 ``//root/gui/on_before_conve
         selected_nodes: ["选中要执行转表的节点集合"],
         selected_items: ["选中要执行转表的item对象集合,数据结构同上面的 item_data"], // 版本 >= 2.2.3
         run_seq: "执行序号",
-        data: {}，                                              // 绑定在事件上的私有数据,可用于保存全局状态, 版本 >= 2.3.0
+        data: {},                                               // 绑定在事件上的私有数据,可用于保存全局状态, 版本 >= 2.3.0
         alert_warning: function(content, title, options) {},    // 警告弹框， options 结构是 {yes: 点击是按钮回调, no: 点击否按钮回调, on_close: 关闭后回调}
         alert_error: function(content, title) {},               // 错误弹框
         log_info: function (content) {},                        // 打印info日志
@@ -235,7 +235,7 @@ GUI自定义按钮 - 自定义脚本（点击回调）
 
 上述配置中， ``script: <脚本名字>`` 里的 **脚本名字** 指向输入XML中 ``//root/gui/script[name=脚本名字]`` 的节点。比如如下配置中:
 
-.. code-block:: html
+.. code-block:: xml
 
     <gui>
         <script name="自定义脚本" type="text/javascript">
@@ -260,7 +260,7 @@ GUI自定义按钮 - 自定义脚本（点击回调）
         global_options: {"全局选项": "VALUE"},
         selected_nodes: ["选中要执行转表的节点集合"],
         selected_items: ["选中要执行转表的item对象集合,数据结构同上面的 item_data"],
-        data: {}， // 绑定在按钮上的私有数据,可用于保存全局状态
+        data: {},  // 绑定在按钮上的私有数据,可用于保存全局状态
         alert_warning: function(content, title, options) {}, // 警告弹框， options 结构是 {yes: 点击是按钮回调, no: 点击否按钮回调, on_close: 关闭后回调}
         alert_error: function(content, title) {}, // 错误弹框
         log_info: function (content) {}, // 打印info日志
