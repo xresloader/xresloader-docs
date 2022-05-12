@@ -32,6 +32,7 @@ jobs:
         env:
           COMMIT_REF: ${{ github.ref }}
           DOCUMENT_DEPLOY_KEY: ${{ secrets.DOCUMENT_DEPLOY_KEY }}
+          DOCUMENT_DEPLOY_KEY_GITEE: ${{ secrets.DOCUMENT_DEPLOY_KEY_GITEE }}
         shell: bash
         run: |
           cd output ;
