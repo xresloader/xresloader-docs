@@ -48,4 +48,4 @@ jobs:
           git -c user.name='owent' -c user.email='admin@owent.net' commit -m "Delpoy document for $COMMIT_REF";
           git push -f -q git@github.com:xresloader/xresloader-docs-website.git HEAD:main ;
           export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=$HOME/.ssh/deploy-gitee.key" ;
-          git push -f -q git@gitee.com:xresloader/xresloader-docs-website.git HEAD:main ;
+          git push -f -q git@gitee.com:xresloader/xresloader-docs-website.git HEAD:main || true ;
