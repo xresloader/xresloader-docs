@@ -5,7 +5,7 @@ xresloader文档
 
 主要功能特点：
 
-+ 跨平台（java 1.8 or upper）
++ 跨平台（java 11 or upper）
 + Excel => protobuf/msgpack/lua/javascript/json/xml
 + 完整支持协议结构，包括嵌套结构和数组嵌套
 + 同时支持protobuf proto v2 和 proto v3
@@ -27,17 +27,21 @@ xresloader文档
 + 提供GUI批量转换工具（支持Windows、macOS、Linux）
 + CLI/GUI批量转换工具支持include来实现配置复用
 
-+--------------------+---------------------------------------------+
-|   构建环境         |                构建状态                     |
-+====================+=============================================+
-|   `xresloader`_    | Linux (OpenJDK 8): |xresloader-ci|          |
-+--------------------+---------------------------------------------+
-|   `xresconv-cli`_  | 直接下载发布包即可，无需构建打包            |
-+--------------------+---------------------------------------------+
-|   `xresconv-gui`_  | |xresconv-gui-ci|                           |
-+--------------------+---------------------------------------------+
-|    文档            | |xresloader-docs|                           |
-+--------------------+---------------------------------------------+
++----------------------------+-------------------------------------------------+
+|   构建环境                 |                构建状态                         |
++============================+=================================================+
+|   `xresloader`_            | Linux (OpenJDK 8): |xresloader-ci|              |
++----------------------------+-------------------------------------------------+
+|   `xresconv-cli`_          | 直接下载发布包即可，无需构建打包                |
++----------------------------+-------------------------------------------------+
+|   `xresconv-gui`_          | |xresconv-gui-ci|                               |
++----------------------------+-------------------------------------------------+
+|   `xres-code-generator`_   | 读表代码生成工具，直接下载即可，无需构建打包    |
++----------------------------+-------------------------------------------------+
+|   `xresloader-dump-bin`_   | 导出二进制转文本工具。|xresloader-dump-bin|     |
++----------------------------+-------------------------------------------------+
+|    文档                    | |xresloader-docs|                               |
++----------------------------+-------------------------------------------------+
 
 .. |xresloader-ci|         image:: https://github.com/xresloader/xresloader/workflows/Master%20Building/badge.svg
                            :alt: Build Status
@@ -48,6 +52,9 @@ xresloader文档
 .. |xresloader-docs|       image:: https://readthedocs.org/projects/xresloader-docs/badge/?version=latest
                            :alt: Documentation Status
                            :target: https://readthedocs.org/projects/xresloader-docs/
+.. |xresloader-dump-bin|   image:: https://github.com/xresloader/xresloader-dump-bin/actions/workflows/main.yml/badge.svg
+                           :alt: Build Status
+                           :target: https://github.com/xresloader/xresloader-dump-bin
 
 .. image:: https://img.shields.io/github/v/release/xresloader/xresloader
 .. image:: https://img.shields.io/github/languages/code-size/xresloader/xresloader
@@ -62,6 +69,18 @@ xresloader文档
 .. _xresconv-gui: https://github.com/xresloader/xresconv-gui
 .. _xresconv-conf: https://github.com/xresloader/xresconv-conf
 .. _dynamic-message-net: https://github.com/xresloader/DynamicMessage-net
+.. _xres-code-generator: https://github.com/xresloader/xres-code-generator
+.. _xresloader-dump-bin: https://github.com/xresloader/xresloader-dump-bin
+
+
+v2.11.0-rc2及以前版本更新迁移指引
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+由于 v2.11.0-rc3 版本变更了默认的索引器，导致对Excel一些内置的数据类型处理和先前有一些差异。比如对于日期时间类型、百分率等。
+现在会先转出原始的文本，再根据protocol的目标类型做转换。如果需要回退到老的POI索引，可以使用 ``--enable-excel-formular`` 选项切换到老的索引器。
+
+新版本开始使用JDK 11打包，如果仍然需要 JDK1.8打包请自行下载源码并修改 ``pom.xml`` 内 ``maven-compiler-plugin`` 的 ``source`` 和 ``target`` 后使用 ``mvn package`` 命令打包。
+
 
 `xresloader`_ 主要文档分为以下几个模块:
 
@@ -84,6 +103,7 @@ xresloader文档
    users/data_types
    users/xres_code_generator
    users/advance_usage
+   users/ecosystem_and_tools
    users/faq
 
 .. _development-docs:

@@ -260,16 +260,16 @@ GUI自定义按钮 - 自定义脚本（点击回调）
         global_options: {"全局选项": "VALUE"},
         selected_nodes: ["选中要执行转表的节点集合"],
         selected_items: ["选中要执行转表的item对象集合,数据结构同上面的 item_data"],
-        data: {},  // 绑定在按钮上的私有数据,可用于保存全局状态
-        alert_warning: function(content, title, options) {}, // 警告弹框， options 结构是 {yes: 点击是按钮回调, no: 点击否按钮回调, on_close: 关闭后回调}
-        alert_error: function(content, title) {}, // 错误弹框
-        log_info: function (content) {}, // 打印info日志
-        log_notice: function (content) {}, // 打印notice日志
-        log_warning: function (content) {}, // 打印warning日志
-        log_error: function (content) {}, // 打印error日志
-        resolve: function (value) {}, // 通知上层执行结束,相当于Promise的resolve
-        reject: function(reason) {}, // 通知上层执行失败,相当于Promise的reject
-        require: function (name) {} // 相当于 nodejs的 require(name) 用于导入nodejs 模块
+        data: {},                                               // 绑定在按钮上的私有数据,可用于保存全局状态
+        alert_warning: function(content, title, options) {},    // 警告弹框， options 结构是 {yes: 点击是按钮回调, no: 点击否按钮回调, on_close: 关闭后回调}
+        alert_error: function(content, title) {},               // 错误弹框
+        log_info: function (content) {},                        // 打印info日志
+        log_notice: function (content) {},                      // 打印notice日志
+        log_warning: function (content) {},                     // 打印warning日志
+        log_error: function (content) {},                       // 打印error日志
+        resolve: function (value) {},                           // 通知上层执行结束,相当于Promise的resolve
+        reject: function(reason) {},                            // 通知上层执行失败,相当于Promise的reject
+        require: function (name) {}                             // 相当于 nodejs的 require(name) 用于导入nodejs 模块
     }
 
 GUI自定义按钮 - 按钮样式

@@ -153,8 +153,8 @@ Step-6: 加载数据
 
 .. _quick_start-load-with-libresloader:
 
-Step-6.1: （推荐）使用 `xres-code-generator`_ 生成解析代码(C++/Lua)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Step-6.1: （推荐）使用 `xres-code-generator`_ 生成解析代码(C++/Lua/C#/Upb Lua)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 对于C++、Lua和C#，我们推荐使用 `xres-code-generator`_ 生成解析代码。（未来会开发更多的语言支持）。详见： :ref:`xres_code_generator` 。
 

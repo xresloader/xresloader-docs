@@ -6,6 +6,7 @@
 .. _`mako`: https://www.makotemplates.org/
 .. _xresloader: https://github.com/xresloader
 .. _`xres-code-generator 插件`: https://github.com/xresloader/xres-code-generator/blob/master/pb_extension/xrescode_extensions_v3.proto
+.. _`upb`: https://github.com/protocolbuffers/upb
 
 .. _xres_code_generator:
 
@@ -61,16 +62,31 @@
     mkdir -p "$REPO_DIR/sample/pbcpp";
     cp -rvf "$REPO_DIR/template/common/cpp/"* "$REPO_DIR/sample/pbcpp";
 
-    python "$REPO_DIR/tools/find_protoc.py" -I "$REPO_DIR/sample/proto" -I "$REPO_DIR/pb_extension" "$REPO_DIR/sample/proto/"*.proto -o "$REPO_DIR/sample/sample.pb" ;
+    PROTOC_BIN="$(which protoc)"
+    PYTHON_BIN="$(which python3 2>/dev/null)"
+
+    if [[ $? -ne 0 ]]; then
+        PYTHON_BIN="$(which python)"
+    else
+        $PYTHON_BIN --version
+        if [[ $? -ne 0 ]]; then
+            PYTHON_BIN="$(which python)"
+        fi
+    fi
+
+    if [[ $? -ne 0 ]] && [[ -e "$REPO_DIR/tools/find_protoc.py" ]]; then
+        PROTOC_BIN="$("$PYTHON_BIN" $REPO_DIR/tools/find_protoc.py)"
+    fi
+    "$PROTOC_BIN" -I "$REPO_DIR/sample/proto" -I "$REPO_DIR/pb_extension" "$REPO_DIR/sample/proto/"*.proto -o "$REPO_DIR/sample/sample.pb" ;
 
     # You can use --pb-include-prefix "pbdesc/" to set subdirectory for generated files. This will influence the generated #include <...FILE_PATH>
-    python "$REPO_DIR/xrescode-gen.py" -i "$REPO_DIR/template" -p "$REPO_DIR/sample/sample.pb" -o "$REPO_DIR/sample/pbcpp"  \
-        -g "$REPO_DIR/template/config_manager.h.mako" -g "$REPO_DIR/template/config_manager.cpp.mako"                       \
-        -g "$REPO_DIR/template/config_easy_api.h.mako" -g "$REPO_DIR/template/config_easy_api.cpp.mako"                     \
-        -l "H:$REPO_DIR/template/config_set.h.mako" -l "S:$REPO_DIR/template/config_set.cpp.mako"                           \
+    "$PYTHON_BIN" "$REPO_DIR/xrescode-gen.py" -i "$REPO_DIR/template" -p "$REPO_DIR/sample/sample.pb" -o "$REPO_DIR/sample/pbcpp"   \
+        -g "$REPO_DIR/template/config_manager.h.mako" -g "$REPO_DIR/template/config_manager.cpp.mako"                               \
+        -g "$REPO_DIR/template/config_easy_api.h.mako" -g "$REPO_DIR/template/config_easy_api.cpp.mako"                             \
+        -l "H:$REPO_DIR/template/config_set.h.mako" -l "S:$REPO_DIR/template/config_set.cpp.mako"                                   \
         "$@"
 
-3. 使用 ``config_manager`` 和 ``config_easy_api`` 访问数据
+1. 使用 ``config_manager`` 和 ``config_easy_api`` 访问数据
 
 .. code-block:: cpp
 
@@ -135,15 +151,31 @@
     mkdir -p "$REPO_DIR/sample/pblua";
     cp -rvf "$REPO_DIR/template/common/lua/"*.lua "$REPO_DIR/sample/pblua";
 
-    python "$REPO_DIR/tools/find_protoc.py" -I "$REPO_DIR/sample/proto" -I "$REPO_DIR/pb_extension" "$REPO_DIR/sample/proto/"*.proto -o "$REPO_DIR/sample/sample.pb" ;
+    PROTOC_BIN="$(which protoc)"
+    PYTHON_BIN="$(which python3 2>/dev/null)"
 
-    python "$REPO_DIR/xrescode-gen.py" -i "$REPO_DIR/template" -p "$REPO_DIR/sample/sample.pb" -o "$REPO_DIR/sample/pblua"  \
-        -g "$REPO_DIR/template/DataTableCustomIndex.lua.mako"                                                               \
-        -g "$REPO_DIR/template/DataTableCustomIndex53.lua.mako"                                                             \
+    if [[ $? -ne 0 ]]; then
+        PYTHON_BIN="$(which python)"
+    else
+        $PYTHON_BIN --version
+        if [[ $? -ne 0 ]]; then
+            PYTHON_BIN="$(which python)"
+        fi
+    fi
+
+    if [[ $? -ne 0 ]] && [[ -e "$REPO_DIR/tools/find_protoc.py" ]]; then
+        PROTOC_BIN="$("$PYTHON_BIN" $REPO_DIR/tools/find_protoc.py)"
+    fi
+
+    "$PROTOC_BIN" -I "$REPO_DIR/sample/proto" -I "$REPO_DIR/pb_extension" "$REPO_DIR/sample/proto/"*.proto -o "$REPO_DIR/sample/sample.pb" ;
+
+    "$PYTHON_BIN" "$REPO_DIR/xrescode-gen.py" -i "$REPO_DIR/template" -p "$REPO_DIR/sample/sample.pb" -o "$REPO_DIR/sample/pblua"   \
+        -g "$REPO_DIR/template/DataTableCustomIndex.lua.mako"                                                                       \
+        -g "$REPO_DIR/template/DataTableCustomIndex53.lua.mako"                                                                     \
         "$@"
 
 
-3. 使用 ``DataTableService53`` 访问数据
+1. 使用 ``DataTableService53`` 访问数据
 
 .. code-block:: lua
 
@@ -188,14 +220,29 @@
     REPO_DIR=$PATH_TO_xres_code_generator;
     mkdir -p "$REPO_DIR/sample/pbcs";
 
-    python "$REPO_DIR/tools/find_protoc.py" -I "$REPO_DIR/sample/proto" -I "$REPO_DIR/pb_extension" "$REPO_DIR/sample/proto/"*.proto -o "$REPO_DIR/sample/sample.pb" ;
+    PROTOC_BIN="$(which protoc)"
+    PYTHON_BIN="$(which python3 2>/dev/null)"
 
-    python "$REPO_DIR/xrescode-gen.py" -i "$REPO_DIR/template" -p "$REPO_DIR/sample/sample.pb" -o "$REPO_DIR/sample/pbcs"   \
-        -g "$REPO_DIR/template/ConfigSet.cs.mako"                                                                           \
-        -l "$REPO_DIR/template/ConfigSetManager.cs.mako"                                                                    \
+    if [[ $? -ne 0 ]]; then
+        PYTHON_BIN="$(which python)"
+    else
+        $PYTHON_BIN --version
+        if [[ $? -ne 0 ]]; then
+            PYTHON_BIN="$(which python)"
+        fi
+    fi
+
+    if [[ $? -ne 0 ]] && [[ -e "$REPO_DIR/tools/find_protoc.py" ]]; then
+        PROTOC_BIN="$("$PYTHON_BIN" $REPO_DIR/tools/find_protoc.py)"
+    fi
+    "$PROTOC_BIN" -I "$REPO_DIR/sample/proto" -I "$REPO_DIR/pb_extension" "$REPO_DIR/sample/proto/"*.proto -o "$REPO_DIR/sample/sample.pb" ;
+
+    "$PYTHON_BIN" "$REPO_DIR/xrescode-gen.py" -i "$REPO_DIR/template" -p "$REPO_DIR/sample/sample.pb" -o "$REPO_DIR/sample/pbcs"    \
+        -g "$REPO_DIR/template/ConfigSet.cs.mako"                                                                                   \
+        -l "$REPO_DIR/template/ConfigSetManager.cs.mako"                                                                            \
         "$@"
 
-2. 使用 ``ConfigSetManager`` 访问数据.
+1. 使用 ``ConfigSetManager`` 访问数据.
 
 .. code-block:: csharp
 
@@ -213,6 +260,96 @@
         }
     }
 
+
+生成基于 `upb`_ 的Lua加载代码
+--------------------------------
+
+1. 编译 `upb`_ 运行时和 `upb`_ 内lua binding内的 ``protoc-gen-lua`` 插件
+2. 从 `xres-code-generator/template/common/upblua`_ 拷贝公共代码
+3. 使用 `upb`_ 的 ``protoc-gen-lua`` 插件生成lua表述信息
+
+.. code-block:: bash
+
+    PROTOC_BIN="$(which protoc)"
+    PYTHON_BIN="$(which python3 2>/dev/null)"
+
+    if [[ $? -ne 0 ]]; then
+        PYTHON_BIN="$(which python)"
+    else
+        $PYTHON_BIN --version
+        if [[ $? -ne 0 ]]; then
+            PYTHON_BIN="$(which python)"
+        fi
+    fi
+
+    if [[ $? -ne 0 ]] && [[ -e "$REPO_DIR/tools/find_protoc.py" ]]; then
+        PROTOC_BIN="$("$PYTHON_BIN" $REPO_DIR/tools/find_protoc.py)"
+    fi
+    "$PROTOC_BIN" "--lua_out=$REPO_DIR/sample/upblua" --plugin=protoc-gen-lua=<PATH to protoc-gen-lua> "$REPO_DIR/pb_extension/xrescode_extensions_v3.proto" "$REPO_DIR/sample/proto/"*.proto
+
+4. 使用模板 ``template/DataTableCustomIndexUpb.lua.mako`` 生成加载代码
+
+.. code-block:: bash
+
+    REPO_DIR=$PATH_TO_xres_code_generator;
+    mkdir -p "$REPO_DIR/sample/upblua";
+
+    PROTOC_BIN="$(which protoc)"
+    PYTHON_BIN="$(which python3 2>/dev/null)"
+
+    if [[ $? -ne 0 ]]; then
+        PYTHON_BIN="$(which python)"
+    else
+        $PYTHON_BIN --version
+        if [[ $? -ne 0 ]]; then
+            PYTHON_BIN="$(which python)"
+        fi
+    fi
+
+    if [[ $? -ne 0 ]] && [[ -e "$REPO_DIR/tools/find_protoc.py" ]]; then
+        PROTOC_BIN="$("$PYTHON_BIN" $REPO_DIR/tools/find_protoc.py)"
+    fi
+    "$PROTOC_BIN" -I "$REPO_DIR/sample/proto" -I "$REPO_DIR/pb_extension" "$REPO_DIR/sample/proto/"*.proto -o "$REPO_DIR/sample/sample.pb" ;
+
+    "$PYTHON_BIN" "$REPO_DIR/xrescode-gen.py" -i "$REPO_DIR/template" -p "$REPO_DIR/sample/sample.pb" -o "$REPO_DIR/sample/upblua"  \
+        -g "$REPO_DIR/template/DataTableCustomIndexUpb.lua.mako"                                                                    \
+        "$@"
+
+5. 使用 ``DataTableServiceUpb`` 访问数据.
+
+.. code-block:: lua
+
+    -- We will use require(...) to load
+    --   - DataTableServiceUpb
+    --   - DataTableCustomIndexUpb
+    --   - xrescode_extensions_v3_pb
+    --   - pb_header_v3_pb
+    --   - upb
+    --   - google/protobuf/descriptor_pb
+    --   - Other custom proto files generated by protoc-gen-lua
+    -- Please ensure these can be load by require(FILE_PATH)
+    local excel_config_service = require("DataTableServiceUpb")
+    local upb = require("upb")
+    -- Set logger
+    -- excel_config_service:OnError = function (message, data_set, indexName, keys...) end
+    excel_config_service:ReloadTables()
+    local role_upgrade_cfg = excel_config_service:Get("role_upgrade_cfg")
+    print("======================= Lazy load begin =======================")
+    local data = role_upgrade_cfg:GetByIndex("id_level", 10001, 3) -- using the Key-Value index: id_level
+    print("======================= Lazy load end =======================")
+    print("----------------------- Get by Key-Value index -----------------------")
+    print(string.format("Data of role_upgrade_cfg: id=10001, level=3 -> json_encode: %s",
+        upb.json_encode(data, { upb.JSONENC_PROTONAMES })))
+    print("----------------------- Get by reflection and Key-List index -----------------------")
+    local current_group = excel_config_service:GetCurrentGroup()
+    local role_upgrade_cfg2 = excel_config_service:GetByGroup(current_group, "role_upgrade_cfg")
+    local data2 = role_upgrade_cfg2:GetByIndex("id", 10001) -- using the Key-List index: id
+    for _, v1 in ipairs(data2) do
+        print(string.format("\tid: %s, level: %s", tostring(v1.Id), tostring(v1.Level)))
+        for fds in role_upgrade_cfg2:GetMessageDescriptor():fields() do
+            print(string.format("\t\t%s=%s", fds:name(), tostring(v1[fds:name()])))
+        end
+    end
 
 自定义模板和更多语言
 ------------------------

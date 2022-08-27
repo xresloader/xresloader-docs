@@ -19,5 +19,7 @@
   // "python.linting.pycodestylePath": "${workspaceFolder}/py3env/bin/pep8",
   // "python.linting.pydocstylePath": "${workspaceFolder}/py3env/bin/pydocstyle",
   // "python.pythonPath": "${workspaceFolder}/py3env/bin/python",
-  "restructuredtext.confPath": "${workspaceFolder}\\source"
+  "restructuredtext.confPath": "${workspaceFolder}\\source",
+  "esbonio.sphinx.buildDir": "${workspaceRoot}/build",
+  "esbonio.sphinx.confDir": "${workspaceFolder}\\source"
 }
