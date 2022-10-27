@@ -131,7 +131,6 @@ xresloader从2.0.0版本开始支持导出UE所支持的CSV或者JSON格式数�
 导出UE数据后，我们还会导出对应加载数据的UE C++类代码，具体可用的控制选项参见 :ref:`data-mapping-available-options` 。
 
 输出的代码有两种模型，一种是扁平模型，会把所有热  **repeated** 字段和 **message** 类型平铺到输出的类里。另一种是保留原始结构的嵌套模式。
-默认使用使用的是嵌套模式，可以通过 ``-m UeCfg-RecursiveMode=true/false`` 来控制是否开启嵌套模式。 
 `xresloader sample ue csv`_ 和 `xresloader sample ue json`_ 中的是两种模式的输出代码，可以很容易看出来两者的差异和相应插件的功能。
 
 生成完数据后我们在输出目录生成一个 **UnreaImportSettings.json** 文件，用于 **UEEditor-Cmd** 的导入命令。
@@ -141,7 +140,7 @@ xresloader从2.0.0版本开始支持导出UE所支持的CSV或者JSON格式数�
 
 .. code-block:: bash
 
-    java -client -jar xresloader.jar -t ue-json -o $XRESLOADER_OUTPUT_DIR -f sample-conf/kind.pb                           \
+    java -client -jar xresloader.jar -t ue-json -o $XRESLOADER_OUTPUT_DIR -f sample-conf/kind.pb            \
         -m DataSource=role_tables.xlsx|upgrade_10001|3,1 -m ProtoName=role_upgrade_cfg                      \
         -m OutputFile=RoleUpgradeCfg.json -m KeyRow=2                                                       \
         -m UeCfg-CodeOutput=$UNREAL_PROJECT_DIR/Source/ShooterGame|Public/Config|Private/Config
