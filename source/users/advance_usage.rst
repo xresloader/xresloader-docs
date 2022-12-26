@@ -402,10 +402,10 @@ Map类型支持（需要 `xresloader`_ 2.9.0及以上）
 
 更多详情请参考 `xresloader sample`_ 的 ``arr_in_arr`` 表，对应协议是 `xresloader/sample/proto_v3/kind.proto`_ 中的 ``message arr_in_arr_cfg`` 。
 
-关于使用 ``CallbackScript`` 处理数据（需要 `xresloader`_ 2.13.0及以上）
+使用 ``CallbackScript`` 处理数据（需要 `xresloader`_ 2.13.0及以上）
 ------------------------------------------------------------------------------------------------------------
 
-从 `xresloader`_ 2.13.0 版本开始，我们通过支持指定一个javascript脚本来修改生成的数据（通过 ``-m CallbackScript=脚本路径``）。
+从 `xresloader`_ 2.13.0 版本开始，我们通过支持指定一个javascript脚本来修改生成的数据（通过 ``-m CallbackScript=脚本路径`` ，参考: :ref:`data-mapping-available-options` ）。
 
 CallbackScript指向的javascript脚本中，需要满足已下条件:
 
