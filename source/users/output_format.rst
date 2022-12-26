@@ -1,15 +1,15 @@
 数据输出和数据加载
 =============================================
 
-.. _xresloader sample: https://github.com/xresloader/xresloader/tree/master/sample
-.. _xresloader sample ue csv: https://github.com/xresloader/xresloader/tree/master/sample/proto_v3/csv/Public/Config
-.. _xresloader sample ue json: https://github.com/xresloader/xresloader/tree/master/sample/proto_v3/json/Public/Config
+.. _xresloader sample: https://github.com/xresloader/xresloader/tree/main/sample
+.. _xresloader sample ue csv: https://github.com/xresloader/xresloader/tree/main/sample/proto_v3/csv/Public/Config
+.. _xresloader sample ue json: https://github.com/xresloader/xresloader/tree/main/sample/proto_v3/json/Public/Config
 .. _`xres-code-generator`: https://github.com/xresloader/xres-code-generator
 
-所有输出的数据的结构都是按照 https://github.com/xresloader/xresloader/blob/master/header/pb_header_v3.proto 的 ``xresloader_datablocks`` 的结构。 ::
+所有输出的数据的结构都是按照 https://github.com/xresloader/xresloader-protocol/blob/main/core/pb_header_v3.proto 的 ``xresloader_datablocks`` 的结构。 ::
 
-> 转表功能和二进制数据读取的示例： https://github.com/xresloader/xresloader/tree/master/sample
-> 文本和Msgpack数据读取示例： https://github.com/xresloader/xresloader/tree/master/loader-binding
+> 转表功能和二进制数据读取的示例： https://github.com/xresloader/xresloader/tree/main/sample
+> 文本和Msgpack数据读取示例： https://github.com/xresloader/xresloader/tree/main/loader-binding
 
 
 输出类型
@@ -119,7 +119,7 @@ Lua和Javacript的输出方式和输出设置有关，也很容易看懂，这�
         data_message_type: "协议名"
     }
 
-使用Msgpack的话， https://github.com/xresloader/xresloader/tree/master/loader-binding/msgpack 里有python2和node.js的读取示例。
+使用Msgpack的话， https://github.com/xresloader/xresloader/tree/main/loader-binding/msgpack 里有python2和node.js的读取示例。
 
 .. _output-format-export ue:
 
@@ -465,7 +465,7 @@ Proto v2和Proto v3
 此加载方式需要上面的 :ref:`output-format-export binary`
 
 对于一些中使用lua的项目，也可以选择使用 `pbc <protobuf-lite>`_ 来加载数据。
-我们在 https://github.com/xresloader/xresloader/tree/master/loader-binding/pbc 有使用pbc进行加载的manager封装。
+我们在 https://github.com/xresloader/xresloader/tree/main/loader-binding/pbc 有使用pbc进行加载的manager封装。
 在 https://github.com/owent-utils/lua/tree/master/src/data 里有对多项数据集的封装。这两部分都依赖 https://github.com/owent-utils/lua 仓库里提供的utility层。
 
 简要的加载代码如下:
@@ -538,7 +538,7 @@ Proto v2和Proto v3
 
 此加载方式需要上面的 :ref:`output-format-export msgpack`
 
-Msgpack的支持库语言和库很多，我们就不依依列举了。我们有一些python和node.js上的简单示例可以参见 https://github.com/xresloader/xresloader/tree/master/loader-binding/msgpack 。
+Msgpack的支持库语言和库很多，我们就不依依列举了。我们有一些python和node.js上的简单示例可以参见 https://github.com/xresloader/xresloader/tree/main/loader-binding/msgpack 。
 
 方式-6(可选): 使用node.js加载javascript文本数据
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -547,7 +547,7 @@ Msgpack的支持库语言和库很多，我们就不依依列举了。我们有�
 
 把配置输出javascript代码的时候，我们支持Node.js模式和AMD模式。
 
-比如，`xresloader sample`_ 中导出的 `role_cfg.n.js <https://github.com/xresloader/xresloader/blob/master/sample/proto_v3/role_cfg.n.js>`_ 。我们可以通过以下代码加载：
+比如，`xresloader sample`_ 中导出的 `role_cfg.n.js <https://github.com/xresloader/xresloader/blob/main/sample/proto_v3/role_cfg.n.js>`_ 。我们可以通过以下代码加载：
 
 .. code-block:: javascript
 
@@ -565,7 +565,7 @@ Msgpack的支持库语言和库很多，我们就不依依列举了。我们有�
         }
     }
 
-详见： https://github.com/xresloader/xresloader/tree/master/loader-binding/javascript
+详见： https://github.com/xresloader/xresloader/tree/main/loader-binding/javascript
 
 方式-7(可选): 使用lua加载导出的枚举类型
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

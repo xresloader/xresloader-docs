@@ -2,7 +2,7 @@
 ============================================================
 
 .. _xresloader: https://github.com/xresloader/xresloader
-.. _xresloader sample: https://github.com/xresloader/xresloader/tree/master/sample
+.. _xresloader sample: https://github.com/xresloader/xresloader/tree/main/sample
 
 在 :doc:`./quick_start` 章节里我们提供了一个基本的转表使用流程。整个流程图示如下：
 
@@ -119,6 +119,10 @@
 |                       |                        |                    |                    |                      | + uassert目录，默认使用代码输出目录|
 |                       |                        |                    |                    |                      |                                    |
 +-----------------------+------------------------+--------------------+--------------------+----------------------+------------------------------------+
+| CallbackScript        | 使用Javascript脚本处理 | Javascript脚本路径 |                    |                      | + *可选*                           |
+|                       | 输出的数据             |                    |                    |                      | + 2.13.0版本开始支持               |
+|                       |                        |                    |                    |                      |                                    |
++-----------------------+------------------------+--------------------+--------------------+----------------------+------------------------------------+
 
 如果Excel里字段名使用上面示例里的规则，如果填的是 0UnlockLevel\_num，则会忽略第一个0（不符合前缀过滤规则）,按分词规则分词为Unlock、Level和num，
 同时移除下划线分词符号（移除分词符号规则）。 然后按上面的大小写规则和 ``字段名分词字符`` 组成新的字段名，最后应用大小写规则。
@@ -130,6 +134,18 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 由于protobuf里写死的UTF-8，所以编码设置不是对所有的功能都生效。如果输出的类型是代码文件或者文本文件，那么转表工具会尝试把文本内容转换成该编码。
 对于二进制输出，这个选项是无效的。
+
+关于使用 ``CallbackScript`` 处理数据
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+CallbackScript指向的脚本中，需要满足已下条件:
+
++ 可使用 ``gOurInstance`` 访问数据源接口（ ``DataSrcImpl.getOurInstance()`` ）
++ 可使用 ``gSchemeConf`` 访问数据转换配置接口（ ``SchemeConf.getInstance()`` ）
++ 提供 ``function initDataSource()`` 函数，将在切换数据源时触发（文件名或sheet名）。
++ 提供 ``function currentMessageCallback(originMsg, typeDesc)`` 函数，将在切换数据源时触发（文件名或sheet名）。
+
+  - ``originMsg`` 为原始数据结构的 ``HashMap`` 结构
+  - ``typeDesc`` 为数据类型描述信息, ``org.xresloader.core.data.dst.DataDstWriterNode.DataDstTypeDescriptor`` 结构
 
 从哪里读取字段映射信息？
 ---------------------------------------------

@@ -4,9 +4,9 @@ FAQ
 哪里有完整的示例？
 -------------------------------------------------------------------------------------------------------
 
-转表功能和二进制数据读取的示例见： https://github.com/xresloader/xresloader/tree/master/sample
+转表功能和二进制数据读取的示例见： https://github.com/xresloader/xresloader/tree/main/sample
 
-文本和Msgpack数据读取示例见： https://github.com/xresloader/xresloader/tree/master/loader-binding
+文本和Msgpack数据读取示例见： https://github.com/xresloader/xresloader/tree/main/loader-binding
 
 批量转表配置的示例见： https://github.com/xresloader/xresconv-conf
 

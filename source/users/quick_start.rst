@@ -1,11 +1,11 @@
 快速上手
 ===============
 
-.. _kind.proto: https://github.com/xresloader/xresloader-docs/blob/master/source/sample/quick_start/sample-conf/kind.proto
-.. _role_tables.xlsx: https://github.com/xresloader/xresloader-docs/blob/master/source/sample/quick_start/sample-conf/role_tables.xlsx
-.. _sample.xml: https://github.com/xresloader/xresloader-docs/blob/master/source/sample/quick_start/sample-conf/sample.xml
-.. _load_with_libresloader.cpp: https://github.com/xresloader/xresloader-docs/blob/master/source/sample/quick_start/sample-code/load_with_libresloader.cpp
-.. _load_custom.cpp: https://github.com/xresloader/xresloader-docs/blob/master/source/sample/quick_start/sample-code/load_custom.cpp
+.. _kind.proto: https://github.com/xresloader/xresloader-docs/blob/main/source/sample/quick_start/sample-conf/kind.proto
+.. _role_tables.xlsx: https://github.com/xresloader/xresloader-docs/blob/main/source/sample/quick_start/sample-conf/role_tables.xlsx
+.. _sample.xml: https://github.com/xresloader/xresloader-docs/blob/main/source/sample/quick_start/sample-conf/sample.xml
+.. _load_with_libresloader.cpp: https://github.com/xresloader/xresloader-docs/blob/main/source/sample/quick_start/sample-code/load_with_libresloader.cpp
+.. _load_custom.cpp: https://github.com/xresloader/xresloader-docs/blob/main/source/sample/quick_start/sample-code/load_custom.cpp
 .. _`xres-code-generator`: https://github.com/xresloader/xres-code-generator
 
 .. _OpenJDK: https://developers.redhat.com/products/openjdk/download
@@ -31,7 +31,7 @@ Step-2: 配置结构化的protobuf协议并使用protoc
     :language: proto
     :encoding: utf-8
 
-proto v2也可以，可以参见 https://github.com/xresloader/xresloader/blob/master/sample/proto_v2/kind.proto 。
+proto v2也可以，可以参见 https://github.com/xresloader/xresloader/blob/main/sample/proto_v2/kind.proto 。
 
 然后使用protoc生成描述文件和用于加载的代码文件: ::
 
@@ -147,7 +147,7 @@ Step-6: 加载数据
 
 比如我们用C++来加载。首先我们之前执行 ``protoc`` 的时候已经生成了配置协议的代码，然后还需要生成转表工具header的结构的代码。 ::
 
-    protoc -I xresloader/header --cpp_out=sample-code xresloader/header/pb_header_v3.proto ;
+    protoc -I xresloader/third_party/xresloader-protocol/core/ --cpp_out=sample-code xresloader/third_party/xresloader-protocol/core/pb_header_v3.proto ;
 
 然后你可以选择使用我们封装过的读取库解析或手动解析。
 
@@ -162,7 +162,7 @@ Step-6.1: （推荐）使用 `xres-code-generator`_ 生成解析代码(C++/Lua/C
 Step-6.2: 手动解析
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-手动解析的流程是先用 `xresloader中header <https://github.com/xresloader/xresloader/blob/master/header/pb_header_v3.proto>`_ 里的 ``xresloader_datablocks`` 解析二进制文件，然后用协议的proto解析里面每条 ``data_block`` 字段。
+手动解析的流程是先用 `xresloader中header <https://github.com/xresloader/xresloader-protocol/blob/main/core/pb_header_v3.proto>`_ 里的 ``xresloader_datablocks`` 解析二进制文件，然后用协议的proto解析里面每条 ``data_block`` 字段。
 每个 ``data_block`` 的条目对应配置里协议的每个message。（文件名: `load_custom.cpp`_ ）：
 
 .. literalinclude:: ../sample/quick_start/sample-code/load_custom.cpp
@@ -206,7 +206,7 @@ Step-6.3: （老式接口，不推荐，请考虑使用上面6.1的加载方法�
 
 需要先下载读取库。 ::
 
-    curl -L -k https://raw.githubusercontent.com/xresloader/xresloader/master/loader-binding/cxx/libresloader.h -o libresloader.h
+    curl -L -k https://raw.githubusercontent.com/xresloader/xresloader/main/loader-binding/cxx/libresloader.h -o libresloader.h
 
 然后读取的代码sample如下（文件名: `load_with_libresloader.cpp`_ ） 
 
@@ -234,7 +234,7 @@ Step-6.3: （老式接口，不推荐，请考虑使用上面6.1的加载方法�
     Level: 1
 
 
-上面的例程和配置可以在 https://github.com/xresloader/xresloader-docs/tree/master/source/sample/quick_start 查看。
+上面的例程和配置可以在 https://github.com/xresloader/xresloader-docs/tree/main/source/sample/quick_start 查看。
 
 使用proto v2加载二进制数据的特别注意事项
 -----------------------------------------------

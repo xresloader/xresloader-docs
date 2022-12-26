@@ -1,11 +1,12 @@
 .. _`xres-code-generator`: https://github.com/xresloader/xres-code-generator
-.. _`xres-code-generator/template`: https://github.com/xresloader/xres-code-generator/tree/master/template
-.. _`xres-code-generator/sample`: https://github.com/xresloader/xres-code-generator/tree/master/sample
-.. _`xres-code-generator/template/common/cpp`: https://github.com/xresloader/xres-code-generator/tree/master/template/common/cpp
-.. _`xres-code-generator/template/common/lua`: https://github.com/xresloader/xres-code-generator/tree/master/template/common/lua
+.. _`xres-code-generator/template`: https://github.com/xresloader/xres-code-generator/tree/main/template
+.. _`xres-code-generator/sample`: https://github.com/xresloader/xres-code-generator/tree/main/sample
+.. _`xres-code-generator/template/common/cpp`: https://github.com/xresloader/xres-code-generator/tree/main/template/common/cpp
+.. _`xres-code-generator/template/common/lua`: https://github.com/xresloader/xres-code-generator/tree/main/template/common/lua
+.. _`xres-code-generator/template/common/upblua`: https://github.com/xresloader/xres-code-generator/tree/main/template/common/upblua
 .. _`mako`: https://www.makotemplates.org/
 .. _xresloader: https://github.com/xresloader
-.. _`xres-code-generator 插件`: https://github.com/xresloader/xres-code-generator/blob/master/pb_extension/xrescode_extensions_v3.proto
+.. _`xres-code-generator 插件`: https://github.com/xresloader/xres-code-generator/blob/main/pb_extension/xrescode_extensions_v3.proto
 .. _`upb`: https://github.com/protocolbuffers/upb
 
 .. _xres_code_generator:

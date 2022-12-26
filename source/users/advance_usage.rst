@@ -2,11 +2,11 @@
 =============================================
 
 .. _xresloader: https://github.com/xresloader/xresloader
-.. _xresloader sample: https://github.com/xresloader/xresloader/tree/master/sample
-.. _`xresloader/sample/proto_v3/kind.proto`: https://github.com/xresloader/xresloader/blob/master/sample/proto_v3/kind.proto
-.. _`xresloader/header/extensions`: https://github.com/xresloader/xresloader/tree/master/header/extensions
-.. _`xresloader/header/extensions/v2`: https://github.com/xresloader/xresloader/tree/master/header/extensions/v2
-.. _`xresloader/header/extensions/v3`: https://github.com/xresloader/xresloader/tree/master/header/extensions/v3
+.. _xresloader sample: https://github.com/xresloader/xresloader/tree/main/sample
+.. _`xresloader/sample/proto_v3/kind.proto`: https://github.com/xresloader/xresloader/blob/main/sample/proto_v3/kind.proto
+.. _`xresloader-protocol/common`: https://github.com/xresloader/xresloader-protocol/tree/main/common
+.. _`xresloader-protocol/core/extensions/v2`: https://github.com/xresloader/xresloader-protocol/tree/main/core/extensions/v2
+.. _`xresloader-protocol/core/extensions/v3`: https://github.com/xresloader/xresloader-protocol/tree/main/core/extensions/v3
 
 文本替换（别名/宏）
 -----------------------------------------------------
@@ -93,7 +93,7 @@
 Protobuf 插件支持
 -----------------------------------------------------
 
-项目中可以导入 `xresloader/header/extensions`_ 目录， 然后通过导入 `xresloader/header/extensions/v2`_ 或 `xresloader/header/extensions/v3`_ 中的相应proto文件，就可以获得额外的插件扩展支持。
+项目中可以导入 `xresloader-protocol/common`_ 目录， 然后通过导入 `xresloader-protocol/core/extensions/v2`_ 或 `xresloader-protocol/core/extensions/v3`_ 中的相应proto文件，就可以获得额外的插件扩展支持。
 
 > 注意: 使用插件功能时　生成pb的时候也要导入插件的proto文件和protobuf官方include目录里的 google/protobuf/descriptor.proto 文件。
 
@@ -401,3 +401,20 @@ Map类型支持（需要 `xresloader`_ 2.9.0及以上）
 
 
 更多详情请参考 `xresloader sample`_ 的 ``arr_in_arr`` 表，对应协议是 `xresloader/sample/proto_v3/kind.proto`_ 中的 ``message arr_in_arr_cfg`` 。
+
+关于使用 ``CallbackScript`` 处理数据（需要 `xresloader`_ 2.13.0及以上）
+------------------------------------------------------------------------------------------------------------
+
+从 `xresloader`_ 2.13.0 版本开始，我们通过支持指定一个javascript脚本来修改生成的数据（通过 ``-m CallbackScript=脚本路径``）。
+
+CallbackScript指向的javascript脚本中，需要满足已下条件:
+
++ 可使用 ``gOurInstance`` 访问数据源接口（ ``DataSrcImpl.getOurInstance()`` ）
++ 可使用 ``gSchemeConf`` 访问数据转换配置接口（ ``SchemeConf.getInstance()`` ）
++ 提供 ``function initDataSource()`` 函数，将在切换数据源时触发（文件名或sheet名）。
++ 提供 ``function currentMessageCallback(originMsg, typeDesc)`` 函数，将在切换数据源时触发（文件名或sheet名）。
+
+  - ``originMsg`` 为原始数据结构的 ``HashMap`` 结构
+  - ``typeDesc`` 为数据类型描述信息, ``org.xresloader.core.data.dst.DataDstWriterNode.DataDstTypeDescriptor`` 结构
+
+更多详情请参考 `xresloader sample`_ 的 ``process_by_script1`` 和 ``process_by_script2`` 表，还有 ``cb_script.js`` 文件。

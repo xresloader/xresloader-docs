@@ -2,12 +2,12 @@
 =============================================
 
 .. _xresloader: https://github.com/xresloader/xresloader
-.. _xresloader sample: https://github.com/xresloader/xresloader/tree/master/sample
-.. _gen_sample_output.bat: https://github.com/xresloader/xresloader/blob/master/sample/gen_sample_output.bat
-.. _gen_sample_output.ps1: https://github.com/xresloader/xresloader/blob/master/sample/gen_sample_output.ps1
-.. _gen_sample_output.sh: https://github.com/xresloader/xresloader/blob/master/sample/gen_sample_output.sh
-.. _gen_protocol.py: https://github.com/xresloader/xresloader/blob/master/sample/gen_protocol.py
-.. _gen_protocol_v3.py: https://github.com/xresloader/xresloader/blob/master/sample/gen_protocol_v3.py
+.. _xresloader sample: https://github.com/xresloader/xresloader/tree/main/sample
+.. _gen_sample_output.bat: https://github.com/xresloader/xresloader/blob/main/sample/gen_sample_output.bat
+.. _gen_sample_output.ps1: https://github.com/xresloader/xresloader/blob/main/sample/gen_sample_output.ps1
+.. _gen_sample_output.sh: https://github.com/xresloader/xresloader/blob/main/sample/gen_sample_output.sh
+.. _gen_protocol.py: https://github.com/xresloader/xresloader/blob/main/sample/gen_protocol.py
+.. _gen_protocol_v3.py: https://github.com/xresloader/xresloader/blob/main/sample/gen_protocol_v3.py
 
 在 :doc:`./quick_start` 章节里我们提供了一个基本的转表使用流程。整个流程图示如下：
 
