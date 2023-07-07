@@ -1,19 +1,21 @@
 syntax = "proto3";
 
 import "xresloader.proto";
-// xresloader的发布页面 https://github.com/xresloader/xresloader/releases 下载 protocols.zip ，即可获取xresloader.proto
+// xresloader的发布页面 https://github.com/xresloader/xresloader/releases 下载
+// protocols.zip ，即可获取xresloader.proto
 
 enum cost_type {
   EN_CT_UNKNOWN = 0;
-  EN_CT_MONEY   = 10001 [(org.xresloader.enum_alias) = "金币"];
-  EN_CT_DIAMOND = 10101 [(org.xresloader.enum_alias) = "钻石"];
+  EN_CT_MONEY = 10001 [ (org.xresloader.enum_alias) = "金币" ];
+  EN_CT_DIAMOND = 10101 [ (org.xresloader.enum_alias) = "钻石" ];
 }
 
 message role_upgrade_cfg {
   uint32 Id = 1;
   uint32 Level = 2;
   uint32 CostType = 3 [
-    (org.xresloader.verifier) = "cost_type", // 这里等同于在Excel中使用 @cost_type 标识
+    (org.xresloader.validator) =
+        "cost_type", // 这里等同于在Excel中使用 @cost_type 标识
     (org.xresloader.field_description) = "Refer to cost_type"
   ];
   int32 CostValue = 4;

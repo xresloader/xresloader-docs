@@ -36,7 +36,7 @@ xresloader-可用参数列表
 +--------------------------------------+----------------------------------+---------------------------------------------------------------+
 | ``-p --proto``                       | 协议描述类型                     | protobuf(默认值),capnproto(暂未实现),flatbuffer(暂未实现)     |
 +--------------------------------------+----------------------------------+---------------------------------------------------------------+
-| ``-f --proto-file``                  | 协议描述文件                     |                                                               |
+| ``-f --proto-file``                  | 协议描述文件                     | 从 2.14.0-rc2 版本开始允许传入多个                            |
 +--------------------------------------+----------------------------------+---------------------------------------------------------------+
 | ``-o --output-dir``                  | 输出目录                         | 默认为当前目录                                                |
 +--------------------------------------+----------------------------------+---------------------------------------------------------------+
@@ -53,9 +53,22 @@ xresloader-可用参数列表
 +--------------------------------------+----------------------------------+---------------------------------------------------------------+
 | ``-n --rename``                      | 重命名输出文件名                 | 正则表达式 （如：``/(?i)\.bin$/\.lua/`` ）                    |
 +--------------------------------------+----------------------------------+---------------------------------------------------------------+
+| ``--require-mapping-all``            | 开启所有字段映射检查             | 开启所有字段映射检查后，转出结构中所有的字段都必须配置映射关  |
+|                                      |                                  | 系，数组字段至少要有一个元素                                  |
+|                                      |                                  |                                                               |
+|                                      |                                  | + 版本 >=2.10.0                                               |
++--------------------------------------+----------------------------------+---------------------------------------------------------------+
+| ``--enable-alias-mapping``           | 开启别名匹配                     | 映射Excel列到目标数据结构，允许使用别名                       |
+|                                      |                                  |                                                               |
+|                                      |                                  | + 版本 >=2.10.0                                               |
++--------------------------------------+----------------------------------+---------------------------------------------------------------+
 | ``-c --const-print``                 | 输出协议描述中的常量             | 参数为字符串，表示输出的文件名                                |
 +--------------------------------------+----------------------------------+---------------------------------------------------------------+
 | ``-i --option-print``                | 输出协议描述中的选项             | 参数为字符串，表示输出的文件名                                |
++--------------------------------------+----------------------------------+---------------------------------------------------------------+
+| ``-r --descriptor-print``            | 输出所有描述数据                 | 参数为字符串，表示输出的文件名                                |
+|                                      |                                  |                                                               |
+|                                      |                                  | + 版本 >=2.11.0-rc2                                           |
 +--------------------------------------+----------------------------------+---------------------------------------------------------------+
 | ``-a --data-version``                | 设置数据版本号                   | 参数为字符串，表示输出的数据的data_ver字段。                  |
 |                                      |                                  | 如果不设置将按执行时间自动生成一个。                          |
@@ -63,14 +76,38 @@ xresloader-可用参数列表
 +--------------------------------------+----------------------------------+---------------------------------------------------------------+
 | ``--pretty``                         | 格式化输出                       | 参数为整数，0代表关闭美化输出功能，大于0表示格式化时的缩进量  |
 +--------------------------------------+----------------------------------+---------------------------------------------------------------+
-| ``--enable-excel-formular``          | 开启Excel公式实时计算            | 默认开启                                                      |
+| ``--enable-excel-formular``          | 开启Excel公式实时计算            | (2.11-RC3版本前默认开启，之后默认关闭)                        |
 |                                      |                                  | 2003版本的excel（\*\.xls）文件使用公式会大幅减慢转表速度      |
 +--------------------------------------+----------------------------------+---------------------------------------------------------------+
-| ``--disable-excel-formular``         | 关闭Excel公式支持                | 2003版的excel（\*\.xls）关闭公式会大幅加快转表速度            |
+| ``--disable-excel-formular``         | 关闭Excel公式支持                | (2.11-RC3版本后默认开启，之前默认关闭)                        |
+|                                      |                                  | 2003版的excel（\*\.xls）关闭公式会大幅加快转表速度            |
 +--------------------------------------+----------------------------------+---------------------------------------------------------------+
-| ``--disable-empty-list``             | 禁止空列表项                     | 默认开启。自动删除Excel中的空数据，不会转出到输出文件中       |
+| ``--disable-empty-list``             | (废弃) 禁止空列表项              | 默认开启。自动删除Excel中的空数据，不会转出到输出文件中       |
 +--------------------------------------+----------------------------------+---------------------------------------------------------------+
-| ``--enable-empty-list``              | 开启空列表项                     | 开启空列表项。未填充数据将使用默认值，并转出到输出文件中      |
+| ``--enable-empty-list``              | (废弃) 开启空列表项              | 开启空列表项。未填充数据将使用默认值，并转出到输出文件中      |
++--------------------------------------+----------------------------------+---------------------------------------------------------------+
+| ``--list-strip-all-empty``           | 移除数组空项                     | (默认) 移除数组空项，自动删除Excel中的未填充数据，不会转出到  |
+|                                      |                                  | 输出文件中                                                    |
+|                                      |                                  |                                                               |
+|                                      |                                  | + 版本 >=2.11.0-rc3                                           |
++--------------------------------------+----------------------------------+---------------------------------------------------------------+
+| ``--list-keep-empty``                | 保留全部数组空项                 | 保留全部数组空项，未填充数据将使用默认的空值来填充，并转出到  |
+|                                      |                                  | 输出文件中                                                    |
+|                                      |                                  |                                                               |
+|                                      |                                  | + 版本 >=2.11.0-rc3                                           |
++--------------------------------------+----------------------------------+---------------------------------------------------------------+
+| ``--list-strip-empty-tail``          | 移除数组尾部空项                 | 移除数组尾部空项，自动删除尾部的未填充数据，其他的未填充数据  |
+|                                      |                                  | 将使用默认的空值，并转出到输出文件中                          |
+|                                      |                                  |                                                               |
+|                                      |                                  | + 版本 >=2.11.0-rc3                                           |
++--------------------------------------+----------------------------------+---------------------------------------------------------------+
+| ``--enable-string-macro``            | 设置Macro表也对字符串类型生效    | 可以通过全局开启此选项，特定表使用 `--disable-string-macro`   |
+|                                      |                                  | 来实现默认开启字符串文本替换，特定表不替换。                  |
+|                                      |                                  |                                                               |
+|                                      |                                  | + 版本 >=2.11.0-rc3                                           |
++--------------------------------------+----------------------------------+---------------------------------------------------------------+
+| ``--disable-string-macro``           | 设置Macro表也对字符串类型不生效  | + 默认生效                                                    |
+|                                      |                                  | + 版本 >=2.11.0-rc3                                           |
 +--------------------------------------+----------------------------------+---------------------------------------------------------------+
 | ``--stdin``                          | 通过标准输入批量转表             | 通过标准输入批量转表，参数和上面的一样，每行都执行一次转表。  |
 |                                      |                                  | 字符串参数可以用单引号或双引号包裹，但是都不支持转义。        |
@@ -92,6 +129,8 @@ xresloader-可用参数列表
 +--------------------------------------+----------------------------------+---------------------------------------------------------------+
 | ``--ignore-unknown-dependency``      | 忽略未知的协议的依赖             | 忽略未知的输入协议的依赖项(>=2.9.0版本)                       |
 +--------------------------------------+----------------------------------+---------------------------------------------------------------+
+| ``--validator-rules``                | 指定自定义验证器配置文件路径     | 指定自定义验证器配置文件路径(YAML)                            |
++--------------------------------------+----------------------------------+---------------------------------------------------------------+
 
 批处理
 ---------------------------------------------
@@ -111,14 +150,14 @@ xresloader-可用参数列表
         -t js -p protobuf -o '$proto_dir'      -f '$proto_dir/kind.pb' --pretty 2 -s '$XLSX_FILE' -m scheme_kind -n "/(?i)\.bin$/\.js/" --javascript-global sample 
         -t js -p protobuf -o '$proto_dir'      -f '$proto_dir/kind.pb' --pretty 2 -m DataSource='$XLSX_FILE'|kind|3,1 -m MacroSource='$XLSX_FILE'|macro|2,1 -m ProtoName=role_cfg -m OutputFile=role_cfg.n.js -m KeyRow=2 -m KeyCase=lower -m KeyWordSplit=_ -m "KeyWordRegex=[A-Z_\$ \t\r\n]|[_\$ \t\r\n]|[a-zA-Z_\$]" --javascript-export nodejs 
         -t js -p protobuf -o '$proto_dir'      -f '$proto_dir/kind.pb' --pretty 2 -s '$XLSX_FILE' -m scheme_kind -n "/(?i)\.bin$/\.amd\.js/" --javascript-export amd 
-        -t lua -p protobuf -o '$proto_dir'     -f '$proto_dir/kind.pb' --pretty 2 -m DataSource='$XLSX_FILE'|arr_in_arr|3,1 -m MacroSource='$XLSX_FILE'|macro|2,1 -m ProtoName=arr_in_arr_cfg -m OutputFile=arr_in_arr_cfg.lua -m KeyRow=2 -o proto_v3
-        -t bin -p protobuf -o '$proto_dir'     -f '$proto_dir/kind.pb' -m DataSource='$XLSX_FILE'|arr_in_arr|3,1 -m MacroSource='$XLSX_FILE'|macro|2,1 -m ProtoName=arr_in_arr_cfg -m OutputFile=arr_in_arr_cfg.bin -m KeyRow=2 -o proto_v3
-        -t json -p protobuf -o '$proto_dir'    -f '$proto_dir/kind.pb' -s '$XLSX_FILE' -m scheme_upgrade -n "/(?i)\.bin$/\.json/"
-        -t lua -p protobuf -o '$proto_dir'     -f '$proto_dir/kind.pb' -s '$XLSX_FILE' -m scheme_upgrade -n "/(?i)\.bin$/\.lua/"
+        -t lua -p protobuf -o '$proto_dir'     -f '$proto_dir/kind.pb' --pretty 2 --validator-rules custom_validator.yaml -m DataSource='$XLSX_FILE'|arr_in_arr|3,1 -m MacroSource='$XLSX_FILE'|macro|2,1 -m ProtoName=arr_in_arr_cfg -m OutputFile=arr_in_arr_cfg.lua -m KeyRow=2 -o proto_v3
+        -t bin -p protobuf -o '$proto_dir'     -f '$proto_dir/kind.pb' --validator-rules custom_validator.yaml -m DataSource='$XLSX_FILE'|arr_in_arr|3,1 -m MacroSource='$XLSX_FILE'|macro|2,1 -m ProtoName=arr_in_arr_cfg -m OutputFile=arr_in_arr_cfg.bin -m KeyRow=2 -o proto_v3
+        -t json -p protobuf -o '$proto_dir'    -f '$proto_dir/kind.pb' -s '$XLSX_FILE' --validator-rules custom_validator.yaml -m scheme_upgrade -n "/(?i)\.bin$/\.json/"
+        -t lua -p protobuf -o '$proto_dir'     -f '$proto_dir/kind.pb' -s '$XLSX_FILE' --validator-rules custom_validator.yaml -m scheme_upgrade -n "/(?i)\.bin$/\.lua/"
         -t ue-csv -o '$proto_dir' -f '$proto_dir/kind.pb' -c KindConst.csv
         -t ue-json -o '$proto_dir' -f '$proto_dir/kind.pb' -c KindConst.json
-        -t ue-csv -o '$proto_dir' -f '$proto_dir/kind.pb' -m DataSource='$XLSX_FILE'|arr_in_arr|3,1 -m MacroSource='$XLSX_FILE'|macro|2,1 -m ProtoName=arr_in_arr_cfg -m OutputFile=ArrInArrCfg.csv -m KeyRow=2 -m UeCfg-CodeOutput=|Public/Config|Private/Config
-        -t ue-json -o '$proto_dir' -f '$proto_dir/kind.pb' -m DataSource='$XLSX_FILE'|arr_in_arr|3,1 -m MacroSource='$XLSX_FILE'|macro|2,1 -m ProtoName=arr_in_arr_cfg -m OutputFile=ArrInArrCfg.json -m KeyRow=2 -m UeCfg-CodeOutput=|Public/Config|Private/Config
+        -t ue-csv -o '$proto_dir' -f '$proto_dir/kind.pb' -m DataSource='$XLSX_FILE'|arr_in_arr|3,1 --validator-rules custom_validator.yaml -m MacroSource='$XLSX_FILE'|macro|2,1 -m ProtoName=arr_in_arr_cfg -m OutputFile=ArrInArrCfg.csv -m KeyRow=2 -m UeCfg-CodeOutput=|Public/Config|Private/Config
+        -t ue-json -o '$proto_dir' -f '$proto_dir/kind.pb' -m DataSource='$XLSX_FILE'|arr_in_arr|3,1 --validator-rules custom_validator.yaml -m MacroSource='$XLSX_FILE'|macro|2,1 -m ProtoName=arr_in_arr_cfg -m OutputFile=ArrInArrCfg.json -m KeyRow=2 -m UeCfg-CodeOutput=|Public/Config|Private/Config
     ' | java -client -jar "$XRESLOADER" --stdin;
 
 这里就有10项转出文件。批处理有个优势是java在运行时会对字节码做JIT，批处理则会只对字节码编译一次，能比每个转出文件运行一次命令快很多。

@@ -248,7 +248,7 @@ xresloader从2.0.0版本开始支持导出UE所支持的CSV或者JSON格式数�
 
         uint32 Id        = 1 [ (org.xresloader.ue.key_tag) = 1000 ];
         uint32 Level     = 2 [ (org.xresloader.ue.key_tag) = 1 ];
-        uint32 CostType  = 3 [ (org.xresloader.verifier) = "cost_type", (org.xresloader.field_description) = "Refer to cost_type" ];
+        uint32 CostType  = 3 [ (org.xresloader.validator) = "cost_type", (org.xresloader.field_description) = "Refer to cost_type" ];
         int32  CostValue = 4;
         int32  ScoreAdd  = 5;
     }
@@ -367,7 +367,7 @@ Lua目标代码（标准形式）:
                   number = 3,
                   options = {
                     field_description = "Refer to cost_type",
-                    verifier = "cost_type",
+                    validator = "cost_type",
                   },
                   type_name = "UINT32",
                 },
@@ -445,11 +445,14 @@ Proto v2和Proto v3
 
 前面小节我们大致展示了转出数据的结构，以此比较容易理解加载的方式。本小节则是对一些环境和语言的简单加载库。
 
-方式-1(推荐): （推荐）使用 `xres-code-generator`_ 生成解析代码(C++/Lua/C#/Upb Lua)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+方式-1(推荐): （推荐）使用 `xres-code-generator`_ 生成解析代码(C++/Lua/C#/Upb Lua/UE蓝图)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-对于C++、Lua和C#，我们推荐使用 `xres-code-generator`_ 生成解析代码。（未来会开发更多的语言支持）。详见： :ref:`xres_code_generator` 。
+对于C++、Lua和C#，我们推荐使用 `xres-code-generator`_ 生成解析代码。（未来会开发更多的语言支持）。
 
+`xres-code-generator`_ 也支持先输出C++接口，再通过 ``template/UE*`` 的UE模板来生成蓝图支持的Wrapper接口。通过这种方式加载数据支持多版本并存和支持复杂的多级索引和多个索引。
+
+详见： :ref:`xres_code_generator` 。
 
 方式-2(可选): 使用C++加载二进制数据
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
