@@ -140,6 +140,221 @@
 
 使用示例可参见 `xres-code-generator/sample`_ ，使用 ``sample_gen.sh`` 可生成协议代码和加载示例代码。
 
+UE(UnrealEngine)蓝图(Blueprint)支持
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1. 使用模板 ``template/UEExcelLoader.h.mako`` , ``template/UEExcelLoader.cpp.mako`` , ``template/UEExcelGroupApi.h.mako`` , ``template/UEExcelGroupApi.cpp.mako`` 生成加载代码
+
+.. code-block:: bash
+
+    python "$REPO_DIR/xrescode-gen.py" -i "$REPO_DIR/template" -p "$REPO_DIR/sample/sample.pb" -o "$REPO_DIR/sample/uepbcpp"  \
+        --set ue_include_prefix=ExcelLoader --set ue_type_prefix=ExcelLoader \
+        --set ue_api_definition=EXCELLOADER_API --add-path "$REPO_DIR/template" \
+        --set "ue_excel_loader_include_rule=ExcelLoader/%(file_path_camelname)s.h" \
+        --set "ue_excel_group_api_include_rule=%(file_basename_without_ext)s.h" \
+        -f "H:$REPO_DIR/template/UEExcelLoader.h.mako:ExcelLoader/\${pb_file.get_file_path_camelname()}.h" \
+        -f "S:$REPO_DIR/template/UEExcelLoader.cpp.mako:ExcelLoader/\${pb_file.get_file_path_camelname()}.cpp" \
+        -g "H:$REPO_DIR/template/UEExcelGroupApi.h.mako" -g "S:$REPO_DIR/template/UEExcelGroupApi.cpp.mako" \
+        "$@"
+
+以上脚本会生成这样的类接口
+
+.. code-block:: cpp
+
+    // ========================== UExcelLoaderRoleUpgradeCfg ==========================
+    UCLASS(Blueprintable, BlueprintType)
+    class EXCELLOADER_API UExcelLoaderRoleUpgradeCfg : public UObject
+    {
+        GENERATED_BODY()
+
+    public:
+        UExcelLoaderRoleUpgradeCfg();
+
+        /**
+        * @brief Bind to a config item to keep lifeime and bind to the real config message
+        * @note It's a internal function, please don't call it
+        * @param Lifetime config group
+        * @param CurrentMessage real message of UExcelLoaderRoleUpgradeCfg
+        */
+        void _InternalBindLifetime(std::shared_ptr<const ::google::protobuf::Message> Lifetime, const ::google::protobuf::Message& CurrentMessage);
+
+        /**
+        * @brief Get the internal message pointer
+        * @note It's a internal function, please don't call it
+        * @return The binded internal message pointer of type role_upgrade_cfg
+        */
+        const ::google::protobuf::Message* _InternalGetMessage() const;
+
+        UFUNCTION(BlueprintCallable, Category = "Excel Config UExcelLoaderRoleUpgradeCfg")
+        int64 GetId(bool& IsValid);
+
+        UFUNCTION(BlueprintCallable, Category = "Excel Config UExcelLoaderRoleUpgradeCfg")
+        int64 GetLevel(bool& IsValid);
+
+        UFUNCTION(BlueprintCallable, Category = "Excel Config UExcelLoaderRoleUpgradeCfg")
+        int64 GetCostType(bool& IsValid);
+
+        UFUNCTION(BlueprintCallable, Category = "Excel Config UExcelLoaderRoleUpgradeCfg")
+        int64 GetCostValue(bool& IsValid);
+
+        UFUNCTION(BlueprintCallable, Category = "Excel Config UExcelLoaderRoleUpgradeCfg")
+        int32 GetScoreAdd(bool& IsValid);
+
+        UFUNCTION(BlueprintCallable, Category = "Excel Config UExcelLoaderRoleUpgradeCfg")
+        int64 GetTestMapSize();
+
+        UFUNCTION(BlueprintCallable, Category = "Excel Config UExcelLoaderRoleUpgradeCfg")
+        FString FindTestMap(int32 Index, bool& IsValid);
+
+        UFUNCTION(BlueprintCallable, Category = "Excel Config UExcelLoaderRoleUpgradeCfg")
+        TArray<UExcelLoaderRoleUpgradeCfgTestMapEntry*> GetAllOfTestMap();
+
+    private:
+        // The real message type is role_upgrade_cfg
+        const ::google::protobuf::Message* current_message_;
+        std::shared_ptr<const ::google::protobuf::Message> lifetime_;
+    };
+
+    // ========================== UExcelLoaderRoleUpgradeCfgTestMapEntry ==========================
+    UCLASS(Blueprintable, BlueprintType)
+    class EXCELLOADER_API UExcelLoaderRoleUpgradeCfgTestMapEntry : public UObject
+    {
+        GENERATED_BODY()
+
+    public:
+        UExcelLoaderRoleUpgradeCfgTestMapEntry();
+
+        /**
+        * @brief Bind to a config item to keep lifeime and bind to the real config message
+        * @note It's a internal function, please don't call it
+        * @param Lifetime config group
+        * @param CurrentMessage real data pointer of ::google::protobuf::Map<int32_t, std::string>::const_pointer
+        */
+        void _InternalBindLifetime(std::shared_ptr<const ::google::protobuf::Message> Lifetime, const void* CurrentMessage);
+
+        UFUNCTION(BlueprintCallable, Category = "Excel Config UExcelLoaderRoleUpgradeCfgTestMapEntry")
+        int32 GetKey(bool& IsValid);
+
+        UFUNCTION(BlueprintCallable, Category = "Excel Config UExcelLoaderRoleUpgradeCfgTestMapEntry")
+        FString GetValue(bool& IsValid);
+
+    private:
+        // The real message type is ::google::protobuf::Map<int32_t, std::string>::const_pointer
+        const void* current_message_;
+        std::shared_ptr<const ::google::protobuf::Message> lifetime_;
+    };
+
+以及这样的简易访问接口
+
+.. code-block:: cpp
+
+    UCLASS(Blueprintable, BlueprintType)
+    class EXCELLOADER_API UExcelLoaderConfigGroupWrapper : public UObject
+    {
+        GENERATED_BODY()
+
+    public:
+        UExcelLoaderConfigGroupWrapper();
+
+        /**
+        * @brief Bind to a config group
+        * @note It's a internal function, please don't call it
+        * @param ConfigGroup config group
+        */
+        void _InternalBindConfigGroup(const std::shared_ptr<excel::config_group_t>& ConfigGroup);
+
+
+        // ======================================== UExcelLoaderRoleUpgradeCfg ========================================
+        // ---------------------------------------- role_upgrade_cfg ----------------------------------------
+        UFUNCTION(BlueprintCallable, Category = "Excel Config UExcelLoaderRoleUpgradeCfg")
+        int64 GetRoleUpgradeCfg_SizeOf_Id();
+
+        UFUNCTION(BlueprintCallable, Category = "Excel Config UExcelLoaderRoleUpgradeCfg")
+        TArray<UExcelLoaderRoleUpgradeCfg*> GetAllRoleUpgradeCfg_Of_Id();
+
+        UFUNCTION(BlueprintCallable, Category = "Excel Config UExcelLoaderRoleUpgradeCfg")
+        TArray<UExcelLoaderRoleUpgradeCfg*> GetRowRoleUpgradeCfg_AllOf_Id(int64 Id, bool& IsValid);
+
+        UFUNCTION(BlueprintCallable, Category = "Excel Config UExcelLoaderRoleUpgradeCfg")
+        UExcelLoaderRoleUpgradeCfg* GetRowRoleUpgradeCfg_Of_Id(int64 Id, int64 Index, bool& IsValid);
+
+        UFUNCTION(BlueprintCallable, Category = "Excel Config UExcelLoaderRoleUpgradeCfg")
+        int64 GetRoleUpgradeCfg_SizeOf_IdLevel();
+
+        UFUNCTION(BlueprintCallable, Category = "Excel Config UExcelLoaderRoleUpgradeCfg")
+        TArray<UExcelLoaderRoleUpgradeCfg*> GetAllRoleUpgradeCfg_Of_IdLevel();
+
+        UFUNCTION(BlueprintCallable, Category = "Excel Config UExcelLoaderRoleUpgradeCfg")
+        UExcelLoaderRoleUpgradeCfg* GetRowRoleUpgradeCfg_Of_IdLevel(int64 Id, int64 Level, bool& IsValid);
+
+    private:
+        std::shared_ptr<excel::config_group_t> config_group_;
+    };
+
+
+2. 为了方便使用，也可以使用模板 ``template/UEBPProtocol.h.mako`` , ``template/UEBPProtocol.cpp.mako`` 生成proto对应的蓝图类
+
+.. code-block:: bash
+
+    python "$REPO_DIR/xrescode-gen.py" -i "$REPO_DIR/template" -p "$REPO_DIR/sample/sample.pb" -o "$REPO_DIR/sample/uepbcpp"  \
+        --set ue_include_prefix=ExcelLoader --set ue_type_prefix=ExcelLoader --set ue_bp_protocol_type_prefix=Proto \
+        --set ue_api_definition=EXCELLOADER_API --add-path "$REPO_DIR/template" \
+        --set "ue_excel_loader_include_rule=ExcelLoader/%(file_path_camelname)s.h" \
+        --set "ue_bp_protocol_include_rule=ExcelLoader/%(directory_path)s/Proto%(file_base_camelname)s.h" \
+        --set "ue_excel_group_api_include_rule=%(file_basename_without_ext)s.h" \
+        --set "ue_excel_enum_include_rule=ExcelEnum/%(file_basename_without_ext)s.h" \
+        --pb-exclude-file "xrescode_extensions_v3.proto" \
+        -f "H:$REPO_DIR/template/UEExcelLoader.h.mako:ExcelLoader/\${pb_file.get_file_path_camelname()}.h" \
+        -f "S:$REPO_DIR/template/UEExcelLoader.cpp.mako:ExcelLoader/\${pb_file.get_file_path_camelname()}.cpp" \
+        -g "H:$REPO_DIR/template/UEExcelGroupApi.h.mako" -g "S:$REPO_DIR/template/UEExcelGroupApi.cpp.mako" \
+        -f "H:$REPO_DIR/template/UEExcelEnum.h.mako:ExcelEnum/\${pb_file.get_file_path_camelname()}.h" \
+        -f "H:$REPO_DIR/template/UEBPProtocol.h.mako:ExcelLoader/\${pb_file.get_directory_path()}/Proto\${pb_file.get_file_base_camelname()}.h" \
+        -f "S:$REPO_DIR/template/UEBPProtocol.cpp.mako:ExcelLoader/\${pb_file.get_directory_path()}/Proto\${pb_file.get_file_base_camelname()}.cpp" \
+        "$@"
+
+这样还会生成这样的蓝图类
+
+.. code-block:: cpp
+
+    UENUM(BlueprintType)
+    enum class EProtoEnTestEnumType : uint8
+    {
+        EPETET_EN_TET_NONE = 0 UMETA(DisplayName="EN_TET_NONE"),
+        EPETET_EN_TET_ONE = 1 UMETA(DisplayName="EN_TET_ONE"),
+    };
+
+    // ========================== UProtoRoleUpgradeCfg ==========================
+    UCLASS(Blueprintable, BlueprintType)
+    class EXCELLOADER_API UProtoRoleUpgradeCfg : public UObject
+    {
+        GENERATED_BODY()
+
+    public:
+        UProtoRoleUpgradeCfg();
+
+        UProtoRoleUpgradeCfg& operator=(const role_upgrade_cfg& other);
+
+
+        UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Protocol UProtoRoleUpgradeCfg")
+        int64 Id;
+
+        UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Protocol UProtoRoleUpgradeCfg")
+        int64 Level;
+
+        UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Protocol UProtoRoleUpgradeCfg")
+        int64 CostType;
+
+        UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Protocol UProtoRoleUpgradeCfg")
+        int64 CostValue;
+
+        UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Protocol UProtoRoleUpgradeCfg")
+        int32 ScoreAdd;
+
+
+        UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Protocol UProtoRoleUpgradeCfg")
+        TMap<int32, FString> TestMap;
+    };
+
 生成Lua加载代码
 ------------------------
 

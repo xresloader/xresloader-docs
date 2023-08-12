@@ -9,14 +9,14 @@
 .. _`xres-code-generator`: https://github.com/xresloader/xres-code-generator
 
 .. _OpenJDK: https://developers.redhat.com/products/openjdk/download
-.. _AdoptopenJDK: https://adoptopenjdk.net/
+.. _Adoptium OpenJDK: https://adoptium.net/
 .. _LibericaJDK: https://bell-sw.com/
 .. _Zulu: https://www.azul.com/downloads/zulu-community/
 
 Step-1: 下载转表工具
 -----------------------------------------------
 
-#. 下载JRE/JDK 8或以上(推荐下载64位的: `AdoptopenJDK`_/`LibericaJDK`_/`OpenJDK`_/`Zulu`_)
+#. 下载JRE/JDK 11或以上(推荐下载64位的: `Adoptium OpenJDK`_/`LibericaJDK`_/`OpenJDK`_/`Zulu`_)
 #. 打开 :doc:`./download` 。下载最新版本的 **转表工具-xresloader** (xresloader-\*.jar)。
 #. 下载或自己编译protobuf官方的protoc工具，可以去 https://github.com/google/protobuf/releases 下载预编译好的protoc
 #. [可选/推荐] 如果要使用命令行版本的批量转换工具则要额外下载 **命令行批量转表工具-xresconv-cli**
@@ -35,7 +35,7 @@ proto v2也可以，可以参见 https://github.com/xresloader/xresloader/blob/m
 
 然后使用protoc生成描述文件和用于加载的代码文件: ::
 
-    protoc -o sample-conf/kind.pb --cpp_out sample-code -I sample-conf -I <xresloader协议目录>/extensions/v3 -I <xresloader协议目录>/extensions sample-conf/kind.proto <xresloader协议目录>/extensions/google/protobuf/descriptor.proto <xresloader协议目录>/extensions/v3/xresloader.proto <xresloader协议目录>/extensions/v3/xresloader_ue.proto;
+    protoc -o sample-conf/kind.pb --cpp_out sample-code -I sample-conf -I <xresloader协议目录>/extensions/v3 -I <xresloader协议目录>/extensions sample-conf/kind.proto <xresloader协议目录>/extensions/google/protobuf/descriptor.proto <xresloader协议目录>/extensions/v3/xresloader.proto <xresloader协议目录>/extensions/v3/xresloader_ue.proto
 
 这是最终的 **数据转出目标** 。
 
