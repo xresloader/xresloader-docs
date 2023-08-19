@@ -43,15 +43,15 @@ xresloader文档
 |    文档                    | |xresloader-docs|                               |
 +----------------------------+-------------------------------------------------+
 
-.. |xresloader-ci|         image:: https://github.com/xresloader/xresloader/workflows/Master%20Building/badge.svg
+.. |xresloader-ci|         image:: https://github.com/xresloader/xresloader/actions/workflows/build.yml/badge.svg
                            :alt: Build Status
-                           :target: https://github.com/xresloader/xresloader/actions?query=workflow%3A%22Master+Building%22
+                           :target: https://github.com/xresloader/xresloader/actions?query=workflow%3AMain+Building
 .. |xresconv-gui-ci|       image:: https://github.com/xresloader/xresconv-gui/workflows/build/badge.svg
                            :alt: Build Status
                            :target: https://github.com/xresloader/xresconv-gui/actions?query=workflow%3Abuild
-.. |xresloader-docs|       image:: https://readthedocs.org/projects/xresloader-docs/badge/?version=latest
+.. |xresloader-docs|       image:: https://github.com/xresloader/xresloader-docs/actions/workflows/main.yml/badge.svg
                            :alt: Documentation Status
-                           :target: https://readthedocs.org/projects/xresloader-docs/
+                           :target: https://github.com/xresloader/xresloader-docs/actions?query=workflow%3Amain
 .. |xresloader-dump-bin|   image:: https://github.com/xresloader/xresloader-dump-bin/actions/workflows/main.yml/badge.svg
                            :alt: Build Status
                            :target: https://github.com/xresloader/xresloader-dump-bin

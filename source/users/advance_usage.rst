@@ -466,3 +466,122 @@ CallbackScript指向的javascript脚本中，需要满足已下条件:
   - ``typeDesc`` 为数据类型描述信息, ``org.xresloader.core.data.dst.DataDstWriterNode.DataDstTypeDescriptor`` 结构
 
 更多详情请参考 `xresloader sample`_ 的 ``process_by_script1`` 和 ``process_by_script2`` 表，还有 ``cb_script.js`` 文件。
+
+多字段复制（需要 `xresloader`_ 2.14.0-rc1及以上）
+------------------------------------------------------------------------------------------------------------
+
+可以在Excel ``KeyRow`` 指向的列里填写多个由 ``,`` 分隔的字段名，这样在转出的时候会把数据分别填充到这些字段里。比如:
+
+.. code-block:: proto
+
+    message level_data_cfg {
+        uint32 level = 1;
+        uint32 exp = 2;
+    }
+    message level_up_cfg {
+        option (xrescode.loader) = {
+            file_path: "level_up.bytes"
+            indexes: { fields: "id" fields: "level" index_type: EN_INDEX_KV }
+
+            tags: "client"
+            tags: "server"
+        };
+        uint32         id    = 1;
+        uint32         level = 2;
+        level_data_cfg data  = 3;
+    }
+
++-----------+------------------+-------------+
+|  角色ID   | 等级             |   经验      |
++===========+==================+=============+
+|   id      | level,data.level | data.exp    |
++-----------+------------------+-------------+
+|   10001   | 1                | 0           |
++-----------+------------------+-------------+
+
+剔除Excel误操作带来的空数据行（需要 `xresloader`_ 2.14.0-rc2及以上）
+------------------------------------------------------------------------------------------------------------
+
+我们可以通过 `org.xresloader.field_not_null` 插件和 `org.xresloader.oneof_not_null` 插件来用以忽略Excel中指定数据为空的数据行。
+特别是对Excel误操作（比如漏删除空单元格，不小心设置了某个空数据行的单元格格式）。比如:
+
+.. code-block:: proto
+
+    message level_up_cfg {
+        uint32         id    = 1 [ (org.xresloader.field_not_null) = true ];
+        uint32         level = 2;
+    }
+
++-----------+------------------+--------------+
+|  角色ID   | 等级             |   备注       |
++===========+==================+==============+
+|   id      | level            |              |
++-----------+------------------+--------------+
+|   10001   | 1                |              |
++-----------+------------------+--------------+
+|           | 2                | 此行会被忽略 |
++-----------+------------------+--------------+
+
+唯一性检测（需要 `xresloader`_ 2.14.0-rc2及以上）
+------------------------------------------------------------------------------------------------------------
+
+我们可以通过 `org.xresloader.field_unique_tag` 插件来设置唯一性检测标签。可多个。
+对于相同唯一性检测标签的所有字段组合，只能出现一次。否则转换过程就会报错。比如:
+
+.. code-block:: proto
+
+    message level_up_cfg {
+        uint32         id    = 1 [ (org.xresloader.field_unique_tag) = "id_level" ];
+        uint32         level = 2 [ (org.xresloader.field_unique_tag) = "id_level" ];
+    }
+
++-----------+------------------+--------------+
+|  角色ID   | 等级             |   备注       |
++===========+==================+==============+
+|   id      | level            |              |
++-----------+------------------+--------------+
+|   10001   | 1                |              |
++-----------+------------------+--------------+
+|   10001   | 2                |              |
++-----------+------------------+--------------+
+|   10001   | 1                | 此行会冲突   |
++-----------+------------------+--------------+
+
+通过自定义验证器在复用验证器规则组合（需要 `xresloader`_ 2.14.0-rc3及以上）
+------------------------------------------------------------------------------------------------------------
+
+自定义验证器主要用于重复使用一些复杂组合的验证规则。比如我们配置奖励表，要求奖励必须是某个虚拟的道具ID（对应protobuf的枚举类型），或者在道具表中，或者在邮件表中，或者在商城表中等等。
+每一个要配置奖励的地方都去单独写这么长的验证规则，一方面不好看，另一方面后续增加新类型维护起来非常容易出错。于是我们现在提供了一个自定义验证器的功能。
+
+首先是增加了 ``--validator-rules`` 参数用于告诉 `xresloader`_ 去哪里读取自定义验证器，自定义验证器配置是一个 YAML 文件，格式如下:
+
+.. code-block:: yaml
+
+    validator:
+      - name: "validator name"
+        description: "（可选）描述"
+        rules:
+          - 子规则1
+          - 子规则2
+          - ...
+
+为了降低错误配置，我们会检测验证器的环形依赖。但是为了降低不必要的检测开销，我们仅仅在第一次使用这个验证器时才会做检查。
+
+比如我们配置验证器:
+
+.. code-block:: yaml
+
+    validator:
+    # com.struct.battle.config.proto
+    - name: "UESourceAbilitySet_ue_source_id"
+        description: "UE局内 AbilitySet资源 值校验"
+        rules:
+        - InText("UeSource_AbilitySet.txt", 3)
+    - name: "ExcelAffixCountRandomPool_affix_count_pool_id"
+        description: "Affix.xlsx|词条数量随机池表|affix_count_pool_id 值校验"
+        rules:
+        - InTableColumn("Affix.xlsx", "词条数量随机池表", 3, 2, "affix_count_pool_id")
+
+验证器检查不通过的一个示例如下(还包含一个唯一性检查报错):
+
+.. image:: ../_static/users/custom_validator.png
