@@ -7,6 +7,7 @@
 .. _`xresloader-protocol/common`: https://github.com/xresloader/xresloader-protocol/tree/main/common
 .. _`xresloader-protocol/core/extensions/v2`: https://github.com/xresloader/xresloader-protocol/tree/main/core/extensions/v2
 .. _`xresloader-protocol/core/extensions/v3`: https://github.com/xresloader/xresloader-protocol/tree/main/core/extensions/v3
+.. _`xresloader/sample/custom_validator.yaml`: https://github.com/owent/xresloader/blob/main/sample/custom_validator.yaml
 
 文本替换（别名/宏）
 -----------------------------------------------------
@@ -50,6 +51,15 @@
 + 函数: ``InText("文件名"[, 第几个字段[, \"字段分隔正则表达式\"]])`` : 从文本文件（UTF-8编码）,可以指定读第几个字段和用于字段分隔的正则表达式
 + 函数: ``InTableColumn("文件名", "Sheet名", 从第几行开始, 从第几列开始)`` : 从Excel数据列读取可用值,指定数据行和数据列
 + 函数: ``InTableColumn("文件名", "Sheet名", 从第几行开始, KeyRow, KeyValue)`` : 从Excel数据列读取可用值,指定数据行并通过某一行的的值获取数据列
++ 函数: ``Regex("正则表达式")`` : 验证匹配正则表达式(>=2.21.0版本)
++ 函数: ``InMacroTable("文件名", "Sheet名", 从第几行开始, 第几列是映射Key, 第几列是映射Value)`` : 从Excel里读取别名映射,指定数据行和别名映射Key和别名映射Value的列号(>=2.20.0版本)
+  > 类似于Macro表，但是可以把这个验证器配置在指定字段或Excel列中，仅对指定字段或Excel列生效。
++ 函数: ``InMacroTable("文件名", "Sheet名", 从第几行开始, KeyRow, 映射Key字段名, 映射Value字段名)`` : 从Excel里读取别名映射,指定数据行并通过某一行的值别名映射Key和别名映射Value的列(>=2.20.0版本)
+  > 类似于Macro表，但是可以把这个验证器配置在指定字段或Excel列中，仅对指定字段或Excel列生效。 具体可参考 `xresloader/sample/custom_validator.yaml`_ 内的 custom_rule6 和 `xresloader/sample/proto_v3/kind.proto`_ 内的 field_alias_message 配置。
++ 函数: ``And("子验证器", ...)`` : 必须同时满足多个子验证器(>=2.21.0版本)
++ 函数: ``Or("子验证器", ...)`` : 必须满足任一子验证器(>=2.21.0版本)
++ 函数: ``Not("子验证器", ...)`` : 必须不满足所有子验证器(>=2.22.2版本)
++ 函数: ``InValues(值, ...)`` : 必须满足候选值之一(>=2.22.2版本)
 + 自定义验证器名（通过 ``--validator-rules`` 加载）
 + 协议类型（对应protobuf的message里的每个field，excel里可以填field number或者field name）
 + 枚举类型（对应protobuf的enum里的每个number，excel里可以填enum number或者enum name）
@@ -133,7 +143,7 @@ Protobuf插件 - Message插件
 +------------------------------------------+---------+-------------------------------------------------------------------------------------------------+
 | org.xresloader.msg_separator             |  string | Plain模式字段分隔符，可指定多个，用于在一个单元格内配置复杂格式时的分隔符列表，默认值: ``,;|``  |
 +------------------------------------------+---------+-------------------------------------------------------------------------------------------------+
-|    org.xresloader.ue.helper              |  string |         生成UE Utility代码的类名后缀                                                            |
+| org.xresloader.ue.helper                 |  string | 生成UE Utility代码的类名后缀                                                                    |
 +------------------------------------------+---------+-------------------------------------------------------------------------------------------------+
 | org.xresloader.ue.not_data_table         |  bool   | 生成UE Utility代码时，不生产加载代码，这用于带name字段的依赖类型                                |
 +------------------------------------------+---------+-------------------------------------------------------------------------------------------------+
@@ -177,16 +187,16 @@ Protobuf插件 - Field插件
 +--------------------------------------------------+---------+--------------------------------------------------------------------------------------------------------------------------------------+
 | org.xresloader.field_required                    | bool    | 设置字段为 **required** ，用于向proto3提供，proto2的 **required** 约束                                                               |
 +--------------------------------------------------+---------+--------------------------------------------------------------------------------------------------------------------------------------+
-|| org.xresloader.field_origin_value               || string || 当前字段类型为Timestamp或Duration时且转换过程发生数据转换时，此扩展允许把原始数据写入指定字段。（版本>=2.12.0）                     |
-||                                                 ||        || 目标字段必须是string类型且repeated属性和当前字段保持一致                                                                            |
+| org.xresloader.field_origin_value                | string  | 当前字段类型为Timestamp或Duration时且转换过程发生数据转换时，此扩展允许把原始数据写入指定字段。（版本>=2.12.0）                      |
+|                                                  |         | 目标字段必须是string类型且repeated属性和当前字段保持一致                                                                             |
 +--------------------------------------------------+---------+--------------------------------------------------------------------------------------------------------------------------------------+
 | org.xresloader.field_allow_missing_in_plain_mode | bool    | Plain模式下设置此字段可选，如果未设置则使用默认值（版本>=2.16.0）                                                                    |
 +--------------------------------------------------+---------+--------------------------------------------------------------------------------------------------------------------------------------+
-|| org.xresloader.field_list_strip_option          || enum   || 给单个字段设置数组裁剪，可选值（版本>=2.18.0）                                                                                      |
-||                                                 ||        || + ``LIST_STRIP_DEFAULT`` : 默认值，使用 ``--list-strip-*/--list-keep-empty`` 控制，未设置则是裁剪全部空值 ）                        |
-||                                                 ||        || + ``LIST_STRIP_NOTHING``: 不裁剪数据，相当于 ``--list-keep-empty``                                                                  |
-||                                                 ||        || + ``LIST_STRIP_TAIL``: 裁剪尾部空值，相当于 ``--list-strip-empty-tail``                                                             |
-||                                                 ||        || + ``LIST_STRIP_ALL``: 裁剪全部空值，相当于 ``--list-strip-all-empty``                                                               |
+| org.xresloader.field_list_strip_option           | enum    | 给单个字段设置数组裁剪，可选值（版本>=2.18.0）                                                                                       |
+|                                                  |         | + ``LIST_STRIP_DEFAULT`` : 默认值，使用 ``--list-strip-*/--list-keep-empty`` 控制，未设置则是裁剪全部空值 ）                         |
+|                                                  |         | + ``LIST_STRIP_NOTHING``: 不裁剪数据，相当于 ``--list-keep-empty``                                                                   |
+|                                                  |         | + ``LIST_STRIP_TAIL``: 裁剪尾部空值，相当于 ``--list-strip-empty-tail``                                                              |
+|                                                  |         | + ``LIST_STRIP_ALL``: 裁剪全部空值，相当于 ``--list-strip-all-empty``                                                                |
 +--------------------------------------------------+---------+--------------------------------------------------------------------------------------------------------------------------------------+
 | org.xresloader.field_list_min_size               | string  | 给单个字段设置数组最小长度，输入字符串：``<N>或<枚举名>``（版本>=2.18.0）                                                            |
 +--------------------------------------------------+---------+--------------------------------------------------------------------------------------------------------------------------------------+
@@ -202,9 +212,9 @@ Protobuf插件 - Field插件
 +--------------------------------------------------+---------+--------------------------------------------------------------------------------------------------------------------------------------+
 | org.xresloader.ue.ue_type_is_class               | bool    | 生成UE代码时，如果这个字段为true，那么生成的字段类型将是 ``TSoftClassPtr<ue_type_name>`` , 并且支持蓝图中直接引用                    |
 +--------------------------------------------------+---------+--------------------------------------------------------------------------------------------------------------------------------------+
-| org.xresloader.ue_origin_type_name               | srtring | 设置输出UE代码的原始类型（版本>=2.14.0-rc1）                                                                                         |
+| org.xresloader.ue_origin_type_name               | string  | 设置输出UE代码的原始类型（版本>=2.14.0-rc1）                                                                                         |
 +--------------------------------------------------+---------+--------------------------------------------------------------------------------------------------------------------------------------+
-| org.xresloader.ue_origin_type_default_value      | srtring | 设置输出UE代码的原始类型的默认值（版本>=2.14.0-rc1）                                                                                 |
+| org.xresloader.ue_origin_type_default_value      | string  | 设置输出UE代码的原始类型的默认值（版本>=2.14.0-rc1）                                                                                 |
 +--------------------------------------------------+---------+--------------------------------------------------------------------------------------------------------------------------------------+
 
 比如我们定义单位属性的proto如下：
@@ -248,7 +258,7 @@ Protobuf插件 - EnumValue插件
 +======================================+=========+======================================================================================================================+
 | org.xresloader.enumv_description     |  string | 枚举值描述信息，会写入输出的header中和代码中                                                                         |
 +--------------------------------------+---------+----------------------------------------------------------------------------------------------------------------------+
-|    org.xresloader.enum_alias         |  string | 枚举值别名，可用于验证器和Excel中直接填别名，2.14.0-rc2版本后允许多个                                                |
+| org.xresloader.enum_alias            |  string | 枚举值别名，可用于验证器和Excel中直接填别名，2.14.0-rc2版本后允许多个                                                |
 +--------------------------------------+---------+----------------------------------------------------------------------------------------------------------------------+
 
 比如 `xresloader/sample/proto_v3/kind.proto`_ 里， ``role_upgrade_cfg`` 内的 ``CostType`` 这一列配置验证器引射到协议的 ``cost_type`` 和 协议描述字段。
@@ -582,12 +592,14 @@ CallbackScript指向的javascript脚本中，需要满足已下条件:
 .. code-block:: yaml
 
     validator:
-      - name: "validator name"
-        description: "（可选）描述"
-        rules:
-          - 子规则1
-          - 子规则2
-          - ...
+    - name: "validator name"
+      description: "（可选）描述"
+      version: 0 # 版本，从 2.20.0 版本开始支持
+      mode: or # 模式: or, and, not 。从 2.22.0 版本开始支持, 默认为 or
+      rules:
+        - validator_rule1
+        - validator_rule2
+        - ...
 
 为了降低错误配置，我们会检测验证器的环形依赖。但是为了降低不必要的检测开销，我们仅仅在第一次使用这个验证器时才会做检查。
 
@@ -598,13 +610,13 @@ CallbackScript指向的javascript脚本中，需要满足已下条件:
     validator:
     # com.struct.battle.config.proto
     - name: "UESourceAbilitySet_ue_source_id"
-        description: "UE局内 AbilitySet资源 值校验"
-        rules:
-        - InText("UeSource_AbilitySet.txt", 3)
+      description: "UE局内 AbilitySet资源 值校验"
+      rules:
+      - InText("UeSource_AbilitySet.txt", 3)
     - name: "ExcelAffixCountRandomPool_affix_count_pool_id"
-        description: "Affix.xlsx|词条数量随机池表|affix_count_pool_id 值校验"
-        rules:
-        - InTableColumn("Affix.xlsx", "词条数量随机池表", 3, 2, "affix_count_pool_id")
+      description: "Affix.xlsx|词条数量随机池表|affix_count_pool_id 值校验"
+      rules:
+      - InTableColumn("Affix.xlsx", "词条数量随机池表", 3, 2, "affix_count_pool_id")
 
 验证器检查不通过的一个示例如下(还包含一个唯一性检查报错):
 
