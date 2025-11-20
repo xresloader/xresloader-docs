@@ -23,6 +23,9 @@ importers:
       prism-react-renderer:
         specifier: ^2.3.1
         version: 2.4.1(react@18.3.1)
+      prismjs:
+        specifier: ^1.30.0
+        version: 1.30.0
       react:
         specifier: ^18.3.1
         version: 18.3.1
