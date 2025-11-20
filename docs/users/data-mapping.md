@@ -27,9 +27,7 @@ description: 讲解数据源到 protobuf 字段的映射方式
 <div id="mapping-data-source"></div>
 ![image](/img/users/data_mapping_data_source.png)
 
-<h3 id="数据索引">数据索引</h3>
-
-### �������� {#数据索引}
+### 数据索引
 
 然后再通过 `ProtoName` 和 `KeyRow` 来把Excel数据映射到哪个协议数据结构里和映射哪些字段。
 

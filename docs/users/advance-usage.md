@@ -521,3 +521,27 @@ validator:
 验证器检查不通过的一个示例如下(还包含一个唯一性检查报错):
 
 ![image](/img/users/custom_validator.png)
+
+我们也可以通过函数验证器或者 `mode` 参数来控制组合关系。
+比如如果我们想配置一个字段必须符合枚举类型 `package_name.cost_type` ，但不允许0（通常遗漏配置会转出默认值0）和1。
+有如下两中方式：
+
+方式一:
+
+```yaml
+validator:
+- name: "CustomValidCostType"
+  mode: "and"
+  rules:
+  - package_name.cost_type
+  - Not(InValues(0, 1))
+```
+
+方式二:
+
+```yaml
+validator:
+- name: "CustomValidCostType"
+  rules:
+  - And(package_name.cost_type, Not(InValues(0, 1)))
+```
