@@ -19,14 +19,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-      - name: Build & Test
-        shell: bash
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build Docusaurus
         run: |
-          python3 -m pip install --user --upgrade pip;
-          python3 -m pip install --user --upgrade -r requirements.txt;
-          sphinx-build -b html -a source output;
-          echo "xresloader.atframe.work" > output/CNAME ;
-          echo "" > output/.nojekyll
+          pnpm build
+          echo "xresloader.atframe.work" > build/CNAME
+          touch build/.nojekyll
       - name: Deploy
         if: ${{ github.event_name == 'push' }}
         env:
@@ -35,7 +43,7 @@ jobs:
           DOCUMENT_DEPLOY_KEY_GITEE: ${{ secrets.DOCUMENT_DEPLOY_KEY_GITEE }}
         shell: bash
         run: |
-          cd output ;
+          cd build ;
           git config --global init.defaultBranch main ;
           git init ;
           git add . .nojekyll ;
@@ -45,7 +53,7 @@ jobs:
           echo "$DOCUMENT_DEPLOY_KEY_GITEE" > $HOME/.ssh/deploy-gitee.key ;
           chmod 600 $HOME/.ssh/deploy.key $HOME/.ssh/deploy-gitee.key ;
           export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=$HOME/.ssh/deploy.key" ;
-          git -c user.name='owent' -c user.email='admin@owent.net' commit -m "Delpoy document for $COMMIT_REF";
+          git -c user.name='owent' -c user.email='admin@owent.net' commit -m "Deploy document for $COMMIT_REF";
           git push -f -q git@github.com:xresloader/xresloader-docs-website.git HEAD:main ;
           export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=$HOME/.ssh/deploy-gitee.key" ;
           git push -f -q git@gitee.com:xresloader/xresloader-docs-website.git HEAD:main || true ;

@@ -1,4 +1,7 @@
-/source/_build
+/.docusaurus
 /build
+/node_modules
 /py3env
 /output
+/source/_build
+.DS_Store
