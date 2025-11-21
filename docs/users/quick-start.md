@@ -6,9 +6,9 @@ description: 通过示例快速完成 Excel 到 protobuf 的转换
 
 ## Step-1: 下载转表工具
 
-1.  下载JRE/JDK 11或以上(推荐下载64位的: [Adoptium OpenJDK](https://adoptium.net/)/[LibericaJDK](https://bell-sw.com/)/[OpenJDK](https://developers.redhat.com/products/openjdk/download)/[Zulu](https://www.azul.com/downloads/zulu-community/))
+1.  下载JRE/JDK 17或以上(推荐下载64位的: [Adoptium OpenJDK](https://adoptium.net/)/[LibericaJDK](https://bell-sw.com/)/[OpenJDK](https://developers.redhat.com/products/openjdk/download)/[Zulu](https://www.azul.com/downloads/zulu-community/))
 
-2.  打开 `[下载与安装](./download)` 。下载最新版本的 **转表工具-xresloader** (xresloader-\*.jar)。
+2.  打开 [下载与安装](./download) 。下载最新版本的 **转表工具-xresloader** (xresloader-\*.jar)。
 
 3.  下载或自己编译protobuf官方的protoc工具，可以去 [https://github.com/google/protobuf/releases](https://github.com/google/protobuf/releases) 下载预编译好的protoc
 
