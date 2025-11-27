@@ -13,8 +13,10 @@
     "clean": "rimraf .docusaurus build"
   },
   "dependencies": {
+    "@easyops-cn/docusaurus-search-local": "^0.52.1",
     "@docusaurus/core": "^3.5.2",
     "@docusaurus/preset-classic": "^3.5.2",
+    "@docusaurus/plugin-sitemap": "^3.5.2",
     "@mdx-js/react": "^3.0.1",
     "clsx": "^2.1.1",
     "prism-react-renderer": "^2.3.1",

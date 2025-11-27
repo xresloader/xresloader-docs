@@ -34,6 +34,24 @@ const config = {
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
+        sitemap: {
+          changefreq: "weekly",
+          priority: 0.5,
+          filename: "sitemap.xml",
+        },
+      },
+    ],
+  ],
+  plugins: [
+    [
+      require.resolve("@easyops-cn/docusaurus-search-local"),
+      {
+        hashed: true,
+        language: ["zh", "en"],
+        highlightSearchTermsOnTargetPage: true,
+        indexDocs: true,
+        indexPages: true,
+        docsRouteBasePath: "/docs",
       },
     ],
   ],

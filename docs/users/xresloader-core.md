@@ -61,6 +61,7 @@ description: xresloader 核心概念、配置项和运行参数
 | `--data-source-mapping-file`                                     | 数据源映射输出文件                                                               | (>=2.19.1版本)                                                                                                                 |
 | `--data-source-mapping-mode`                                     | 数据源映射输出模式                                                               | `none, md5, sha1, sha256` (>=2.19.1版本)                                                                                       |
 | `--data-source-mapping-seed`                                     | 数据源映射输出Hash Seed                                                          | (>=2.19.1版本)                                                                                                                 |
+| --transpose-data-source                                          | 是否翻转数据源的行和列                                                           | 可用于按行配字段映射，每列一组数据 (>=2.23.0版本)                                                                              |
 
 ## 批处理
 

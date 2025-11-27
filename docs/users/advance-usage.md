@@ -545,3 +545,59 @@ validator:
   rules:
   - And(package_name.cost_type, Not(InValues(0, 1)))
 ```
+
+## 全局配置/行列翻转（需要 [xresloader](https://github.com/xresloader/xresloader) 2.23.0及以上）
+
+某些场景中，我们希望拿一个表维护全局配置。每行一个字段，并且限定数据提取范围。
+此时我们可以用行列翻转（ `--transpose-data-source` ）和 限制数据源结束行列的功能。
+
+比如我们在 `资源转换示例.xlsx` 文件里有 `global_settings` 表:
+
+| 标识                          | 字符串值                                                                                         | 类型                            | 描述                                                                                                                                    |
+| ----------------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| test_duration1                | 30d                                                                                              | google.protobuf.Duration        | 时间周期， 单位:  w/weeks,d/days,h/hours,m/minutes,s/seconds,ms/milliseconds,us/microseconds,ns/nanoseconds                             |
+| test_duration2                | 30ms                                                                                             | google.protobuf.Duration        | 时间周期， 单位:  w/weeks,d/days,h/hours,m/minutes,s/seconds,ms/milliseconds,us/microseconds,ns/nanoseconds                             |
+| test_timestamp                | 2009-07-05 15:25:00                                                                              | google.protobuf.Timestamp       | 时间点， 格式: 年-月-日 时:分:秒 表示系统时区时间， 年-月-日 时:分:秒Z 表示UTC时区时间， 年-月-日  时:分:秒+\|-时:分 表示自定义时区时间 |
+| mail_max_count_per_major_type | 100                                                                                              | int                             | 用户邮件每种大类的最大数量                                                                                                              |
+| i18n_system_admin             | 系统管理员                                                                                       | string                          | 系统管理员昵称                                                                                                                          |
+| test_plain_msg                | 1-2                                                                                              | test_msg_verifier               | Plain模式Message                                                                                                                        |
+| test_arr                      | 721,722,12\|10001 <br /> 821,822,货币类型\|EN_CT_DIAMOND <br /> 921,822,描述文本\|数组嵌套one of | event_rule_item                 | Plain模式Message数组,嵌套one of                                                                                                         |
+| test_repeated_timestamp       | 2009-07-05 15:25:00<br />     2009-07-05 15:25:00Z<br />2009-07-05 15:25:00+04:00                | array:google.protobuf.Timestamp |                                                                                                                                         |
+| timezone_base_timestamp       | 2025-01-06 00:00:00+08:00                                                                        | google.protobuf.Timestamp       | 基准时间用于结算跨周和跨天，必须是一周的第一天的零点时间（比如周一或者周日的东八区零点）                                                |
+| test_plain_enum_array         | 金币,金币,钻石                                                                                   | array:enum                      |                                                                                                                                         |
+| test_standard_msg.id          | 537                                                                                              |                                 |                                                                                                                                         |
+| test_standard_msg.level       | 648                                                                                              |                                 |                                                                                                                                         |
+| test_map_is[0].key            | 70                                                                                               | map<int32, string>              | map简单测试                                                                                                                             |
+| test_map_is[0].value          | Map简单测试.value                                                                                |                                 |                                                                                                                                         |
+| test_map_is[1].key            | 71                                                                                               |                                 |                                                                                                                                         |
+| test_map_is[1].value          | Map简单测试.value                                                                                |                                 |                                                                                                                                         |
+| test_map_sm[0].key            | aa                                                                                               | map<string, dep2_cfg>           | map嵌套测试                                                                                                                             |
+| test_map_sm[0].value          | 811,812                                                                                          |                                 |                                                                                                                                         |
+| test_map_sm[1].key            | 特殊:字符                                                                                        |                                 |                                                                                                                                         |
+| test_map_sm[1].value          | 821,822                                                                                          |                                 |                                                                                                                                         |
+
+然后有proto文件:
+
+```protobuf
+message global_settings {
+    google.protobuf.Duration  test_duration1                   = 1;
+    google.protobuf.Duration  test_duration2                   = 2;
+    google.protobuf.Timestamp test_timestamp                   = 3;
+    int32                     mail_max_count_per_major_type    = 4;
+    string                    i18n_system_admin                = 5;
+    test_msg_verifier         test_plain_msg                   = 6 [ (org.xresloader.field_separator) = "&" ];
+    repeated event_rule_item  test_arr                         = 7 [ (org.xresloader.field_separator) = "\n" ];
+    repeated google.protobuf.Timestamp test_repeated_timestamp = 8 [ (org.xresloader.field_separator) = "\n" ];
+    google.protobuf.Timestamp          timezone_base_timestamp = 9;
+    repeated cost_type                 test_plain_enum_array   = 10;
+    map<int32, string>                 test_map_is             = 11;
+    map<string, dep2_cfg>              test_map_sm             = 12 [ (org.xresloader.field_separator) = "|" ];
+    dep2_cfg                           test_standard_msg       = 13;
+}
+```
+
+我们可以在参数里增加下面参数把这个表数据转入一个 `global_settings` 的message结构中。
+
+- `--transpose-data-source` : 开启行列翻转，此时 `KeyRow` 指向列号。
+- `-m "KeyRow=1"` : 从第一列读字段映射的Key。
+- `-m "DataSource=${workspaceFolder}/sample/资源转换示例.xlsx|global_settings|2,2,0,2"` : 限定从第2行第2列开始读数据，到第2列截止。不限定截止行。
