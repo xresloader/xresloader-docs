@@ -170,6 +170,34 @@ const featureAccents = {
   schema: {background: 'linear-gradient(120deg,#fbcfe8,#f472b6)', color: '#831843'},
   view_in_ar: {background: 'linear-gradient(120deg,#bfdbfe,#60a5fa)', color: '#1e3a8a'},
 };
+
+const downloadLinks = [
+  {
+    title: 'xresloader',
+    description: '核心转表工具，下载 jar 文件即可使用',
+    link: 'https://github.com/xresloader/xresloader/releases',
+    badge: '核心',
+  },
+  {
+    title: 'xresconv-cli',
+    description: '命令行批量转表工具，适合 CI/CD 集成',
+    link: 'https://github.com/xresloader/xresconv-cli/releases',
+    badge: 'CLI',
+  },
+  {
+    title: 'xresconv-gui',
+    description: 'GUI 批量转表工具，可视化操作更便捷',
+    link: 'https://github.com/xresloader/xresconv-gui/releases',
+    badge: 'GUI',
+  },
+  {
+    title: 'xresconv-conf',
+    description: '批量转表配置模板仓库，包含完整示例',
+    link: 'https://github.com/xresloader/xresconv-conf',
+    badge: '模板',
+  },
+];
+
 const quickLinks = [
   {
     title: '下载与安装',
@@ -261,6 +289,9 @@ function HomepageHeader() {
             </Link>
             <Link className="button button--lg button--primary" to="/docs/users/quick-start">
               快速上手
+            </Link>
+            <Link className="button button--lg button--outline button--light" to="/docs/users/download">
+              立即下载
             </Link>
             <Link
               className="button button--lg button--outline button--light"
@@ -405,12 +436,54 @@ function ShowcaseSection() {
   );
 }
 
+function DownloadCard({title, description, link, badge}) {
+  return (
+    <div className={styles.downloadCard}>
+      <div className={styles.downloadCardHeader}>
+        <span className={styles.downloadBadge}>{badge}</span>
+        <h3>{title}</h3>
+      </div>
+      <p className={styles.downloadDescription}>{description}</p>
+      <Link className="button button--sm button--primary" to={link}>
+        前往下载
+      </Link>
+    </div>
+  );
+}
+
+function DownloadSection() {
+  return (
+    <section className={clsx(styles.materialSection, styles.downloadSection)}>
+      <div className="container">
+        <div className={styles.sectionHeader}>
+          <p className={styles.sectionTag}>工具下载</p>
+          <h2>获取 xresloader 工具套件</h2>
+          <p>
+            选择适合你工作流程的工具组合，核心转表引擎 + CLI/GUI 批量工具 + 配置模板
+          </p>
+        </div>
+        <div className={styles.downloadGrid}>
+          {downloadLinks.map((item) => (
+            <DownloadCard key={item.title} {...item} />
+          ))}
+        </div>
+        <div className={styles.downloadMore}>
+          <Link className="button button--lg button--outline button--secondary" to="/docs/users/download">
+            查看完整下载指南
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function Home() {
   return (
     <Layout>
       <HomepageHeader />
       <main>
         <FeatureSection />
+        <DownloadSection />
         <QuickStartSection />
         <ShowcaseSection />
       </main>
