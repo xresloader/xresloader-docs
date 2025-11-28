@@ -656,7 +656,7 @@ message arr_in_arr {
 
 [xres-code-generator](https://github.com/xresloader/xres-code-generator) 也支持先输出C++接口，再通过 `template/UE*` 的UE模板来生成蓝图支持的Wrapper接口。通过这种方式加载数据支持多版本并存和支持复杂的多级索引和多个索引。
 
-详见： `xres_code_generator` 。
+详见 [《读表代码生成》](/docs/users/xres-code-generator) 。
 
 ### 方式-2(可选): 使用C++加载二进制数据
 

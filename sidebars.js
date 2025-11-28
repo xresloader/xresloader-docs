@@ -9,12 +9,27 @@ const sidebars = {
       items: [
         'users/download',
         'users/quick-start',
+        {
+          type: 'category',
+          label: '读表代码生成',
+          link: {
+            type: 'doc',
+            id: 'users/xres-code-generator',
+          },
+          items: [
+            'users/xres-code-generator/cpp',
+            'users/xres-code-generator/unreal',
+            'users/xres-code-generator/lua',
+            'users/xres-code-generator/csharp',
+            'users/xres-code-generator/lua-upb',
+            'users/xres-code-generator/lua-protobuf',
+          ],
+        },
         'users/xresloader-core',
         'users/data-mapping',
         'users/output-format',
         'users/xresconv',
         'users/data-types',
-        'users/xres-code-generator',
         'users/advance-usage',
         'users/ecosystem-and-tools',
         'users/faq',

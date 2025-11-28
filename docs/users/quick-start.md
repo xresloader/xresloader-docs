@@ -187,7 +187,7 @@ python xresconv-cli/xresconv-cli.py sample-conf/sample.xml
 
 ### Step-6.1: （推荐）使用 [xres-code-generator](https://github.com/xresloader/xres-code-generator) 生成解析代码(C++/Lua/C#/Upb Lua//UE蓝图)
 
-对于C++、Lua和C#，我们推荐使用 [xres-code-generator](https://github.com/xresloader/xres-code-generator) 生成解析代码。（未来会开发更多的语言支持）。详见： `xres_code_generator` 。
+对于C++、Lua和C#，我们推荐使用 [xres-code-generator](https://github.com/xresloader/xres-code-generator) 生成解析代码。（未来会开发更多的语言支持）。详见 [《读表代码生成》](/docs/users/xres-code-generator) 。
 
 ### Step-6.2: 手动解析
 
