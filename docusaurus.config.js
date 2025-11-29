@@ -100,11 +100,15 @@ const config = {
               href: "https://github.com/xresloader/xresloader",
             },
             {
-              label: "xresconv",
+              label: "xresconv-cli",
               href: "https://github.com/xresloader/xresconv-cli",
             },
             {
-              label: "代码生成器",
+              label: "xresconv-gui",
+              href: "https://github.com/xresloader/xresconv-gui",
+            },
+            {
+              label: "读表代码生成",
               href: "https://github.com/xresloader/xres-code-generator",
             },
           ],

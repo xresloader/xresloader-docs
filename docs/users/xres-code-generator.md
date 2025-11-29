@@ -6,8 +6,8 @@ description: xres-code-generator 使用指南与各语言生态入口
 
 [xres-code-generator](https://github.com/xresloader/xres-code-generator) 基于 [Mako](https://www.makotemplates.org/) 模板引擎，可读取 [xresloader](https://github.com/xresloader/xresloader) 导出的 `.pb` 描述文件并生成各语言的读表逻辑。
 
-- 转表工具仓库：`D:/workspace/git/github/xresloader/xresloader`
-- 读表代码生成工具仓库：`D:/workspace/git/github/xresloader/xres-code-generator`
+- 转表工具仓库：[https://github.com/xresloader/xresloader](https://github.com/xresloader/xresloader)
+- 读表代码生成工具仓库：[https://github.com/xresloader/xres-code-generator](https://github.com/xresloader/xres-code-generator)
 
 > 建议先完成 `docs/users/quick-start.md` 中的流程，确保能产出 `.bytes` 与 `.pb` 文件。
 
