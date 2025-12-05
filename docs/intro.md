@@ -18,7 +18,7 @@ xresloader 是一个面向游戏团队的数据转表工具链：把 Excel 中�
 - ✅ **别名表与校验体系**：别名表提升策划可读性，validator 可直接识别 proto 字段与枚举，保障数据有效。
 - ⚙️ **输出插件与合表**：protobuf 插件可控制部分输出，还能自动将多张 Excel 合并为单一目标文件。
 - 📐 **公式、压缩与版本控制**：支持 Excel 公式、空数据裁剪/定长保留、字段名正则映射及数据版本号设置。
-- 🌐 **多语言模块形态**：Lua 支持 global/require/module，JavaScript 支持 global/node/AMD，兼容不同运行时装载方式。
+- 🌐 **多语言模块形态**：支持C++, C#, Golang, upb, pbc, lua-protobuf 等。Lua 支持 global/require/module，JavaScript 支持 global/node/AMD，兼容不同运行时装载方式。
 
 ## 组件状态
 

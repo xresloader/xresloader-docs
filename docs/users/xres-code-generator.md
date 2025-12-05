@@ -80,6 +80,7 @@ PROTOC_BIN="$(which protoc)"
 - [C# / Unity](xres-code-generator/csharp.md)
 - [Lua（upb 运行时）](xres-code-generator/lua-upb.md)
 - [Lua（lua-protobuf 运行时）](xres-code-generator/lua-protobuf.md)
+- [Golang](xres-code-generator/golang.md)
 
 ## 自定义模板与扩展
 
