@@ -31,6 +31,7 @@ const sidebars = {
         'users/xresconv',
         'users/data-types',
         'users/advance-usage',
+        'users/validator',
         'users/ecosystem-and-tools',
         'users/faq',
       ],

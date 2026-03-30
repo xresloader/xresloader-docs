@@ -2,6 +2,7 @@
 title: 高级用法
 description: 深入功能与定制化实践
 ---
+
 # 高级功能
 
 ## 文本替换（别名/宏）
@@ -30,79 +31,16 @@ description: 深入功能与定制化实践
 
 ## 数据验证器
 
-[xresloader](https://github.com/xresloader/xresloader) 提供了一个基于协议描述得高级功能- **数据验证器** 。用于限制输入数据的范围。 **数据验证器** 的使用方法是在Excel的字段名后面跟 `@` 符号，然后输入协议名称或者数字范围 `A-B` ，多个验证器可以用 `|` 隔开。 或者也可以通过协议插件来设置验证器（详见: 下面插件章节）。这样在数据转出的时候转表工具会检查数据的合法性。
+[xresloader](https://github.com/xresloader/xresloader)
+提供了基于协议描述的 **数据验证器（Validator）** 功能，
+用于在转表时自动校验Excel中输入的数据是否合法，
+能够有效防止策划配置出超出范围或不符合预期的数据。
 
-可用的验证器语法如下:
+数据验证器支持值范围验证、协议类型验证、枚举类型验证、
+函数验证器（InText/InTableColumn/InMacroTable/Regex）、
+逻辑组合验证器（And/Or/Not/InValues）和自定义验证器等功能。
 
-- 函数: `InText("文件名"[, 第几个字段[, \"字段分隔正则表达式\"]])` : 从文本文件（UTF-8编码）,可以指定读第几个字段和用于字段分隔的正则表达式
-- 函数: `InTableColumn("文件名", "Sheet名", 从第几行开始, 从第几列开始)` : 从Excel数据列读取可用值,指定数据行和数据列
-- 函数: `InTableColumn("文件名", "Sheet名", 从第几行开始, KeyRow, KeyValue)` : 从Excel数据列读取可用值,指定数据行并通过某一行的的值获取数据列
-- 函数: `Regex("正则表达式")` : 验证匹配正则表达式(\>=2.21.0版本)
-- 函数: `InMacroTable("文件名", "Sheet名", 从第几行开始, 第几列是映射Key, 第几列是映射Value)` : 从Excel里读取别名映射,指定数据行和别名映射Key和别名映射Value的列号(\>=2.20.0版本) 
-  > 类似于Macro表，但是可以把这个验证器配置在指定字段或Excel列中，仅对指定字段或Excel列生效。
-- 函数: `InMacroTable("文件名", "Sheet名", 从第几行开始, KeyRow, 映射Key字段名, 映射Value字段名)` : 从Excel里读取别名映射,指定数据行并通过某一行的值别名映射Key和别名映射Value的列(\>=2.20.0版本) 
-  > 类似于Macro表，但是可以把这个验证器配置在指定字段或Excel列中，仅对指定字段或Excel列生效。 具体可参考 [xresloader/sample/custom_validator.yaml](https://github.com/xresloader/xresloader/blob/main/sample/custom_validator.yaml) 内的 custom_rule6 和 [xresloader/sample/proto_v3/kind.proto](https://github.com/xresloader/xresloader/blob/main/sample/proto_v3/kind.proto) 内的 field_alias_message 配置。
-- 函数: `And("子验证器", ...)` : 必须同时满足多个子验证器(\>=2.21.0版本)
-- 函数: `Or("子验证器", ...)` : 必须满足任一子验证器(\>=2.21.0版本)
-- 函数: `Not("子验证器", ...)` : 必须不满足所有子验证器(\>=2.22.2版本)
-- 函数: `InValues(值, ...)` : 必须满足候选值之一(\>=2.22.2版本)
-- 自定义验证器名（通过 `--validator-rules` 加载）
-- 协议类型（对应protobuf的message里的每个field，excel里可以填field number或者field name）
-- 枚举类型（对应protobuf的enum里的每个number，excel里可以填enum number或者enum name）
-- 值范围: `A-B`（比如 `0-1234` ）或 `>=A`（比如 `>=1234` ）或 `<=A`（比如 `<=1234` ）或 `>A`（比如 `>1234` ）或 `<A`（比如 `<1234` ）
-- 多个验证器可以使用“或”符号（`|`）分隔，任意一个验证器满足条件即可视作合法，例如 `100-200|2000-3000|test_msg_verifier`。
-
-自定义验证器的配置格式(YAML):
-
-```yaml
-validator:
-- name: "validator name"
-    rules:
-    - validator_rule1
-    - validator_rule2
-    - ...
-
-```
-
-举例如下：
-
-| 角色ID | 等级  | 货币类别 | 消耗值                                                  |
-| ------ | ----- | -------- | ------------------------------------------------------- |
-| 角色ID | 等级  | 货币类别 | 消耗值                                                  |
-| Id     | Level | CostType | [CostValue@0-1000](mailto:CostValue@0-1000) \|2000-3000 |
-| 10001  | 1     |          |                                                         |
-| 10001  | 2     | 10001    | 50                                                      |
-
-上面这个表，如果 `消耗值` 这一列出现了\[0, 1000\]和\[2000-3000\]以外的值，转表工具会转表不通过并予以提示。
-
-还有一个特殊的用法是，比如我们有技能要对单位的属性加成。然后我们定义单位属性的proto如下：
-
-```protobuf
-message unit_attribute {
-    int32 hp           = 1;
-    int32 mp           = 2;
-    int32 power        = 3;
-}
-
-message skill_effect {
-    int32 id           = 1;
-    int32 level        = 2;
-    int32 func_type    = 3;
-    int32 attr_type    = 4;
-    int32 value        = 5;
-}
-```
-
-然后我们可以定义技能功能表如下：
-
-| 技能ID | 等级  | 功能类别  | 属性                     | 值    |
-| ------ | ----- | --------- | ------------------------ | ----- |
-| 技能ID | 等级  | 功能类别  | 属性                     | 值    |
-| id     | level | func_type | attr_type@unit attribute | value |
-| 20001  | 1     |           | hp                       | 100   |
-| 20001  | 2     | 1001      | hp                       | 200   |
-
-使用 `skill_effect` 转出如上的表， `属性` 这个字段的验证器设为了 `unit_attribute` ，`attr_type` 的类型是int32。 这时在转出数据的时候，转出的数据是 `unit_attribute.hp` 的字段编号 `1` 。
+详见 [数据验证器](/docs/users/validator) 章节。
 
 ## Protobuf 插件支持
 
@@ -479,72 +417,6 @@ message level_up_cfg {
 | 10001  | 1     |            |
 | 10001  | 2     |            |
 | 10001  | 1     | 此行会冲突 |
-
-## 通过自定义验证器在复用验证器规则组合（需要 [xresloader](https://github.com/xresloader/xresloader) 2.14.0-rc3及以上）
-
-自定义验证器主要用于重复使用一些复杂组合的验证规则。比如我们配置奖励表，要求奖励必须是某个虚拟的道具ID（对应protobuf的枚举类型），或者在道具表中，或者在邮件表中，或者在商城表中等等。 每一个要配置奖励的地方都去单独写这么长的验证规则，一方面不好看，另一方面后续增加新类型维护起来非常容易出错。于是我们现在提供了一个自定义验证器的功能。
-
-首先是增加了 `--validator-rules` 参数用于告诉 [xresloader](https://github.com/xresloader/xresloader) 去哪里读取自定义验证器，自定义验证器配置是一个 YAML 文件，格式如下:
-
-```yaml
-validator:
-- name: "validator name"
-  description: "（可选）描述"
-  version: 0 # 版本，从 2.20.0 版本开始支持
-  mode: or # 模式: or, and, not 。从 2.22.0 版本开始支持, 默认为 or
-  rules:
-    - validator_rule1
-    - validator_rule2
-    - ...
-
-```
-
-为了降低错误配置，我们会检测验证器的环形依赖。但是为了降低不必要的检测开销，我们仅仅在第一次使用这个验证器时才会做检查。
-
-比如我们配置验证器:
-
-```yaml
-validator:
-# com.struct.battle.config.proto
-- name: "UESourceAbilitySet_ue_source_id"
-  description: "UE局内 AbilitySet资源 值校验"
-  rules:
-  - InText("UeSource_AbilitySet.txt", 3)
-
-- name: "ExcelAffixCountRandomPool_affix_count_pool_id"
-  description: "Affix.xlsx|词条数量随机池表|affix_count_pool_id 值校验"
-  rules:
-  - InTableColumn("Affix.xlsx", "词条数量随机池表", 3, 2, "affix_count_pool_id")
-
-```
-
-验证器检查不通过的一个示例如下(还包含一个唯一性检查报错):
-
-![image](/img/users/custom_validator.png)
-
-我们也可以通过函数验证器或者 `mode` 参数来控制组合关系。
-比如如果我们想配置一个字段必须符合枚举类型 `package_name.cost_type` ，但不允许0（通常遗漏配置会转出默认值0）和1。
-有如下两中方式：
-
-方式一:
-
-```yaml
-validator:
-- name: "CustomValidCostType"
-  mode: "and"
-  rules:
-  - package_name.cost_type
-  - Not(InValues(0, 1))
-```
-
-方式二:
-
-```yaml
-validator:
-- name: "CustomValidCostType"
-  rules:
-  - And(package_name.cost_type, Not(InValues(0, 1)))
-```
 
 ## 全局配置/行列翻转（需要 [xresloader](https://github.com/xresloader/xresloader) 2.23.0及以上）
 
