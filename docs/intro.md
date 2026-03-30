@@ -22,21 +22,14 @@ xresloader 是一个面向游戏团队的数据转表工具链：把 Excel 中�
 
 ## 组件状态
 
-| 组件                                                                     | 状态                                                                                                                |
-| ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
-| [xresloader](https://github.com/xresloader/xresloader)                   | Linux (OpenJDK 17)：![Build Status](https://github.com/xresloader/xresloader/actions/workflows/build.yml/badge.svg) |
-| [xresconv-cli](https://github.com/xresloader/xresconv-cli)               | 提供批量配置 CLI，发布包附带可执行脚本                                                                              |
-| [xresconv-gui](https://github.com/xresloader/xresconv-gui)               | ![GUI Build](https://github.com/xresloader/xresconv-gui/workflows/build/badge.svg)                                  |
-| [xres-code-generator](https://github.com/xresloader/xres-code-generator) | 代码生成器，提供模板即可直接定制                                                                                    |
-| [xresloader-dump-bin](https://github.com/xresloader/xresloader-dump-bin) | ![Dump Build](https://github.com/xresloader/xresloader-dump-bin/actions/workflows/main.yml/badge.svg)               |
-| 文档 (本仓库)                                                            | ![Docs Build](https://github.com/xresloader/xresloader-docs/actions/workflows/main.yml/badge.svg)                   |
-
-![GitHub release](https://img.shields.io/github/v/release/xresloader/xresloader)
-![Code size](https://img.shields.io/github/languages/code-size/xresloader/xresloader)
-![Repo size](https://img.shields.io/github/repo-size/xresloader/xresloader)
-![Downloads](https://img.shields.io/github/downloads/xresloader/xresloader/total)
-![Forks](https://img.shields.io/github/forks/xresloader/xresloader?style=social)
-![Stars](https://img.shields.io/github/stars/xresloader/xresloader?style=social)
+| 组件 | 状态 |
+| --- | --- |
+| [xresloader](https://github.com/xresloader/xresloader) | ![Build Status](https://github.com/xresloader/xresloader/actions/workflows/build.yml/badge.svg) ![GitHub release](https://img.shields.io/github/v/release/xresloader/xresloader) ![Downloads](https://img.shields.io/github/downloads/xresloader/xresloader/total) ![License](https://img.shields.io/github/license/xresloader/xresloader) ![Repo Size](https://img.shields.io/github/repo-size/xresloader/xresloader) ![Language](https://img.shields.io/github/languages/top/xresloader/xresloader) ![Stars](https://img.shields.io/github/stars/xresloader/xresloader?style=social) |
+| [xresconv-cli](https://github.com/xresloader/xresconv-cli) | ![GitHub release](https://img.shields.io/github/v/release/xresloader/xresconv-cli) ![License](https://img.shields.io/github/license/xresloader/xresconv-cli) ![Repo Size](https://img.shields.io/github/repo-size/xresloader/xresconv-cli) ![Language](https://img.shields.io/github/languages/top/xresloader/xresconv-cli) ![Stars](https://img.shields.io/github/stars/xresloader/xresconv-cli?style=social) |
+| [xresconv-gui](https://github.com/xresloader/xresconv-gui) | ![GUI Build](https://github.com/xresloader/xresconv-gui/workflows/build/badge.svg) ![GitHub release](https://img.shields.io/github/v/release/xresloader/xresconv-gui) ![Downloads](https://img.shields.io/github/downloads/xresloader/xresconv-gui/total) ![License](https://img.shields.io/github/license/xresloader/xresconv-gui) ![Repo Size](https://img.shields.io/github/repo-size/xresloader/xresconv-gui) ![Language](https://img.shields.io/github/languages/top/xresloader/xresconv-gui) ![Stars](https://img.shields.io/github/stars/xresloader/xresconv-gui?style=social) |
+| [xres-code-generator](https://github.com/xresloader/xres-code-generator) | ![License](https://img.shields.io/github/license/xresloader/xres-code-generator) ![Repo Size](https://img.shields.io/github/repo-size/xresloader/xres-code-generator) ![Language](https://img.shields.io/github/languages/top/xresloader/xres-code-generator) ![Stars](https://img.shields.io/github/stars/xresloader/xres-code-generator?style=social) |
+| [xresloader-dump-bin](https://github.com/xresloader/xresloader-dump-bin) | ![Dump Build](https://github.com/xresloader/xresloader-dump-bin/actions/workflows/main.yml/badge.svg) ![GitHub release](https://img.shields.io/github/v/release/xresloader/xresloader-dump-bin) ![Downloads](https://img.shields.io/github/downloads/xresloader/xresloader-dump-bin/total) ![License](https://img.shields.io/github/license/xresloader/xresloader-dump-bin) ![Repo Size](https://img.shields.io/github/repo-size/xresloader/xresloader-dump-bin) ![Language](https://img.shields.io/github/languages/top/xresloader/xresloader-dump-bin) ![Stars](https://img.shields.io/github/stars/xresloader/xresloader-dump-bin?style=social) |
+| 文档 (本仓库) | ![Docs Build](https://github.com/xresloader/xresloader-docs/actions/workflows/main.yml/badge.svg) ![License](https://img.shields.io/github/license/xresloader/xresloader-docs) ![Repo Size](https://img.shields.io/github/repo-size/xresloader/xresloader-docs) ![Language](https://img.shields.io/github/languages/top/xresloader/xresloader-docs) ![Stars](https://img.shields.io/github/stars/xresloader/xresloader-docs?style=social) |
 
 > **迁移提示**：从 v2.11.0-rc3 起，默认禁用了对 Excel 某些常见公式的旧式兼容逻辑。如果你依赖旧行为，可通过 `--enable-excel-formular` 显式开启；若仍在使用 JDK 8，需要在源码中调整 `maven-compiler-plugin` 的 target 再构建。
 
