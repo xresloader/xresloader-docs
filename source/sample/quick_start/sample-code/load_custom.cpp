@@ -3,11 +3,7 @@
 #include <fstream>
 #include <google/protobuf/stubs/common.h>
 
-#if GOOGLE_PROTOBUF_VERSION < 3000000
-#include "pb_header.pb.h"
-#else
 #include "pb_header_v3.pb.h"
-#endif
 
 #include "kind.pb.h"
 
@@ -39,7 +35,7 @@ int main(int argc, char* argv[]) {
         role_upgrade_cfg role_upg_data;
         if (false == role_upg_data.ParseFromString(data_wrapper.data_block(i))) {
             printf("parse role_upgrade_cfg for index %d failed. %s\n", i, role_upg_data.InitializationErrorString().c_str());
-            continue;
+            return 1;
         }
 
         printf("role_upgrade_cfg => index %d: %s\n", i, role_upg_data.ShortDebugString().c_str());

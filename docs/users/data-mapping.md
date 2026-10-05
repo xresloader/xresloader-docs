@@ -4,21 +4,21 @@ description: 讲解数据源到 protobuf 字段的映射方式
 ---
 # 协议-\>Excel数据映射和支持的配置读取源 （scheme）
 
-在 `./quick_start` 章节里我们提供了一个基本的转表使用流程。整个流程图示如下：
+首次使用见 [快速上手](./quick-start)，详细运行参数见 [核心引擎](./xresloader-core)。整个流程图示如下：
 
 <div class="diagram-panel">
 ![image](/img/development/xresconv_process.png)
 </div>
 
-上一章节里我们展示了 `./xresloader_core` 的最基础的使用方式。 在使用的时候，我们需要告诉 [xresloader](https://github.com/xresloader/xresloader) 怎么把Excel里的数据对引到协议的数据结构里。 本章节主要是针对 `协议描述` 的说明。
+ 在使用的时候，我们需要告诉 [xresloader](https://github.com/xresloader/xresloader) 怎么把Excel里的数据对应到协议的数据结构里。 本章节主要是针对 `协议描述` 的说明。
 
 ## 配置项的结构
 
-所有的数据源和规则设置都是Key-Value的形式。并且Value有三个，分别是\*\*主配置，次要配置，补充配置\*\*。 这三个参数对于不同配置的含义是不同的，具体没想配置的含义请参照 [可用的配置项](#可用的配置项) 章节。
+所有的数据源和规则设置都是Key-Value的形式。并且Value 有三个，分别是**主配置、次配置、补充配置**。 这三个参数对于不同配置的含义是不同的，具体每项配置的含义请参照 [可用的配置项](#可用的配置项) 章节。
 
 ## 数据映射-Scheme
 
-我们通过一些列scheme的配置来告诉 [xresloader](https://github.com/xresloader/xresloader) 从Excel的哪些地方读取数据，又转化到协议的哪个数据结构和哪个字段中。
+我们通过一系列 scheme的配置来告诉 [xresloader](https://github.com/xresloader/xresloader) 从Excel的哪些地方读取数据，又转化到协议的哪个数据结构和哪个字段中。
 
 ### 数据源
 
@@ -51,6 +51,36 @@ description: 讲解数据源到 protobuf 字段的映射方式
 ![image](/img/users/data_mapping_arr_in_arr.png)
 
 以上示例是 [xresloader sample](https://github.com/xresloader/xresloader/tree/main/sample) 中的 `arr_in_arr` 表。
+
+## 范围与转置
+
+2.23.0 起，DataSource 支持 `文件|Sheet|起始行,起始列,结束行,结束列`。行列从 1 开始，结束坐标包含在范围内；省略或设为 0 时不设置该方向的结束限制。
+
+```xml
+<scheme name="DataSource">tables.xlsx|upgrade|3,1,5,4</scheme>
+<scheme name="KeyRow">2</scheme>
+```
+
+上例只读取原表格第 3–5 行、第 1–4 列，KeyRow 仍位于第 2 行。多个 DataSource 合并到同一条目的输出。
+
+--transpose-data-source 按列读取记录，KeyRow 表示字段名所在的列。DataSource 的坐标仍以原表格的行列为基准，不先交换坐标。
+
+| 字段所在列（第 1 列） | 记录 1（第 2 列） | 记录 2（第 3 列） |
+| --- | --- | --- |
+| id | 10001 | 10002 |
+| name | 欧若拉 | 杰克 |
+
+这个独立转置表的规则为 `DataSource=transpose.xlsx|kind|1,2,2,3`、`KeyRow=1`、`ProtoName=role_cfg`，并在条目 option 中设置 --transpose-data-source。
+
+## 生成自己的协议描述
+
+快速上手包中的 kind.proto 没有外部依赖，可以在包所在目录重新生成：
+
+```sh
+protoc -I . --include_imports --descriptor_set_out=kind.pb kind.proto
+```
+
+项目使用 xresloader.proto、其他 proto 或 protobuf 内置类型时，按实际协议目录补齐 -I 搜索路径，并保留 --include_imports。descriptor 供转表器读取；C++ 等加载代码按应用的 protoc/库版本另行生成。
 
 ## 可用的配置项
 
@@ -115,6 +145,8 @@ CallbackScript指向的脚本中，需要满足已下条件:
 
 ### 直接写在Excel里: 文件后缀.xls,.xlsx
 
+规则 Sheet 的表头必须含“字段”或 header；值列使用“主配置 / 次配置 / 补充配置”或 major / minor / addition。仅写“配置项”不会被识别为规则表。
+
 当字段映射信息保存在Excel里时，scheme的名字就是表名（ `-m` 参数）。我们会先查找列明为 `字段或header` 、`主配置或major` 、`次配置或minor` 和 `补充配置或addition` 的字段，并依此列读取相应配置。如:
 
 | 字段         | 简介                        | 主配置               | 次配置        | 补充配置 | 说明                                               |
@@ -156,7 +188,7 @@ CallbackScript指向的脚本中，需要满足已下条件:
 
 ### 直接写在ini文件里: 文件后缀.ini,.conf,.cfg
 
-当字段映射信息保存在Excel里时，scheme的名字（ `-m` 参数）是section的名字，里面的数据是:
+当字段映射信息保存在 INI 中时，scheme 的名字（`-m` 参数）是 section 的名字，里面的数据是:
 
 - Key名称.0 =\> Key名称的主配置
 - Key名称.1 =\> Key名称的次配置
@@ -185,4 +217,4 @@ Encoding = UTF-8
 
 ## 完整的样例
 
-以上配置选项在 [xresloader sample](https://github.com/xresloader/xresloader/tree/main/sample) 中有完整的示例，并且在。 [xresloader](https://github.com/xresloader/xresloader) 的 `README.md` 中有举例说明。
+以上配置选项在 [xresloader sample](https://github.com/xresloader/xresloader/tree/main/sample) 中有完整的示例，并在 [xresloader](https://github.com/xresloader/xresloader) 的 `README.md` 中有举例说明。

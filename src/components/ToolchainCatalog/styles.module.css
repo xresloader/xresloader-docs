@@ -1,0 +1,127 @@
+.catalog {
+  color: var(--ifm-font-color-base);
+  container-type: inline-size;
+}
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1.2rem;
+  background: var(--ifm-color-emphasis-100);
+  border-radius: 0.8rem;
+}
+.filters label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.filters select {
+  max-width: 100%;
+  padding: 0.6rem 2rem 0.6rem 0.7rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 0.4rem;
+  background: var(--ifm-background-surface-color);
+  color: inherit;
+  font: inherit;
+}
+.filters p {
+  flex: 1 1 260px;
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--ifm-color-emphasis-700);
+}
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.2rem;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 1.4rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 0.8rem;
+  background: var(--ifm-background-surface-color);
+}
+.card h3 {
+  font-size: 1.15rem;
+  overflow-wrap: anywhere;
+  margin: 0.3rem 0 0.7rem;
+  border: 0;
+}
+.role {
+  margin: 0;
+  color: var(--ifm-color-primary);
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+.purpose {
+  flex: 1;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  font-size: 0.8rem;
+}
+.downloads {
+  padding-top: 0.8rem;
+  font-size: 0.85rem;
+}
+.status,
+.note {
+  font-size: 0.78rem;
+  color: var(--ifm-color-emphasis-700);
+}
+.status {
+  margin: 0 0 0.6rem;
+}
+.asset {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.3rem 0.6rem;
+  margin: 0.5rem 0;
+}
+.asset a {
+  overflow-wrap: anywhere;
+}
+.checksum {
+  font-size: 0.68rem;
+}
+.note {
+  margin: 1rem 0 0;
+}
+@container (min-width: 680px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@container (min-width: 1050px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@container (min-width: 1480px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .filters label {
+    width: 100%;
+  }
+  .card {
+    padding: 1.2rem;
+  }
+}

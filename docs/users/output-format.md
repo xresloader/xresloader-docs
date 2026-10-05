@@ -36,7 +36,7 @@ Json的数据格式是:
 
     "xres_ver":"xresloader版本号",
 
-    "hash_code":"文本输出无hash码",
+    "hash_code":"hash算法:hash值",
 
     "data_ver":"数据版本号"
 
@@ -108,7 +108,7 @@ return {
 
         xres_ver    = "xresloader版本号",
 
-        hash_code   = "文本输出无hash码",
+        hash_code   = "hash算法:hash值",
 
         data_ver    = "数据版本号",
 
@@ -129,6 +129,8 @@ return {
 ```
 
 默认情况，文本数据的输出是紧缩的。就没有上面格式列举出的看起来美观，可以通过 `--pretty 缩进数量` 来设置格式化输出。
+
+默认 Lua 输出可用标准 Lua 的 `dofile` / `require` 直接读取，记录位于返回 table 的协议名字段中。可运行的转换、索引、缓存与重载示例见 [原生 Lua 加载](./data-loading#原生-lua-加载)。
 
 ### 导出为Msgpack打包的二进制数据 (可选)
 
@@ -166,15 +168,17 @@ return {
 
 ```
 
-使用Msgpack的话， [https://github.com/xresloader/xresloader/tree/main/loader-binding/msgpack](https://github.com/xresloader/xresloader/tree/main/loader-binding/msgpack) 里有python2和node.js的读取示例。
+使用Msgpack的话， [https://github.com/xresloader/xresloader/tree/main/loader-binding/msgpack](https://github.com/xresloader/xresloader/tree/main/loader-binding/msgpack) 里有 Python 3 和 Node.js 的读取示例；其安装命令与库版本应按所用运行时复核。
 
 ### 导出为UE支持的CSV或JSON数据和代码 (可选)
+
+2.20.0 起，生成 UE 代码时枚举字段使用枚举类型；超出 UENUM uint8 范围的枚举不标为 BlueprintType。2.23.6 修复显式 Name 字段的 key 判断，升级时应同时重新生成和检查数据与代码。
 
 xresloader从2.0.0版本开始支持导出UE所支持的CSV或者JSON格式数据，使用 `-t ue-csv` 或 `-t ue-json` 可以指定导出的UE支持的数据格式内容。
 
 导出UE数据后，我们还会导出对应加载数据的UE C++类代码，具体可用的控制选项参见 `data-mapping-available-options` 。
 
-输出的代码有两种模型，一种是扁平模型，会把所有热 **repeated** 字段和 **message** 类型平铺到输出的类里。另一种是保留原始结构的嵌套模式。 [xresloader sample ue csv](https://github.com/xresloader/xresloader/tree/main/sample/proto_v3/csv/Public/Config) 和 [xresloader sample ue json](https://github.com/xresloader/xresloader/tree/main/sample/proto_v3/json/Public/Config) 中的是两种模式的输出代码，可以很容易看出来两者的差异和相应插件的功能。
+输出的代码有两种模型，一种是扁平模型，会把所有 **repeated** 字段和 **message** 类型平铺到输出的类里。另一种是保留原始结构的嵌套模式。 [xresloader sample ue csv](https://github.com/xresloader/xresloader/tree/main/sample/proto_v3/csv/Public/ConfigRec) 和 [xresloader sample ue json](https://github.com/xresloader/xresloader/tree/main/sample/proto_v3/json/Public/ConfigRec) 中的是两种模式的输出代码，可以很容易看出来两者的差异和相应插件的功能。
 
 生成完数据后我们在输出目录生成一个 **UnreaImportSettings.json** 文件，用于 **UEEditor-Cmd** 的导入命令。
 
@@ -610,11 +614,11 @@ return const_res
 
 ## Proto v2和Proto v3
 
-转表工具同时支持proto v2和proto v3，但是转出是使用的proto v3模式。而对于proto v2和proto v3仅在数字类型的 `repeated` 字段上有些许区别。
+转表器读取 descriptor 中声明的 proto2/proto3 结构。proto2 的可打包数值 repeated 字段默认 packed=false，proto3 默认 packed=true；显式 packed 选项可以固定输出编码。
 
-详见： [https://developers.google.com/protocol-buffers/docs/proto3#specifying-field-rules](https://developers.google.com/protocol-buffers/docs/proto3#specifying-field-rules)
+packed 编码使用一个长度限定字段保存多个数值，长度是字节数，不是元素数量。符合当前协议的解析器应同时接受 packed 与 unpacked 形式；如果旧绑定库或自定义解析器只支持一种，显式指定 packed 并验证对应运行库。参见 [官方编码规范](https://protobuf.dev/programming-guides/encoding/#repeated-elements)。
 
-简单地说，就是proto v2里数字类型的 `repeated` 字段默认是 `[ packed = false ]` 。打包结构是每个项目一个Key-Value数据对。 而在proto v3里是 `[ packed = false ]` 。打包结构是Key-Value个数N，而后紧挨着N个Value。 这可能导致转出的数据无法正常读取。解决方法也很简单，那就是对数字类型的 `repeated` 字段手动指定是否是packed。如：
+以下示例在两种语法中显式设为 packed=true：
 
 ```protobuf
 

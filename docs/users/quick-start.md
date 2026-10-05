@@ -1,377 +1,167 @@
 ---
-title: 快速开始
-description: 通过示例快速完成 Excel 到 protobuf 的转换
+title: 快速上手
+description: 用准备好的示例完成 Excel 转换，核对数据并加载 JSON、原生 Lua 或 protobuf
 ---
+
 # 快速上手
 
-## Step-1: 下载转表工具
+先用现成的 Excel 和协议描述文件跑通一次转换，再换成自己的数据。本页使用 xresloader 2.23.7、xresconv-cli 2.0.2 或 xresconv-gui 3.0.0，详细参数分别见 [CLI](./xresconv-cli)、[GUI](./xresconv-gui) 和 [XML 配置](./xresconv)。
 
-1.  下载JRE/JDK 17或以上(推荐下载64位的: [Adoptium OpenJDK](https://adoptium.net/)/[LibericaJDK](https://bell-sw.com/)/[OpenJDK](https://developers.redhat.com/products/openjdk/download)/[Zulu](https://www.azul.com/downloads/zulu-community/))
+## 1. 准备工具和示例
 
-2.  打开 [下载与安装](./download) 。下载最新版本的 **转表工具-xresloader** (xresloader-\*.jar)。
+1. 安装 Java 17 或以上版本，在终端执行 `java -version` 确认可用。
+2. 从 [xresloader 最新发行页](https://github.com/xresloader/xresloader/releases/latest) 下载完整的 **xresloader-版本号.jar**，重命名为 `xresloader.jar`。也可用 [按系统下载入口](./download#按系统下载最新版本)。
+3. 下载 [快速上手示例 ZIP](/examples/quick-start.zip)，解压后把 JAR 放进去。
+4. 从 [下载与安装](./download) 选择 CLI 或 GUI；只需选一种。CLI 无需 Python，GUI 完整发行包自带 Node.js。
 
-3.  下载或自己编译protobuf官方的protoc工具，可以去 [https://github.com/google/protobuf/releases](https://github.com/google/protobuf/releases) 下载预编译好的protoc
-
-4.  \[可选/推荐\] 如果要使用命令行版本的批量转换工具则要额外下载 **命令行批量转表工具-xresconv-cli**
-
-5.  \[可选/推荐\] 如果要使用GUI版本的批量转换工具则要额外下载 **GUI批量转表工具-xresconv-gui**
-
-## Step-2: 配置结构化的protobuf协议并使用protoc
-
-我们需要先写协议描述文件，到时候转出的数据也是按这个结构打包的。比如： [kind.proto](https://github.com/xresloader/xresloader-docs/blob/main/source/sample/quick_start/sample-conf/kind.proto)
-
-```protobufbuf title="sample/quick_start/sample-conf/kind.proto"
-syntax = "proto3";
-
-import "xresloader.proto";
-// xresloader的发布页面 https://github.com/xresloader/xresloader/releases 下载
-// protocols.zip ，即可获取xresloader.proto
-
-enum cost_type {
-  EN_CT_UNKNOWN = 0;
-  EN_CT_MONEY = 10001 [ (org.xresloader.enum_alias) = "金币" ];
-  EN_CT_DIAMOND = 10101 [ (org.xresloader.enum_alias) = "钻石" ];
-}
-
-message role_upgrade_cfg {
-  uint32 Id = 1;
-  uint32 Level = 2;
-  uint32 CostType = 3 [
-    (org.xresloader.validator) =
-        "cost_type", // 这里等同于在Excel中使用 @cost_type 标识
-    (org.xresloader.field_description) = "Refer to cost_type"
-  ];
-  int32 CostValue = 4;
-  int32 ScoreAdd = 5;
-}
+```text
+quick-start/
+├── convert.xml       批量转表清单
+├── convert-lua.xml   可选的原生 Lua 转换清单
+├── load-lua.lua      原生 Lua 加载示例
+├── xresloader.jar    下载后放入的引擎
+├── tables.xlsx      示例 Excel，包含转换规则 Sheet
+├── kind.pb          已生成的协议描述文件
+└── output/          运行后生成的 bin 和 JSON
 ```
 
-proto v2也可以，可以参见 [https://github.com/xresloader/xresloader/blob/main/sample/proto_v2/kind.proto](https://github.com/xresloader/xresloader/blob/main/sample/proto_v2/kind.proto) 。
+示例取用 xresloader sample 的基础人物数据和本站升级数据，使用简化协议，保留数据来源与生成源。已经准备好 descriptor，第一次转换无需安装 protoc。
 
-然后使用protoc生成描述文件和用于加载的代码文件: :
+打开 `tables.xlsx` 可以先核对数据。`kind` Sheet 包含三个人物：
 
-```bash
-protoc -o sample-conf/kind.pb --cpp_out sample-code -I sample-conf -I <xresloader协议目录>/extensions/v3 -I <xresloader协议目录>/extensions sample-conf/kind.proto <xresloader协议目录>/extensions/google/protobuf/descriptor.proto <xresloader协议目录>/extensions/v3/xresloader.proto <xresloader协议目录>/extensions/v3/xresloader_ue.proto
-```
+| Excel 行 | 角色 ID / id | 名称 / name |
+| --- | --- | --- |
+| 3 | 10001 | 欧若拉 |
+| 4 | 10002 | 杰克 |
+| 5 | 10003 | 库拉 |
 
-这是最终的 **数据转出目标** 。
+`upgrade` Sheet 的第 1 行是说明，第 2 行是字段名，第 3 行开始是数据：
 
-## Step-3: 配置Excel数据源
+| Excel 行 | 角色 ID / Id | 等级 / Level | 货币类别 / CostType | 消耗值 / CostValue |
+| --- | --- | --- | --- | --- |
+| 3 | 10001 | 1 | 0 | 0 |
+| 4 | 10001 | 2 | 10001 | 50 |
+| 5 | 10001 | 3 | 10001 | 100 |
 
-按照协议的配置编辑Excel文件，[role_tables.xlsx](https://github.com/xresloader/xresloader-docs/blob/main/source/sample/quick_start/sample-conf/role_tables.xlsx) ，我们使用表名 `upgrade_10001` 。 第一行设为描述，第二行设置为字段映射列，后面是数据(具体设置请参照 `[Step-4 配置批量转表配置文件](#quick-start-configure-sheme)`)。
+这里的货币类别沿用上游金币枚举值 **10001**。`scheme_kind` 和 `scheme_upgrade` 两个 Sheet 保存转换规则，不是需要导出的游戏数据。
 
-| 角色ID | 等级 | 货币类别 | 消耗值 |
-| --- | --- | --- | --- |
-| 角色ID | 等级 | 货币类别 | 消耗值 |
-| Id | Level | CostType | CostValue |
-| 10001 | 1 |  |  |
-| 10001 | 2 | 1001 | 50 |
-| 10001 | 3 | 1001 | 100 |
-| 10001 | 4 | 1001 | 150 |
-| 10001 | 5 | 1001 | 200 |
-| 10001 | 6 | 1001 | 250 |
-| 10001 | 7 | 1001 | 300 |
-| 10001 | 8 | 1001 | 350 |
-| 10001 | 9 | 1001 | 400 |
-| 10001 | 10 | 1001 | 450 |
-| 10001 | 11 | 1001 | 500 |
+## 2. 看一眼配置 {#quick-start-configure-sheme}
 
-这是最终的 **数据来源** 。
+`convert.xml` 把人物表与升级表各导出为 bin 和 JSON。相对路径以配置中的工作目录为准；此处工作目录就是 XML 所在目录。
 
-## Step-4: 配置批量转表配置文件 {#quick-start-configure-sheme}
-
-编辑配置转表配置， [sample.xml](https://github.com/xresloader/xresloader-docs/blob/main/source/sample/quick_start/sample-conf/sample.xml) 。这个文件用于告诉批量转表工具，xresloader的位置、工作目录从哪里读协议描述文件，如果映射字段转成什么类型等等。 简而言之就是把 **数据转出目标** 和 **数据来源** 关联起来。
-
-```xml title="sample/quick_start/sample-conf/sample.xml"
+```xml title="convert.xml"
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
-    <global>
-        <work_dir desc="工作目录，相对于当前xml的目录，我们的Excel文件放在这里">.</work_dir>
-        <xresloader_path desc="指向前面下载的 转表工具-xresloader，相对于当前xml的目录">../xresloader/target/xresloader-2.9.0.jar</xresloader_path>
-
-        <proto desc="协议类型，-p选项">protobuf</proto>
-        <output_type desc="输出类型，对应-t选项，输出二进制">bin</output_type>
-        <output_type desc="多种输出时可以额外定义某个节点的重命名规则" rename="/(?i)\.bin$/\.json/">json</output_type>
-        <proto_file desc="协议描述文件，-f选项">kind.pb</proto_file>
-
-        <output_dir desc="输出目录，-o选项">../sample-data</output_dir>
-        <data_src_dir desc="数据源目录，-d选项"></data_src_dir>
-
-        <java_option desc="java选项-最大内存限制2GB">-Xmx2048m</java_option>
-        <java_option desc="java选项-客户端模式">-client</java_option>
-
-        <default_scheme name="KeyRow" desc="默认scheme模式参数-Key行号，对应上面Id、Level、CostType、CostValue那一行">2</default_scheme>
-        <option desc="全局自定义选项" name="美化文本输出，缩进为2个空格">--pretty 2</option>
-    </global>
-
-    <groups desc="分组信息（可选）">
-        <group id="client" name="客户端"></group>
-        <group id="server" name="服务器"></group>
-    </groups>
-
-    <category desc="类信息（用于GUI工具的树形结构分类显示）">
-        <tree id="all_cats" name="大分类">
-            <tree id="kind" name="角色配置"></tree>
-        </tree>
-    </category>
-
-    <list>
-        <item name="升级表" cat="kind" class="client server">
-            <scheme name="DataSource" desc="数据源(文件名|表名|数据起始行号,数据起始列号)">role_tables.xlsx|upgrade_10001|3,1</scheme>
-            <scheme name="ProtoName" desc="协议名">role_upgrade_cfg</scheme>
-            <scheme name="OutputFile" desc="输出文件名">role_upgrade_cfg.bin</scheme>
-        </item>
-    </list>
+  <global>
+    <work_dir>.</work_dir>
+    <xresloader_path>xresloader.jar</xresloader_path>
+    <proto>protobuf</proto>
+    <proto_file>kind.pb</proto_file>
+    <output_dir>output</output_dir>
+    <output_type>bin</output_type>
+    <output_type rename="/(?i)\.bin$/\.json/">json</output_type>
+    <data_version>quick-start</data_version>
+    <option>--pretty 2</option>
+  </global>
+  <list>
+    <item file="tables.xlsx" scheme="scheme_kind" name="人物表" />
+    <item file="tables.xlsx" scheme="scheme_upgrade" name="升级表" />
+  </list>
 </root>
 ```
 
-对于文件路径配置的说明: `work_dir` 、 `xresloader_path` 和 `include` 配置的路径是相对于xml文件的路径。其他的涉及路径配置的地方如果不是绝对路径的，都是相对于 `work_dir` 的路径。（具体含义请参考 `./xresconv` ）
+## 3. 运行并检查输出
 
-在查找Excel文件的时候，如果有配置 `data_src_dir` ，则会相对于这个配置的路径读取Excel，否则也是相对于 `work_dir` 。
+### 用 GUI
 
-## Step-5: 运行转表工具
+解压完整 GUI 发行包，启动 `xresconv-gui`，打开 `convert.xml`。勾选人物表和升级表，查看预览，再点击开始转换。Windows 的程序名为 `xresconv-gui.exe`。
 
-下面两种运行转表的工具，一种是命令行工具，另一种是有用户界面的GUI工具。选用一种即可。
+![GUI 3.0 的示例配置、条目与真实转换日志](/img/users/gui-main-light.png)
 
-我们假设执行环境的目录结构如下:
+### 用 CLI
 
-```bash
-├── sample-conf/                    (批量转表配置所在目录)
-│   ├── sample.xml
-│   ├── kind.proto
-│   ├── kind.pb                     (使用protoc生成的二进制协议描述文件)
-│   ├── role_tables.xlsx            (Excel数据源)
-│   └── xresloader.run.log          (输出的日志文件，执行转表后自动生成，方便万一有错误排查)
-├── sample-data/                    (转出的配置数据所在目录)
-│   └── role_upgrade_cfg.bin        (输出的二进制配置文件，执行转表后自动生成)
-├── xresloader/
-│   ├── header/                     (可在 https://github.com/xresloader/xresloader/releases 下载 protocols.zip 获得)
-│   │   ├── pb_header.proto         (用于proto v2的转表头结构描述文件，读取数据的时候用)
-│   │   └── pb_header_v3.proto      (用于proto v3的转表头结构描述文件，读取数据的时候用)
-│   └── target/                     (可在 https://github.com/xresloader/xresloader/releases 下载 xresloader-*.jar 获得)
-│       └── xresloader-2.8.0.jar
-├── xresconv-cli/                   (命令行转表工具所在目录，可在 https://github.com/xresloader/xresconv-cli/releases 下载)
-│   ├── xresconv-cli.py
-│   └── print_color.py
-└── xresconv-gui/                   (GUI转表工具所在目录，可在 https://github.com/xresloader/xresconv-gui/releases 下载)
-    └── GUI工具的文件列表...
+在示例目录打开终端执行以下命令。Windows PowerShell 中，把程序名写为 `./xresconv-cli.exe`，或使用已加入 PATH 的 `xresconv-cli`。
+
+```sh
+xresconv-cli --test -p 1 convert.xml
+xresconv-cli -p 1 convert.xml
 ```
 
-### Step-5.1: 命令行批量转表工具
+第一行只预览，不生成数据；第二行执行转换。确认退出码为 0，再检查 `output/role_cfg.bin`、`output/role_cfg.json`、`output/role_upgrade_cfg.bin`、`output/role_upgrade_cfg.json`。JSON 可以直接打开核对记录，bin 供程序加载。
 
-```bash
+![CLI 2.0.2 的实际转换输出快照，工作目录路径已缩写](/img/users/cli-conversion.png)
 
-python xresconv-cli/xresconv-cli.py sample-conf/sample.xml
+## 4. 核对并加载数据
 
+### 加载 JSON
+
+普通 JSON 输出由 `[header, data, messageType]` 三部分组成。示例包内的 `load-json.cjs` 使用 Node.js 标准库加载升级表，并以角色 ID + 等级建立索引：
+
+```sh
+node load-json.cjs output/role_upgrade_cfg.json
 ```
 
-输出如下:
-
-![image](/img/users/quick_start_cli_sample.gif)
-
-### Step-5.2: GUI批量转表工具
-
-使用GUI工具，直接加载配置文件，选中要转换的表然后点击开始即可。
-
-![image](/img/users/quick_start_gui_sample.gif)
-
-## Step-6: 加载数据
-
-执行完上面一步的转表流程后，我们得到了 `xresloader/sample/role_upgrade_cfg.bin` 这个二进制配置文件，接下来把它加载到我们的程序中就可以了。
-
-比如我们用C++来加载。首先我们之前执行 `protoc` 的时候已经生成了配置协议的代码，然后还需要生成转表工具header的结构的代码。 :
-
-    protoc -I xresloader/third_party/xresloader-protocol/core/ --cpp_out=sample-code xresloader/third_party/xresloader-protocol/core/pb_header_v3.proto ;
-
-然后你可以选择使用我们封装过的读取库解析或手动解析。
-
-### Step-6.1: （推荐）使用 [xres-code-generator](https://github.com/xresloader/xres-code-generator) 生成解析代码(C++/Lua/C#/Upb Lua//UE蓝图)
-
-对于C++、Lua和C#，我们推荐使用 [xres-code-generator](https://github.com/xresloader/xres-code-generator) 生成解析代码。（未来会开发更多的语言支持）。详见 [《读表代码生成》](/docs/users/xres-code-generator) 。
-
-### Step-6.2: 手动解析
-
-手动解析的流程是先用 [xresloader中header](https://github.com/xresloader/xresloader-protocol/blob/main/core/pb_header_v3.proto) 里的 `xresloader_datablocks` 解析二进制文件，然后用协议的proto解析里面每条 `data_block` 字段。 每个 `data_block` 的条目对应配置里协议的每个message。（文件名: [load_custom.cpp](https://github.com/xresloader/xresloader-docs/blob/main/source/sample/quick_start/sample-code/load_custom.cpp) ）：
-
-```cpp title="sample/quick_start/sample-code/load_custom.cpp"
-#include <cstdio>
-#include <iostream>
-#include <fstream>
-#include <google/protobuf/stubs/common.h>
-
-#if GOOGLE_PROTOBUF_VERSION < 3000000
-#include "pb_header.pb.h"
-#else
-#include "pb_header_v3.pb.h"
-#endif
-
-#include "kind.pb.h"
-
-int main(int argc, char* argv[]) {
-
-    const char* file_path = "../sample-data/role_upgrade_cfg.bin";
-    if (argc > 1) {
-        file_path = argv[1];
-    } else {
-        printf("usage: %s <path to role_upgrade_cfg.bin>\n", argv[0]);
-        return 1;
-    }
-
-    org::xresloader::pb::xresloader_datablocks data_wrapper;
-    std::fstream fin;
-    fin.open(file_path, std::ios::in | std::ios::binary);
-    if (!fin.is_open()) {
-        printf("open %s failed\n", file_path);
-        return 1;
-    }
-    if (false == data_wrapper.ParseFromIstream(&fin)) {
-        printf("parse org::xresloader::pb::xresloader_datablocks failed. %s\n", data_wrapper.InitializationErrorString().c_str());
-        return 1;
-    }
-
-    printf("========================\ndata header: %s\n========================\n", data_wrapper.header().DebugString().c_str());
-
-    for (int i = 0; i < data_wrapper.data_block_size(); ++i) {
-        role_upgrade_cfg role_upg_data;
-        if (false == role_upg_data.ParseFromString(data_wrapper.data_block(i))) {
-            printf("parse role_upgrade_cfg for index %d failed. %s\n", i, role_upg_data.InitializationErrorString().c_str());
-            continue;
-        }
-
-        printf("role_upgrade_cfg => index %d: %s\n", i, role_upg_data.ShortDebugString().c_str());
-    }
-
-    return 0;
-}
+```js
+const fs = require('node:fs');
+const [header, data, messageType] = JSON.parse(
+  fs.readFileSync('output/role_upgrade_cfg.json', 'utf8')
+);
+const rows = data[messageType];
+const byKey = new Map(rows.map(row => [`${row.Id}:${row.Level}`, row]));
+console.log(header.count);       // 3
+console.log(byKey.get('10001:2')); // { Id: 10001, Level: 2, CostType: 10001, CostValue: 50 }
 ```
 
-编译和运行：
+Node.js 是此加载示例的依赖。使用其他语言时按同一 JSON 结构读取；JSON 中的字段大小写与协议一致。
 
-```bash
+### 加载原生 Lua
 
-```bash
-g++ -I . -I<protobuf的include目录> -L<protobuf的lib目录> -std=c++11 -O0 -g -ggdb -Wall load_custom.cpp *.pb.cc -lprotobuf -o load_custom.exe && ./load_custom.exe ../sample-data/role_upgrade_cfg.bin
+已有 Lua 运行环境时，可以直接加载转换出的 Lua table。示例包提供 `convert-lua.xml`，复用相同的两张表，仅把输出切换为 Lua。在示例目录执行，或用 GUI 打开该清单、勾选两项后转换：
+
+```sh
+xresconv-cli -p 1 convert-lua.xml
+lua load-lua.lua output/role_upgrade_cfg.lua
 ```
 
+第二行使用标准 Lua 5.4，无额外加载库。输出为 `version=quick-start, count=3` 和 `Id=10001, Level=2, CostType=10001, CostValue=50`。核心读取方法如下：
+
+```lua
+local config = dofile("output/role_upgrade_cfg.lua")
+local header, messageType = config[1], config[2]
+local rows = config[messageType]
+local byId = {}
+for _, row in ipairs(rows) do
+    byId[row.Id] = byId[row.Id] or {}
+    byId[row.Id][row.Level] = row
+end
+print(header.count)                -- 3
+print(byId[10001][2].CostValue)     -- 50
 ```
 
-输出示例：
+Lua 的 `[1]` 是头信息、`[2]` 是协议名，记录放在 `config[messageType]` 中；字段大小写与协议一致。完整加载源随 ZIP 提供，路径、`require` 与重载方式见 [原生 Lua 加载](./data-loading#原生-lua-加载)。
 
-```bash
-========================
-data header: xres_ver: "1.4.3"
-data_ver: "1.4.3.20180317040504"
-count: 11
-hash_code: "md5:7bbe88cca1eb23ebdce75b0e10b88b4a"
-========================
-role_upgrade_cfg => index 0: Id: 10001 Level: 1
-role_upgrade_cfg => index 1: Id: 10001 Level: 2 CostType: 1001 CostValue: 50
-role_upgrade_cfg => index 2: Id: 10001 Level: 3 CostType: 1001 CostValue: 100
-role_upgrade_cfg => index 3: Id: 10001 Level: 4 CostType: 1001 CostValue: 150
-role_upgrade_cfg => index 4: Id: 10001 Level: 5 CostType: 1001 CostValue: 200
-role_upgrade_cfg => index 5: Id: 10001 Level: 6 CostType: 1001 CostValue: 250
-role_upgrade_cfg => index 6: Id: 10001 Level: 7 CostType: 1001 CostValue: 300
-role_upgrade_cfg => index 7: Id: 10001 Level: 8 CostType: 1001 CostValue: 350
-role_upgrade_cfg => index 8: Id: 10001 Level: 9 CostType: 1001 CostValue: 400
-role_upgrade_cfg => index 9: Id: 10001 Level: 10 CostType: 1001 CostValue: 450
-role_upgrade_cfg => index 10: Id: 10001 Level: 11 CostType: 1001 CostValue: 500
+### 查看与加载 bin
+
+从 [最新下载](./download) 获取 **xresloader-dump-bin**，在示例目录执行：
+
+```sh
+xresloader-dump-bin --pretty -p kind.pb -b output/role_upgrade_cfg.bin
 ```
 
-加载数据可以有多种方法，这里提供加载二进制的方法。 更多关于输出类型和加载方式的信息请参见 `./output_format` 。
+可核对 `data count: 3`，以及三个等级的 ID、货币类别和消耗值。dump-bin 按 descriptor 的 JSON 字段名展示；此例的 Id、Level 等保持原样，proto3 默认值 0 可能省略。若终端设置了 RUST_LOG 并过滤 info，按 [查看工具说明](./ecosystem-and-tools#没有输出时) 调整。
 
-### Step-6.3: （老式接口，不推荐，请考虑使用上面6.1的加载方法）使用读取库模板解析
+程序加载 bin 时，先解析 `xresloader_datablocks` 包装结构，再把每个 `data_block` 解析为 `role_upgrade_cfg`。**整个 bin 不能直接当成单条 role_upgrade_cfg 解析**。
 
-需要先下载读取库。
+- 推荐通过 [读表代码生成器](./xres-code-generator) 生成 C++、C#、Go、Lua 或 UE 项目的加载代码与索引。
+- [协议生成与完整加载示例](./data-loading) 保留自定义协议、C++ 手动解析和旧 libresloader 模板的方法及编译命令。当前可编辑源代码也随示例 ZIP 提供。
 
-```bash
-curl -L -k https://raw.githubusercontent.com/xresloader/xresloader/main/loader-binding/cxx/libresloader.h -o libresloader.h
-```
+## 换成自己的表
 
-然后读取的代码sample如下（文件名: [load_with_libresloader.cpp](https://github.com/xresloader/xresloader-docs/blob/main/source/sample/quick_start/sample-code/load_with_libresloader.cpp) ）
+写自己的 `.proto`，用 protoc 生成包含依赖的 descriptor，再在 XML 中设置 `proto_file`。把 Excel 的字段名与 proto 对齐，通过内联 `DataSource`、`ProtoName`、`OutputFile` 和 `KeyRow` 指定映射，或沿用示例的 scheme Sheet。
 
-```cpp title="sample/quick_start/sample-code/load_with_libresloader.cpp"
-#include <cstdio>
-#include <iostream>
-#include <fstream>
+- [数据映射](./data-mapping)：定义数据源、字段行与嵌套结构。
+- [配置与输出矩阵](./xresconv)：多张表、多格式、目录与标签筛选。
+- [输出格式与数据加载](./output-format)：理解 bin 包装结构，接入 C++、Lua、C# 等运行时。
+- [读表代码生成](./xres-code-generator)：生成项目使用的加载代码；这是首次转换之后的步骤。
 
-#include "kind.pb.h"
-#include "libresloader.h"
-
-int main(int argc, char* argv[]) {
-
-    const char* file_path = "../sample-data/role_upgrade_cfg.bin";
-    if (argc > 1) {
-        file_path = argv[1];
-    } else {
-        printf("usage: %s <path to role_upgrade_cfg.bin>\n", argv[0]);
-        return 1;
-    }
-
-    // key - value 型数据读取机制
-    do {
-        typedef xresloader::conf_manager_kv<role_upgrade_cfg, uint32_t, uint32_t> kind_upg_cfg_t;
-        kind_upg_cfg_t upg_mgr;
-        upg_mgr.set_key_handle([](kind_upg_cfg_t::value_type p) {
-            return kind_upg_cfg_t::key_type(p->id(), p->level());
-        });
-
-        upg_mgr.load_file(file_path);
-
-        kind_upg_cfg_t::value_type data1 = upg_mgr.get(10001, 4); // 获取Key 为 10001,4的条目
-        if (NULL == data1) {
-            std::cerr<< "role_upgrade_cfg id: 10001, level: 4 not found, load file "<< file_path<< " failed."<< std::endl;
-            break;
-        }
-
-        printf("%s\n", data1->DebugString().c_str());
-    } while(false);
-
-    // key - list 型数据读取机制
-    do {
-        typedef xresloader::conf_manager_kl<role_upgrade_cfg, uint32_t> kind_upg_cfg_t;
-        kind_upg_cfg_t upg_mgr;
-        upg_mgr.set_key_handle([](kind_upg_cfg_t::value_type p) {
-            return kind_upg_cfg_t::key_type(p->id());
-        });
-
-        upg_mgr.load_file(file_path);
-        printf("role_upgrade_cfg with id=%d has %llu items\n", 10001, static_cast<unsigned long long>(upg_mgr.get_list(10001)->size()));
-
-        kind_upg_cfg_t::value_type data1 = upg_mgr.get(10001, 0); // 获取Key 为 10001 下标为0（就是第一个）条目
-        if (NULL == data1) {
-            std::cerr<< "role_upgrade_cfg id: 10001 , index: 0, not found, load file "<< file_path<< " failed."<< std::endl;
-            break;
-        }
-
-        printf("%s\n", data1->DebugString().c_str());
-    } while(false);
-
-    return 0;
-}
-```
-
-编译和运行：
-
-```bash
-g++ -I . -I<protobuf的include目录> -L<protobuf的lib目录> -std=c++11 -O0 -g -ggdb -Wall load_with_libresloader.cpp *.pb.cc -lprotobuf -o load_with_libresloader.exe && ./load_with_libresloader.exe ../sample-data/role_upgrade_cfg.bin
-```
-
-输出示例：
-
-```bash
-Id: 10001
-Level: 4
-CostType: 1001
-CostValue: 150
-role_upgrade_cfg with id=10001 has 11 items
-Id: 10001
-Level: 1
-```
-
-上面的例程和配置可以在 [https://github.com/xresloader/xresloader-docs/tree/main/source/sample/quick_start](https://github.com/xresloader/xresloader-docs/tree/main/source/sample/quick_start) 查看。
-
-## 使用proto v2加载二进制数据的特别注意事项
-
-需要额外注意一点的是，如果使用proto v2生成的代码或pb加载转出的数据，如果有 `repeated` 的数字字段，需要在proto文件里显式指明 `packed` 属性。
-
-详见 `output-format-proto v2 and proto v3`
+若执行失败，先核对 Java、JAR、工作目录和文件路径，再查看 [常见问题](./faq)。

@@ -1,0 +1,30 @@
+{
+  "kind": [
+    ["角色 ID", "名称"],
+    ["id", "name"],
+    [10001, "欧若拉"],
+    [10002, "杰克"],
+    [10003, "库拉"]
+  ],
+  "upgrade": [
+    ["角色 ID", "等级", "货币类别", "消耗值"],
+    ["Id", "Level", "CostType", "CostValue"],
+    [10001, 1, 0, 0],
+    [10001, 2, 10001, 50],
+    [10001, 3, 10001, 100]
+  ],
+  "scheme_kind": [
+    ["字段", "说明", "主配置", "次配置", "补充配置"],
+    ["DataSource", "人物数据", "tables.xlsx", "kind", "3,1"],
+    ["ProtoName", "协议", "role_cfg", "", ""],
+    ["OutputFile", "输出", "role_cfg.bin", "", ""],
+    ["KeyRow", "字段行", "2", "", ""]
+  ],
+  "scheme_upgrade": [
+    ["字段", "说明", "主配置", "次配置", "补充配置"],
+    ["DataSource", "升级数据", "tables.xlsx", "upgrade", "3,1"],
+    ["ProtoName", "协议", "role_upgrade_cfg", "", ""],
+    ["OutputFile", "输出", "role_upgrade_cfg.bin", "", ""],
+    ["KeyRow", "字段行", "2", "", ""]
+  ]
+}

@@ -1,65 +1,73 @@
 ---
 id: intro
-title: xresloader 简介
-description: xresloader 工具链特性概览与文档索引
+title: 工具链概览
+description: 当前 xresloader、CLI、GUI 组件与文档阅读入口
 ---
 
-xresloader 是一个面向游戏团队的数据转表工具链：把 Excel 中的策划数据转换为 protobuf、JSON、MsgPack、Lua、JavaScript、XML 等多种结构化格式，并配套批量化、校验和代码生成工具。
+xresloader 将 Excel 策划数据转换为结构化配置，配合批量工具、校验和读表代码生成接入游戏项目。
 
-## 主要特性
+## 能力与优势
 
-> 该部分信息会同步展示在[首页](/)，方便了解 xresloader 的能力与优势。
+- **跨平台批量转表**：Java 17+ 引擎、Rust CLI 批量转表工具与 Tauri GUI 批量转表工具协作，支持 Windows、macOS、Linux；include 让多个清单复用配置。
+- **多格式导出**：同一份 Excel 可输出 protobuf、MsgPack、Lua、JavaScript、JSON、XML 和 UE DataTable JSON / CSV，通过输出矩阵区分客户端与服务端。
+- **完整的协议结构**：支持 proto2 / proto3、嵌套 message、repeated 与嵌套数组、oneof、map 和单元格 Plain 复杂结构。
+- **枚举与描述信息**：可将协议枚举、常量和 descriptor 导成 Lua / JavaScript 代码或 JSON / XML 数据，结合自定义输出插件扩展反射信息。
+- **Unreal Engine 生态**：导出 DataTable JSON / CSV，配套生成加载代码，适配 UE 内容工作流。
+- **别名与校验体系**：字段和枚举别名、宏及跨表引用提升策划可读性；范围、逻辑组合和自定义验证器在导出前检查数据。
+- **输出插件与合表**：协议扩展控制输出，多张 Excel 可合并为一个目标文件，支持字段名正则映射、范围和转置。
+- **公式与输出控制**：读取 Excel 公式缓存，按需开启实时计算；支持空数组裁剪或保留、数据版本号和不同输出的目录 / 重命名规则。
+- **多语言加载方式**：支持 C++、C#、Go、upb、pbc、lua-protobuf 等接入方式。Lua 支持 global / require / module，JavaScript 支持 global / Node.js / AMD。
+- **二进制可查看**：xresloader-dump-bin 按 descriptor 展示已导出的 bin，核对数据头与正文，还可提取字符串和带标签的字段。
 
-- 💠 **跨平台批量工具**：基于 Java 17+ 提供 CLI/GUI，并支持 include 复用配置，Windows、macOS、Linux 一致体验。
-- 📦 **多格式导出**：Excel 可同时输出 protobuf、MsgPack、Lua、JavaScript、JSON、XML 以及 UE DataTable（JSON/CSV）。
-- 🕸️ **协议结构完整**：同时支持 proto v2/v3、嵌套 message、数组嵌套、oneof、map 与 plain 字符串转复杂结构。
-- 🧩 **枚举与描述信息导出**：可将 proto 枚举值和 descriptor 导成 Lua/JavaScript 代码或 JSON/XML 数据，并支持插件扩展反射。
-- 🎮 **Unreal Engine 生态**：导出 UE 所需 JSON/CSV，自动生成 DataTable 加载代码，适配 UE 内容流水线。
-- ✅ **别名表与校验体系**：别名表提升策划可读性，validator 可直接识别 proto 字段与枚举，保障数据有效。
-- ⚙️ **输出插件与合表**：protobuf 插件可控制部分输出，还能自动将多张 Excel 合并为单一目标文件。
-- 📐 **公式、压缩与版本控制**：支持 Excel 公式、空数据裁剪/定长保留、字段名正则映射及数据版本号设置。
-- 🌐 **多语言模块形态**：支持C++, C#, Golang, upb, pbc, lua-protobuf 等。Lua 支持 global/require/module，JavaScript 支持 global/node/AMD，兼容不同运行时装载方式。
+首页保留这些能力介绍和 [完整组件、仓库及最新下载](/)。
 
-## 组件状态
+## 组件清单
 
-| 组件 | 状态 |
+| 组件与仓库 | 用途 | 下载 |
+| --- | --- | --- |
+| [xresloader](https://github.com/xresloader/xresloader) | Excel 转表引擎 | [最新 Release](https://github.com/xresloader/xresloader/releases/latest) |
+| [xresconv-cli](https://github.com/xresloader/xresconv-cli) | CLI 批量转表工具 | [最新 Release](https://github.com/xresloader/xresconv-cli/releases/latest) |
+| [xresconv-gui](https://github.com/xresloader/xresconv-gui) | GUI 批量转表工具 | [最新 Release](https://github.com/xresloader/xresconv-gui/releases/latest) |
+| [xresloader-dump-bin](https://github.com/xresloader/xresloader-dump-bin) | 查看导出的二进制数据 | [最新 Release](https://github.com/xresloader/xresloader-dump-bin/releases/latest) |
+| [xres-code-generator](https://github.com/xresloader/xres-code-generator) | 读表代码生成器 | [最新源码](https://github.com/xresloader/xres-code-generator/archive/refs/heads/main.zip) |
+| [xresconv-conf](https://github.com/xresloader/xresconv-conf) | XML 配置与 GUI 扩展示例 | [最新源码](https://github.com/xresloader/xresconv-conf/archive/refs/heads/main.zip) |
+| [xresloader-protocol](https://github.com/xresloader/xresloader-protocol) | 数据头与协议扩展 | [最新源码](https://github.com/xresloader/xresloader-protocol/archive/refs/heads/main.zip) |
+
+后面三个项目尚无 Release。按当前操作系统下载实际发行包见 [下载与安装](./users/download)。[文档仓库](https://github.com/xresloader/xresloader-docs) 保留配置、脚本和示例源。
+
+## 选择入口
+
+| 目标 | 从这里开始 |
 | --- | --- |
-| [xresloader](https://github.com/xresloader/xresloader) | ![Build Status](https://github.com/xresloader/xresloader/actions/workflows/build.yml/badge.svg) ![GitHub release](https://img.shields.io/github/v/release/xresloader/xresloader) ![Downloads](https://img.shields.io/github/downloads/xresloader/xresloader/total) ![License](https://img.shields.io/github/license/xresloader/xresloader) ![Repo Size](https://img.shields.io/github/repo-size/xresloader/xresloader) ![Language](https://img.shields.io/github/languages/top/xresloader/xresloader) ![Stars](https://img.shields.io/github/stars/xresloader/xresloader?style=social) |
-| [xresconv-cli](https://github.com/xresloader/xresconv-cli) | ![GitHub release](https://img.shields.io/github/v/release/xresloader/xresconv-cli) ![License](https://img.shields.io/github/license/xresloader/xresconv-cli) ![Repo Size](https://img.shields.io/github/repo-size/xresloader/xresconv-cli) ![Language](https://img.shields.io/github/languages/top/xresloader/xresconv-cli) ![Stars](https://img.shields.io/github/stars/xresloader/xresconv-cli?style=social) |
-| [xresconv-gui](https://github.com/xresloader/xresconv-gui) | ![GUI Build](https://github.com/xresloader/xresconv-gui/workflows/build/badge.svg) ![GitHub release](https://img.shields.io/github/v/release/xresloader/xresconv-gui) ![Downloads](https://img.shields.io/github/downloads/xresloader/xresconv-gui/total) ![License](https://img.shields.io/github/license/xresloader/xresconv-gui) ![Repo Size](https://img.shields.io/github/repo-size/xresloader/xresconv-gui) ![Language](https://img.shields.io/github/languages/top/xresloader/xresconv-gui) ![Stars](https://img.shields.io/github/stars/xresloader/xresconv-gui?style=social) |
-| [xres-code-generator](https://github.com/xresloader/xres-code-generator) | ![License](https://img.shields.io/github/license/xresloader/xres-code-generator) ![Repo Size](https://img.shields.io/github/repo-size/xresloader/xres-code-generator) ![Language](https://img.shields.io/github/languages/top/xresloader/xres-code-generator) ![Stars](https://img.shields.io/github/stars/xresloader/xres-code-generator?style=social) |
-| [xresloader-dump-bin](https://github.com/xresloader/xresloader-dump-bin) | ![Dump Build](https://github.com/xresloader/xresloader-dump-bin/actions/workflows/main.yml/badge.svg) ![GitHub release](https://img.shields.io/github/v/release/xresloader/xresloader-dump-bin) ![Downloads](https://img.shields.io/github/downloads/xresloader/xresloader-dump-bin/total) ![License](https://img.shields.io/github/license/xresloader/xresloader-dump-bin) ![Repo Size](https://img.shields.io/github/repo-size/xresloader/xresloader-dump-bin) ![Language](https://img.shields.io/github/languages/top/xresloader/xresloader-dump-bin) ![Stars](https://img.shields.io/github/stars/xresloader/xresloader-dump-bin?style=social) |
-| 文档 (本仓库) | ![Docs Build](https://github.com/xresloader/xresloader-docs/actions/workflows/main.yml/badge.svg) ![License](https://licensebuttons.net/l/by-sa/4.0/80x15.png) ![Repo Size](https://img.shields.io/github/repo-size/xresloader/xresloader-docs) ![Language](https://img.shields.io/github/languages/top/xresloader/xresloader-docs) ![Stars](https://img.shields.io/github/stars/xresloader/xresloader-docs?style=social) |
+| 第一次导出数据 | [快速上手](./users/quick-start)：下载准备好的示例，检查四个输出 |
+| 安装当前工具 | [下载与安装](./users/download)：Java、平台包和 WebView |
+| 接入自动化 | [CLI 使用与迁移](./users/xresconv-cli)：Rust 原生程序、参数和退出状态 |
+| 交互式选表 | [GUI 使用与迁移](./users/xresconv-gui)：Tauri 工作台、日志和显示设置 |
+| 维护项目清单 | [XML 与输出矩阵](./users/xresconv)：路径、include、格式与筛选 |
+| 扩展桌面工具 | [脚本与选择器](./users/xresconv-scripts)：事件、树镜像与按钮 |
+| 修改工具实现 | [构建与验证](./development/build)、[架构与接口](./development/design-xresconv) |
 
-> **迁移提示**：从 v2.11.0-rc3 起，默认禁用了对 Excel 某些常见公式的旧式兼容逻辑。如果你依赖旧行为，可通过 `--enable-excel-formular` 显式开启；若仍在使用 JDK 8，需要在源码中调整 `maven-compiler-plugin` 的 target 再构建。
+## 当前组件
 
-## 文档地图
+2026-10-05 核验的正式版为 xresloader 2.23.7、xresconv-cli 2.0.2、xresconv-gui 3.0.0、xresloader-dump-bin 2.6.0。各组件独立发布，运行依赖见 [安装指南](./users/download)。
 
-### 用户文档
+- **引擎**：Java 17+，支持 proto2/proto3、嵌套 message、repeated、oneof、map、单元格 Plain 结构。
+- **输出**：protobuf bin、MsgPack、Lua、JavaScript、JSON、XML 和 UE DataTable JSON/CSV。数据加载见 [输出格式](./users/output-format)。
+- **批量工具**：Rust CLI 接入流水线；Tauri GUI 管理选择、输出矩阵和项目扩展。两者复用 XML，部分 include 与 GUI 事件语义需分别确认。
+- **校验**：字段与枚举别名、范围、跨表引用和逻辑组合，见 [验证器](./users/validator)。
+- **映射**：多表合并、数据源范围、转置、数组和宏，见 [数据映射](./users/data-mapping)、[数据类型](./users/data-types) 与 [高级用法](./users/advance-usage)。
+- **运行时接入**：[读表代码生成](./users/xres-code-generator) 与 [周边工具](./users/ecosystem-and-tools)。
 
-- [下载与安装](/docs/users/download)
-- [快速开始](/docs/users/quick-start)
-- [xresloader 核心功能](/docs/users/xresloader-core)
-- [数据映射](/docs/users/data-mapping)
-- [输出格式](/docs/users/output-format)
-- [批量转换 xresconv](/docs/users/xresconv)
-- [支持的数据类型](/docs/users/data-types)
-- [代码生成器](/docs/users/xres-code-generator)
-- [高级用法](/docs/users/advance-usage)
-- [生态与工具链](/docs/users/ecosystem-and-tools)
-- [常见问题 FAQ](/docs/users/faq)
+## 升级时先确认
 
-### 开发文档
+CLI 2.x 已移除主程序对 Python 的依赖，旧 Python 文件负责转发。GUI 3.0 已替换 Electron，项目脚本不再获得 DOM、jQuery 或 Electron 接口。安装与迁移说明分别放在组件文档中。
 
-- [依赖说明](/docs/development/dependency)
-- [构建指南](/docs/development/build)
-- [包源配置](/docs/development/pkg-source)
-- [xresloader 设计](/docs/development/design-xresloader)
-- [xresconv 设计](/docs/development/design-xresconv)
+引擎默认读取 Excel 保存的公式缓存，显式 --enable-excel-formular 才启用实时计算；流式模式不进行日期格式探测。当前 Java 源码不能只降低编译 target 就兼容 JDK 8。
 
-### 关于项目
+## 开发与项目
 
-- [许可证](/docs/about/license)
-- [关于 xresloader](/docs/about/)
+- [环境与依赖](./development/dependency)、[构建与验证](./development/build)、[包源与代理](./development/pkg-source)。
+- [xresloader 设计](./development/design-xresloader)、[xresconv 架构与接口](./development/design-xresconv)。
+- [许可证](./about/license)、[关于项目](/docs/about/)、[常见问题](./users/faq)。
 
-需要更完整的示例？可以直接查看仓库中的 `source/sample` 目录 —— 与文档保持同步的样例协议、配置与代码都保存在那里。
+可下载入门样例的源在 source/sample/current；其余历史样例保留原始上下文，重新生成代码时按自己的 protoc 和运行库版本处理。

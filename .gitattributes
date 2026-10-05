@@ -3,3 +3,5 @@
 *.py eol=lf
 *.rst eol=lf
 Makefile eol=lf
+# This historical XML uses CRLF; retain its line endings during example maintenance.
+source/sample/xresconv_conf.xml whitespace=trailing-space,space-before-tab,cr-at-eol

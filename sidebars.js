@@ -7,8 +7,19 @@ const sidebars = {
       label: '用户文档',
       collapsed: false,
       items: [
-        'users/download',
         'users/quick-start',
+        'users/download',
+        'users/data-loading',
+        {
+          type: 'category',
+          label: '批量转表',
+          link: { type: 'doc', id: 'users/xresconv' },
+          items: [
+            'users/xresconv-cli',
+            'users/xresconv-gui',
+            'users/xresconv-scripts',
+          ],
+        },
         {
           type: 'category',
           label: '读表代码生成',
@@ -21,6 +32,7 @@ const sidebars = {
             'users/xres-code-generator/unreal',
             'users/xres-code-generator/lua',
             'users/xres-code-generator/csharp',
+            'users/xres-code-generator/golang',
             'users/xres-code-generator/lua-upb',
             'users/xres-code-generator/lua-protobuf',
           ],
@@ -28,7 +40,6 @@ const sidebars = {
         'users/xresloader-core',
         'users/data-mapping',
         'users/output-format',
-        'users/xresconv',
         'users/data-types',
         'users/advance-usage',
         'users/validator',

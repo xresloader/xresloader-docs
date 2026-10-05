@@ -1,8 +1,10 @@
 ---
-title: Lua 读表代码（C protobuf）
-description: 使用 xres-code-generator 生成基于标准 C protobuf 运行时的 Lua 配置读取服务
+title: Lua 读表代码（原生 Lua）
+description: 使用 xres-code-generator 为原生 Lua table 生成配置管理器与索引
 ---
-# Lua（标准运行时）集成指南
+# Lua（原生 table）集成指南
+
+DataTableService53 用标准 Lua 的 `require` 加载 xresloader `-t lua` 导出的 table，并按生成的 DataTableCustomIndex53 配置建立索引。加载时无需 C protobuf 模块；二进制方案分别见 [upb](./lua-upb) 和 [lua-protobuf](./lua-protobuf)。简短的按索引读表示例见 [推荐加载方式](../data-loading#使用-xres-code-generator-加载最推荐)。
 
 ## 模板与生成
 

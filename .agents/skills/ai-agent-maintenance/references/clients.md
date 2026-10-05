@@ -26,9 +26,9 @@ CLI 不在 PATH 不证明客户端完全未安装。团队确认采用额外客�
 
 [官方规则文档](https://learn.chatgpt.com/docs/agent-configuration/agents-md) 规定项目根到 cwd，每目录依次查 AGENTS.override.md、AGENTS.md 和配置回退，默认合并上限 32 KiB；更近指引覆盖较早内容。[官方 Skills 文档](https://learn.chatgpt.com/docs/build-skills) 规定从 cwd 向仓库根扫描 .agents/skills，同名不会自动合并；元数据发现与正文使用分开。
 
-本次 CLI `codex debug prompt-input` 以实际加载器输出 model-visible JSON，没有调用模型。根与 docs/users 启动诊断应分别证明项目入口和三个 Skill 的名称/描述/仓库路径存在；不打印完整全局提示或向产物复制个人规则。默认输入不能提前加载覆盖表或三个 Skill 正文。诊断和时间/路径的脱敏结果保存在覆盖记录。
+本次 CLI `codex debug prompt-input` 以实际加载器输出 model-visible JSON，没有调用模型。新增写作 Skill 后，根与 docs/users 诊断均发现四个 Skill 的元数据及新仓库路径，写作正文与细则未预载；原三个 Skill 的正文未预载已在初始化诊断核验。不打印完整全局提示或向产物复制个人规则。诊断和时间/路径的脱敏结果保存在覆盖记录。
 
-实际诊断还验证了临时 CLI 覆盖参数禁用 site-change 后对应元数据消失，其他两个 Skill 仍发现；独立临时 Git fixture 中根与子目录的两个同名 Skill 均发现，局部 AGENTS.override.md 生效而同目录 AGENTS.md 未加载。没有改用户级配置、模型或权限。
+原三个 Skill 时的实际诊断还验证了临时 CLI 覆盖参数禁用 site-change 后对应元数据消失，其他两个 Skill 仍发现；独立临时 Git fixture 中根与子目录的两个同名 Skill 均发现，局部 AGENTS.override.md 生效而同目录 AGENTS.md 未加载。新增写作 Skill 后没有重跑禁用或冲突诊断，也没有改用户级配置、模型或权限。
 
 这些诊断不能证明 Skill 实际调用、自动触发质量或 shell/MCP 权限拒绝。明确调用与行为验收仍需目标 harness 真实轨迹；临时禁用的发现测试不能代替执行权限测试。
 

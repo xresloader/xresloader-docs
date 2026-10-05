@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- <?xml-stylesheet type="text/xsl" href="helper/view.xsl"?> -->
 <root>
-    <include desc="可以包含其他文件配置，然后本文件里的配置将会覆盖或合并配置，相对于当前xml的目录">sample.xml</include>
+    <!-- 可选：<include>current/sample.xml</include>；此示例默认独立运行。 -->
     <global>
-        <work_dir desc="工作目录，相对于当前xml的目录">../xresloader/sample</work_dir>
-        <xresloader_path desc="xresloader地址，相对于当前xml的目录">../target/xresloader-2.22.3.jar</xresloader_path>
+        <work_dir desc="工作目录，相对于当前xml的目录">../../../xresloader/sample</work_dir>
+        <xresloader_path desc="xresloader地址，相对于工作目录">../target/xresloader-2.23.7.jar</xresloader_path>
 
         <proto desc="协议类型，-p选项">protobuf</proto>
         <output_type desc="输出类型，-t选项，支持多个同时配置多种输出">bin</output_type>
@@ -13,17 +13,18 @@
         <!-- output_type 里的class标签对应下面item里的class标签，均可配置多个，多个用空格隔开，任意一个class匹配都会启用这个输出 -->
         <proto_file desc="协议描述文件，-f选项">proto_v3/kind.pb</proto_file>
 
-        <output_dir desc="输出目录，-o选项"></output_dir>
+        <output_dir desc="输出目录，-o选项，相对于工作目录">output-docs</output_dir>
         <data_src_dir desc="数据源目录，-d选项"></data_src_dir>
         <data_version desc="数据版本号，留空则自动生成">1.0.0.0</data_version>
 
         <rename desc="重命名规则，正则表达式：/搜索模式/替换内容/，对应xresloader的-n选项, 如果在output_type里设置了rename，以output_type里的rename为准，否则使用这里的全局配置" placeholder="/(?i)\.bin$/\.json/"></rename>
 
         <java_option desc="java选项-最大内存限制2GB">-Xmx2048m</java_option>
-        <java_option desc="java选项-客户端模式">-client</java_option>
+        <!-- 旧 JVM 模式参数 -client 无需配置。 -->
 
         <default_scheme name="KeyRow" desc="默认scheme模式参数-Key行号">2</default_scheme>
         <default_scheme name="MacroSource" desc="默认scheme模式参数-Key行号">资源转换示例.xlsx|macro|2,1</default_scheme>
+        <option desc="上游完整示例依赖的验证器">--validator-rules custom_validator.yaml</option>
     </global>
     
     <groups desc="分组信息">
@@ -40,9 +41,15 @@
 
     <list>
         <item file="资源转换示例.xlsx" scheme="scheme_kind" name="人物表" cat="kind" class="server"></item>
-        <item file="资源转换示例.xlsx" scheme="scheme_upgrade" name="升级表" cat="kind" class="server">
-            <option desc="自定义选项" name="移除空列表项">--disable-empty-list</option>
+        <item name="升级表（前11条有效数据）" cat="kind" class="server">
+            <scheme name="DataSource">资源转换示例.xlsx|upgrade_10001|3,1,13,0</scheme>
+            <scheme name="ProtoName">role_upgrade_cfg</scheme>
+            <scheme name="OutputFile">role_upgrade_cfg.bin</scheme>
+            <option name="移除空数组项">--list-strip-all-empty</option>
         </item>
+        <!-- 可选：原完整 scheme 含违反 custom_rule5 的大数值，启用后严格校验失败。
+        <item file="资源转换示例.xlsx" scheme="scheme_upgrade" name="完整升级表校验失败演示" cat="kind" class="server" />
+        -->
         <item name="嵌套数组测试" cat="test" class="client server">
             <scheme name="DataSource" desc="数据源(文件名|表名|数据起始行号,数据起始列号)">资源转换示例.xlsx|arr_in_arr|3,1</scheme>
             <scheme name="ProtoName" desc="协议名">arr_in_arr_cfg</scheme>
@@ -50,52 +57,61 @@
         </item>
     </list>
 
-    <gui>
-        <set_name desc="这个脚本用于修改树形节点的显示数据,便于策划核对具体的表名">
-            if (item_data.file) {
-                item_data.name += " (" + item_data.file.match(/([^.]+)\.\w+$/)[1] + ")"
-            }
-        </set_name>
-        <on_before_convert type="text/javascript" timeout="15000" description="事件执行结束必须调用resolve(value)或reject(reason)函数，以触发进行下一步">
-            // 这里可以执行nodejs代码，比如下面是Windows平台执行 echo work_dir
-            var os = require("os");
-            var spawn = require("child_process").spawn;
-            if (os.type().substr(0, 7).toLowerCase() == "windows") {
-                var exec = spawn("cmd", ["/c", "echo " + work_dir], {
-                    cwd: work_dir,
-                    encoding: 'utf-8'
-                });
-                exec.stdout.on("data", function(data) {
-                    log_info(data);
-                });
-                exec.stderr.on("data", function(data) {
-                    log_error(data);
-                });
-                exec.on("error", function(data) {
-                    log_error(data.toString());
-                    resolve();
-                    // reject("执行失败" + data.toString());
-                });
-                exec.on("exit", function(code) {
-                    if (code === 0) {
-                        resolve();
-                    } else {
-                        resolve();
-                        // reject("执行失败");
-                    }
-                });
-            } else {
-                resolve();
-            }
-        </on_before_convert>
-        <on_after_convert type="text/javascript" timeout="60000" description="事件执行结束必须调用resolve(value)或reject(reason)函数，以触发进行下一步">
-            // 同上
-            alert_warning("自定义转表完成后事件，可以执行任意nodejs脚本");
+  <gui>
+    <set_name><![CDATA[
+      if (item_data.file) {
+        const base = item_data.file.replace(/^.*[\/]/, "").replace(/\.[^.]+$/, "");
+        item_data.name += " (" + base + ")";
+      }
+    ]]></set_name>
+    <on_before_convert name="打印工作目录" type="text/javascript" timeout="15000"><![CDATA[
+      // 参数分别传递；不用 shell 拼接工作目录。Windows 子进程不弹出窗口。
+      const spawn = require("node:child_process").spawn;
+      const child = spawn(require("node:process").execPath,
+        ["-e", "process.stdout.write(process.cwd())"],
+        { cwd: work_dir, shell: false, windowsHide: true });
+      child.stdout.setEncoding("utf8");
+      child.stderr.setEncoding("utf8");
+      child.stdout.on("data", log_info);
+      child.stderr.on("data", log_error);
+      let finished = false;
+      function finish(reason) {
+        if (finished) return;
+        finished = true;
+        if (reason) reject(reason); else resolve();
+      }
+      child.on("error", error => finish(error.message));
+      child.on("close", code => finish(code === 0 ? null : "子进程失败: " + code));
+    ]]></on_before_convert>
+    <on_after_convert name="转表完成后事件" type="text/javascript" timeout="60000"><![CDATA[
+      alert_warning("转表事件完成，请核对日志中的结果。");
+      resolve();
+    ]]></on_after_convert>
+    <script name="delaycall" type="text/javascript" timeout="15000"><![CDATA[
+      if (data.running) {
+        reject("上一次未完成");
+      } else {
+        data.running = true;
+        let left = 5;
+        function counter() {
+          if (left > 0) {
+            log_notice("定时器计数: " + left--);
+            setTimeout(counter, 1000);
+          } else {
+            data.running = false; // 结束后允许再次点击。
+            log_notice("定时器结束");
             resolve();
-        </on_after_convert>
-        <script name="自定义脚本" desc="用于自定义按钮" type="text/javascript">
-            // 同上
-            resolve();
-        </script>
-    </gui>
+          }
+        }
+        counter();
+      }
+    ]]></script>
+    <script name="自定义脚本" type="text/javascript"><![CDATA[
+      data.call_times = (data.call_times || 0) + 1;
+      alert_warning("自定义脚本，可用于自定义按钮");
+      log_notice("自定义脚本调用次数: " + data.call_times);
+      log_warning("可用于项目检查或工具集成");
+      resolve();
+    ]]></script>
+  </gui>
 </root>

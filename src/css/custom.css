@@ -1,32 +1,33 @@
 :root {
-  --ifm-font-family-base: "更纱黑体 SC", "Sarasa SC", "Noto Sans SC", "Roboto",
-    "Microsoft YaHei", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
-  --ifm-color-primary: #5c6bc0;
-  --ifm-color-primary-dark: #45519c;
-  --ifm-color-primary-darker: #3e498e;
-  --ifm-color-primary-darkest: #2c3565;
-  --ifm-color-primary-light: #7985d4;
-  --ifm-color-primary-lighter: #8a95db;
-  --ifm-color-primary-lightest: #c5cae9;
+  --ifm-font-family-base:
+    "更纱黑体 SC", "Sarasa SC", "Noto Sans SC", "Roboto", "Microsoft YaHei",
+    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --ifm-color-primary: #14796b;
+  --ifm-color-primary-dark: #126d60;
+  --ifm-color-primary-darker: #11675b;
+  --ifm-color-primary-darkest: #0e554b;
+  --ifm-color-primary-light: #168576;
+  --ifm-color-primary-lighter: #178b7b;
+  --ifm-color-primary-lightest: #1a9d8b;
   --ifm-code-font-size: 0.9rem;
-  --ifm-leading: 1.65;
-  --md-elevation-1: 0 10px 15px -3px rgba(60, 60, 60, 0.1),
+  --ifm-leading: 1.8;
+  --md-elevation-1:
+    0 10px 15px -3px rgba(60, 60, 60, 0.1),
     0 4px 6px -2px rgba(60, 60, 60, 0.05);
-  --md-strong-color: #2d2a8c;
+  --md-strong-color: #183f42;
   --md-em-color: #b45309;
   --md-strong-em-color: #c026d3;
 }
 
 html[data-theme="dark"] {
-  --ifm-color-primary: #90a4ff;
-  --ifm-color-primary-dark: #7489f4;
-  --ifm-color-primary-darker: #6178f0;
-  --ifm-color-primary-darkest: #3a53d6;
-  --ifm-color-primary-light: #b2beff;
-  --ifm-color-primary-lighter: #c5ceff;
-  --ifm-color-primary-lightest: #e3e8ff;
-  --md-strong-color: #c7d2fe;
+  --ifm-color-primary: #78d9c3;
+  --ifm-color-primary-dark: #59cfb5;
+  --ifm-color-primary-darker: #49caad;
+  --ifm-color-primary-darkest: #31ad92;
+  --ifm-color-primary-light: #97e3d1;
+  --ifm-color-primary-lighter: #a7e8d9;
+  --ifm-color-primary-lightest: #d5f6ed;
+  --md-strong-color: #d4eee8;
   --md-em-color: #fcd34d;
   --md-strong-em-color: #f9a8d4;
 }
@@ -156,5 +157,121 @@ html[data-theme="dark"] {
 }
 
 .footer--dark {
-  background: #1f1f1f;
+  background: #14242c;
+}
+
+/* Readable documentation, scrollable tables, and consistent keyboard focus. */
+.navbar {
+  box-shadow: 0 1px 0 var(--ifm-color-emphasis-200);
+}
+.navbar__title {
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+.navbar__logo {
+  height: 2.2rem;
+}
+.button {
+  border-radius: 0.55rem;
+  text-transform: none;
+}
+.menu__link {
+  border-radius: 0.4rem;
+  font-size: 0.9rem;
+}
+.theme-doc-markdown {
+  max-width: 1320px;
+}
+.markdown h2 {
+  margin-top: 2.3rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+.markdown h3 {
+  margin-top: 1.6rem;
+}
+.markdown table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  font-size: 0.9rem;
+}
+.markdown th {
+  background: var(--ifm-color-emphasis-100);
+}
+.markdown :not(pre) > code {
+  overflow-wrap: anywhere;
+}
+.markdown img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 0.6rem;
+}
+.markdown ul,
+.markdown ol {
+  margin-left: 0;
+  padding-left: 1.7rem;
+}
+.theme-code-block {
+  box-shadow: none;
+  border: 1px solid var(--ifm-color-emphasis-200);
+}
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--ifm-color-primary);
+  outline-offset: 3px;
+}
+html[data-theme="dark"] {
+  --ifm-background-color: #131d25;
+  --ifm-background-surface-color: #192832;
+}
+@media (max-width: 600px) {
+  .markdown {
+    font-size: 0.95rem;
+  }
+  .markdown h1 {
+    font-size: 1.9rem;
+  }
+  .markdown h2 {
+    font-size: 1.45rem;
+  }
+}
+
+/* Expand documentation independently of the home page while keeping prose readable. */
+@media (min-width: 997px) {
+  .main-wrapper:has(.theme-doc-markdown) {
+    --ifm-container-width: 1600px;
+    --ifm-container-width-xl: 1880px;
+  }
+  .main-wrapper:has(.theme-doc-markdown) .container {
+    width: 100%;
+    padding-inline: clamp(1.5rem, 2vw, 4rem);
+  }
+  .main-wrapper:has(.theme-doc-markdown) .col--3:has(.theme-doc-toc-desktop) {
+    flex: 0 0 240px;
+    max-width: 240px;
+  }
+  .main-wrapper:has(.theme-doc-markdown)
+    .row:has(> .col--3 .theme-doc-toc-desktop)
+    > .col:has(article) {
+    flex: 1;
+    min-width: 0;
+    max-width: calc(100% - 240px) !important;
+  }
+}
+@media (min-width: 2200px) {
+  .main-wrapper:has(.theme-doc-markdown) {
+    --ifm-container-width-xl: 2560px;
+  }
+  .theme-doc-markdown {
+    max-width: 1680px;
+  }
+  .theme-doc-markdown > p,
+  .theme-doc-markdown > ul,
+  .theme-doc-markdown > ol {
+    max-width: 110ch;
+  }
 }

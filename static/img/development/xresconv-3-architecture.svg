@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="450" viewBox="0 0 1040 450" role="img" aria-labelledby="title desc">
+  <title id="title">xresconv-gui 3.0 进程架构</title>
+  <desc id="desc">React 界面通过 Tauri 桌面层和私有管道连接 guardian。guardian 监督 backend 与脚本 worker；backend 执行配置解析、Java 转换和文件日志。</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#526783"/></marker></defs>
+  <rect width="1040" height="450" rx="18" fill="#f5f8fc"/>
+  <g font-family="Segoe UI, Microsoft YaHei, sans-serif" fill="#19324a">
+    <text x="32" y="42" font-size="24" font-weight="700">xresconv-gui 3.0</text>
+    <text x="32" y="68" font-size="15" fill="#526783">界面、业务状态与项目脚本分进程运行</text>
+    <g stroke="#526783" stroke-width="2" fill="none" marker-end="url(#arrow)">
+      <path d="M216 145h45"/><path d="M446 145h50"/><path d="M681 145h55"/>
+      <path d="M828 182v48H130v56"/><path d="M828 230H354v56"/><path d="M828 230H578v56"/>
+      <path d="M828 230v56"/>
+    </g>
+    <g fill="#fff" stroke="#b4c7d8" stroke-width="1.5">
+      <rect x="32" y="108" width="184" height="74" rx="12"/>
+      <rect x="261" y="108" width="185" height="74" rx="12"/>
+      <rect x="496" y="108" width="185" height="74" rx="12" fill="#e4f5f2" stroke="#4b998e"/>
+      <rect x="736" y="108" width="185" height="74" rx="12" fill="#e8efff" stroke="#7093c8"/>
+      <rect x="38" y="286" width="184" height="80" rx="12"/>
+      <rect x="262" y="286" width="184" height="80" rx="12"/>
+      <rect x="486" y="286" width="184" height="80" rx="12"/>
+      <rect x="736" y="286" width="185" height="80" rx="12" fill="#fff3df" stroke="#c9a05d"/>
+    </g>
+    <g text-anchor="middle" font-size="18" font-weight="600">
+      <text x="124" y="138">React / WebView</text><text x="354" y="138">Tauri 桌面层</text>
+      <text x="588" y="138">Node guardian</text><text x="828" y="138">Node backend</text>
+      <text x="130" y="318">配置 helper</text><text x="354" y="318">Java / xresloader</text>
+      <text x="578" y="318">log4js sink</text><text x="828" y="318">script workers</text>
+    </g>
+    <g text-anchor="middle" font-size="14" fill="#526783">
+      <text x="124" y="161">界面与快照</text><text x="354" y="161">原生接口与转发</text>
+      <text x="588" y="161">监督、健康与回收</text><text x="828" y="161">会话、选择与运行</text>
+      <text x="130" y="344">隔离 XML 读取与解析</text><text x="354" y="344">实际转换与产物</text>
+      <text x="578" y="344">受限队列与文件写入</text><text x="828" y="344">树镜像、操作与回调</text>
+      <text x="473" y="99">私有字节管道</text>
+    </g>
+    <text x="38" y="411" font-size="15" fill="#526783">guardian 监督所属业务进程与脚本；业务状态由 backend 持有，脚本操作按会话与版本提交。</text>
+  </g>
+</svg>

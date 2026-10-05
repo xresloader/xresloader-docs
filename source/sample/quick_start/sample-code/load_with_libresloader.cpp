@@ -23,12 +23,12 @@ int main(int argc, char* argv[]) {
             return kind_upg_cfg_t::key_type(p->id(), p->level());
         });
 
-        upg_mgr.load_file(file_path);
+        if (!upg_mgr.load_file(file_path)) return 1;
 
         kind_upg_cfg_t::value_type data1 = upg_mgr.get(10001, 4); // 获取Key 为 10001,4的条目
         if (NULL == data1) {
             std::cerr<< "role_upgrade_cfg id: 10001, level: 4 not found, load file "<< file_path<< " failed."<< std::endl;
-            break;
+            return 1;
         }
 
         printf("%s\n", data1->DebugString().c_str());
@@ -42,13 +42,15 @@ int main(int argc, char* argv[]) {
             return kind_upg_cfg_t::key_type(p->id());
         });
 
-        upg_mgr.load_file(file_path);
-        printf("role_upgrade_cfg with id=%d has %llu items\n", 10001, static_cast<unsigned long long>(upg_mgr.get_list(10001)->size()));
+        if (!upg_mgr.load_file(file_path)) return 1;
+        const auto* list = upg_mgr.get_list(10001);
+        if (!list) return 1;
+        printf("role_upgrade_cfg with id=%d has %llu items\n", 10001, static_cast<unsigned long long>(list->size()));
 
         kind_upg_cfg_t::value_type data1 = upg_mgr.get(10001, 0); // 获取Key 为 10001 下标为0（就是第一个）条目
         if (NULL == data1) {
             std::cerr<< "role_upgrade_cfg id: 10001 , index: 0, not found, load file "<< file_path<< " failed."<< std::endl;
-            break;
+            return 1;
         }
         
         printf("%s\n", data1->DebugString().c_str());

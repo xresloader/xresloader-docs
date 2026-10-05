@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <!-- 先加载 sample.xml，再应用本文件；工作目录仍是示例目录。 -->
+  <include>sample.xml</include>
+  <global>
+    <!-- 此文件的 output_type 组替换被包含文件的组，最终只导出 Lua。 -->
+    <output_type desc="对应 -t">lua</output_type>
+    <output_dir desc="相对于工作目录">output/lua</output_dir>
+    <rename desc="对应 -n">/(?i)\.bin$/\.lua/</rename>
+    <option name="美化输出">--pretty 2</option>
+  </global>
+</root>

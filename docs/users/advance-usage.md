@@ -59,7 +59,7 @@ description: 深入功能与定制化实践
 | org.xresloader.ue.helper               | string | 生成UE Utility代码的类名后缀                                                                                                                                   |
 | org.xresloader.ue.not_data_table       | bool   | 生成UE Utility代码时，不生产加载代码，这用于带name字段的依赖类型                                                                                               |
 | org.xresloader.ue.default_loader       | enum   | 生成UE Utility代码时，控制单独的Message是否开启默认Loader（版本>=v2.13.1） 可选项: `EN_LOADER_MODE_DEFAULT`; `EN_LOADER_MODE_ENABLE`; `EN_LOADER_MODE_DISABLE` |
-| org.xresloader.ue.include_header       | string | 生成UE Utility代码时，额外附加包含文件（版本>=v2.13.1）                                                                                                        |
+| org.xresloader.ue.include_header       | repeated string | 生成UE Utility代码时，额外附加包含文件（版本>=v2.13.1）                                                                                                        |
 
 比如 [xresloader/sample/proto_v3/kind.proto](https://github.com/xresloader/xresloader/blob/main/sample/proto_v3/kind.proto) 里， `arr_in_arr_cfg` 配置了相关字段，会影响到一些输出。
 
@@ -68,15 +68,15 @@ description: 深入功能与定制化实践
 | 插件名称                                         | 类型   | 插件功能                                                                                                                                                                                                                                                                                                                                                      |
 | ------------------------------------------------ | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | org.xresloader.field_description                 | string | 字段描述信息，会写入输出的header中和代码中                                                                                                                                                                                                                                                                                                                    |
-| org.xresloader.validator                         | string | 字段描述信息，会写入输出的header中和代码中（版本\>=2.14.0-rc2）                                                                                                                                                                                                                                                                                               |
-| org.xresloader.verifier                          | string | (废弃，请使用 org.xresloader.validator)字段描述信息，会写入输出的header中和代码中                                                                                                                                                                                                                                                                             |
-| org.xresloader.field_unique_tag                  | string | 唯一性检测Tag，所有tag相同的字段会组合到一起检查唯一性（版本\>=2.14.0-rc2）                                                                                                                                                                                                                                                                                   |
-| org.xresloader.map_key_validator                 | string | 用于Map类型Key的验证器，可填范围(low-high),message名，enum名。多个由 `                                                                                                                                                                                                                                                                                        | ` 分隔。任意验证器通过检查则认为数据有效 （版本\>=2.15.0） |
-| org.xresloader.map_value_validator               | string | 用于Map类型Value的验证器，可填范围(low-high),message名，enum名。多个由 `                                                                                                                                                                                                                                                                                      | ` 分隔。任意验证器通过检查则认为数据有效 （版本\>=2.15.0） |
+| org.xresloader.validator | string | 字段校验器，可填范围、协议字段/枚举、函数或自定义规则，见 [验证器](./validator) |
+| org.xresloader.verifier | string | 已弃用的校验器选项名，使用 org.xresloader.validator |
+| org.xresloader.field_unique_tag                  | repeated string | 唯一性检测Tag，所有tag相同的字段会组合到一起检查唯一性（版本\>=2.14.0-rc2）                                                                                                                                                                                                                                                                                   |
+| org.xresloader.map_key_validator | string | Map Key 校验器，多个由 `\|` 分隔；任一通过即有效 |
+| org.xresloader.map_value_validator | string | Map Value 校验器，多个由 `\|` 分隔；任一通过即有效 |
 | org.xresloader.field_not_null                    | bool   | 如果配置了字段映射，忽略此项为空的行（版本\>=2.14.0-rc2）                                                                                                                                                                                                                                                                                                     |
-| org.xresloader.field_alias                       | string | 字段别名，可用于验证器和Excel中直接填别名，2.14.0-rc2版本后允许多个                                                                                                                                                                                                                                                                                           |
+| org.xresloader.field_alias                       | repeated string | 字段别名，可用于验证器和Excel中直接填别名，2.14.0-rc2版本后允许多个                                                                                                                                                                                                                                                                                           |
 | org.xresloader.field_ratio                       | int32  | 数值放大倍数，`转出数值=Excel内数值*field_ratio`。比如设为1000时，如果Excel里填的是1.05，转出的数据是 1050                                                                                                                                                                                                                                                    |
-| org.xresloader.field_separator                   | string |                                                                                                                                                                                                                                                                                                                                                               |
+| org.xresloader.field_separator                   | string | Plain 模式字段分隔符，默认 `,;\|`；按字段覆盖全局或 message 设置。                                                                                                                                                                                                                                                                                                                                                               |
 | org.xresloader.field_required                    | bool   | 设置字段为 **required** ，用于向proto3提供，proto2的 **required** 约束                                                                                                                                                                                                                                                                                        |
 | org.xresloader.field_origin_value                | string | 当前字段类型为Timestamp或Duration时且转换过程发生数据转换时，此扩展允许把原始数据写入指定字段。（版本\>=2.12.0） 目标字段必须是string类型且repeated属性和当前字段保持一致                                                                                                                                                                                     |
 | org.xresloader.field_allow_missing_in_plain_mode | bool   | Plain模式下设置此字段可选，如果未设置则使用默认值（版本\>=2.16.0）                                                                                                                                                                                                                                                                                            |
@@ -84,12 +84,12 @@ description: 深入功能与定制化实践
 | org.xresloader.field_list_min_size               | string | 给单个字段设置数组最小长度，输入字符串：`<N>或<枚举名>`（版本\>=2.18.0）                                                                                                                                                                                                                                                                                      |
 | org.xresloader.field_list_max_size               | string | 给单个字段设置数组最大长度，输入字符串：`<N>或<枚举名>`（版本\>=2.18.0）                                                                                                                                                                                                                                                                                      |
 | org.xresloader.field_list_strict_size            | bool   | 设置单个字段设置数组严格长度要求，即不自动补全最小长度，而是报错。：`false/true`（默认值: `false`, 版本\>=2.18.0）                                                                                                                                                                                                                                            |
-| org.xresloader.field_tag                         | string | 设置字段Tag，配合 `--ignore-field-tags` 选项可用于跳过某些数据。（版本\>=2.19.0）                                                                                                                                                                                                                                                                             |
-| org.xresloader.ue.key_tag                        | int32  | 生成UE代码时，如果需要支持多个Key组合成一个Name，用这个字段指定系数（必须大于0）                                                                                                                                                                                                                                                                              |
+| org.xresloader.field_tag                         | repeated string | 设置字段Tag，配合 `--ignore-field-tags` 选项可用于跳过某些数据。（版本\>=2.19.0）                                                                                                                                                                                                                                                                             |
+| org.xresloader.ue.key_tag                        | int64  | 生成UE代码时，如果需要支持多个Key组合成一个Name，用这个字段指定系数（必须大于0）                                                                                                                                                                                                                                                                              |
 | org.xresloader.ue.ue_type_name                   | string | 生成UE代码时，如果指定了这个字段，那么生成的字段类型将是 `TSoftObjectPtr<ue_type_name>` , 并且支持蓝图中直接引用                                                                                                                                                                                                                                              |
 | org.xresloader.ue.ue_type_is_class               | bool   | 生成UE代码时，如果这个字段为true，那么生成的字段类型将是 `TSoftClassPtr<ue_type_name>` , 并且支持蓝图中直接引用                                                                                                                                                                                                                                               |
-| org.xresloader.ue_origin_type_name               | string | 设置输出UE代码的原始类型（版本\>=2.14.0-rc1）                                                                                                                                                                                                                                                                                                                 |
-| org.xresloader.ue_origin_type_default_value      | string | 设置输出UE代码的原始类型的默认值（版本\>=2.14.0-rc1）                                                                                                                                                                                                                                                                                                         |
+| org.xresloader.ue.ue_origin_type_name               | string | 设置输出UE代码的原始类型（版本\>=2.14.0-rc1）                                                                                                                                                                                                                                                                                                                 |
+| org.xresloader.ue.ue_origin_type_default_value      | string | 设置输出UE代码的原始类型的默认值（版本\>=2.14.0-rc1）                                                                                                                                                                                                                                                                                                         |
 
 比如我们定义单位属性的proto如下：
 
@@ -126,7 +126,7 @@ message skill_effect {
 | -------------------------------- | ------ | --------------------------------------------------------------------- |
 | 插件名称                         | 类型   | 插件功能                                                              |
 | org.xresloader.enumv_description | string | 枚举值描述信息，会写入输出的header中和代码中                          |
-| org.xresloader.enum_alias        | string | 枚举值别名，可用于验证器和Excel中直接填别名，2.14.0-rc2版本后允许多个 |
+| org.xresloader.enum_alias        | repeated string | 枚举值别名，可用于验证器和Excel中直接填别名，2.14.0-rc2版本后允许多个 |
 
 比如 [xresloader/sample/proto_v3/kind.proto](https://github.com/xresloader/xresloader/blob/main/sample/proto_v3/kind.proto) 里， `role_upgrade_cfg` 内的 `CostType` 这一列配置验证器引射到协议的 `cost_type` 和 协议描述字段。
 
@@ -170,10 +170,10 @@ message role_upgrade_cfg {
 | 插件名称                                         | 类型   | 插件功能                                                                          |
 | ------------------------------------------------ | ------ | --------------------------------------------------------------------------------- |
 | org.xresloader.oneof_description                 | string | oneof描述信息，可能会写入输出的header中和代码中                                   |
-| org.xresloader.oneof_separator                   | string |                                                                                   |
-| org.xresloader.oneof_not_null                    | string | 如果配置了字段映射，忽略此项为空的行（版本\>=v2.14.0-rc2）                        |
+| org.xresloader.oneof_separator                   | string | Plain 模式 oneof 分隔符，默认 `,;\|`。                                                                                   |
+| org.xresloader.oneof_not_null                    | bool | 如果配置了字段映射，忽略此项为空的行（版本\>=v2.14.0-rc2）                        |
 | org.xresloader.oneof_allow_missing_in_plain_mode | bool   | Plain模式下设置此字段可选，如果未设置则使用默认值 （版本\>=2.16.0）               |
-| org.xresloader.oneof_tag                         | string | 设置字段Tag，配合 `--ignore-field-tags` 选项可用于跳过某些数据。（版本\>=2.16.0） |
+| org.xresloader.oneof_tag                         | repeated string | 设置字段Tag，配合 `--ignore-field-tags` 选项可用于跳过某些数据。（版本\>=2.16.0） |
 
 ## 仅导出部分字段
 
@@ -181,17 +181,21 @@ message role_upgrade_cfg {
 
 ## 批量转表的include标签
 
+路径基准、合并顺序和 CLI/GUI 差异见 [XML 配置](./xresconv#合并与两种工具的差异)。
+
 ## 公式支持
 
 [xresloader](https://github.com/xresloader/xresloader) 支持公式功能，但是不建议使用跨文件公式。是因为有些平台里，文件的引用可能会使用绝对路径，这时候如果改变一个文件中的值会影响另一个文件。 而另一个文件计算公式的时候读取失败，则会用之前的数据缓存（Excel中对所有公式的计算结果有缓存）。这时候数据可能滞后，但是是没有提示的。可能会引起困惑。
 
 ## 定长数组
 
-详见 `数据类型说明-定长数组 <data-types-stable-array>` 章节。
+详见 [定长数组](./data-types#定长数组)，当前使用 --list-keep-empty。
 
 ## Plain模式（需要 [xresloader](https://github.com/xresloader/xresloader) 2.7.0及以上）
 
-为了方便某些特殊场景使用，从 [xresloader](https://github.com/xresloader/xresloader) 2.7.0版本开始，我们开支支持Plain模式。 Plain模式的配置方式允许把数字和字符串数组和整个message配置在一个单元格里，多个元素或者多个字段按分隔符分割。分隔符支持多个候选项，实际执行会采用按输入的字符串中，第一个找到的候选项。 默认的分隔符候选项是 `,;|` 。
+为了方便某些特殊场景使用，从 [xresloader](https://github.com/xresloader/xresloader) 2.7.0版本开始，我们开始支持 Plain 模式。 Plain模式的配置方式允许把数字和字符串数组和整个message配置在一个单元格里，多个元素或者多个字段按分隔符分割。分隔符支持多个候选项，实际执行会采用按输入的字符串中，第一个找到的候选项。 默认的分隔符候选项是 `,;|` 。
+
+2.23.0 起，分隔符含换行时归一化跨平台换行；含空格或制表符时合并连续空白。2.23.2/2.23.4 改进空字符串和错误提示。
 
 Plain模式不需要额外配置，当数组元素没有配置下标或者配置的映射字段直接指向一个message时，将自动使用Plain模式解析。
 

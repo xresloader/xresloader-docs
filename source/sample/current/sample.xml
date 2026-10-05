@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 可选：配合 xresconv-conf/helper/view.xsl 查看 XML。
+     <?xml-stylesheet type="text/xsl" href="helper/view.xsl"?> -->
+<root>
+  <!-- 可选 include：路径相对于声明它的 XML；不能包含自己。
+       <include>shared.xml</include> -->
+  <global>
+    <work_dir desc="共享清单的主 XML 工作目录">.</work_dir>
+    <xresloader_path desc="相对于工作目录；完整 JAR 重命名后的名称">xresloader.jar</xresloader_path>
+    <proto desc="对应 -p">protobuf</proto>
+    <proto_file desc="对应 -f，可重复配置">kind.pb</proto_file>
+    <output_type desc="对应 -t">bin</output_type>
+    <output_type rename="/(?i)\.bin$/\.json/" output_dir="output/json">json</output_type>
+    <!-- 可选 UE 输出：协议须有 Name 字段或 key_tag；入门简化协议未定义它们。
+    <output_type class="client" rename="/(?i)\.bin$/\.csv/" output_dir="output/ue">ue-csv</output_type>
+    -->
+    <!-- 一个 class 中任一标签匹配即可；同时有 class 与 tag 时两类都要匹配。 -->
+    <output_dir desc="相对于工作目录">output/bin</output_dir>
+    <data_src_dir desc="为空时从工作目录查找 Excel"></data_src_dir>
+    <data_version desc="留空则自动生成">configuration-sample</data_version>
+    <rename desc="局部 output_type.rename 优先于此全局规则"></rename>
+    <java_option desc="最大堆 2 GB；放在 -jar 之前">-Xmx2048m</java_option>
+    <!-- 旧样例的 -client 是历史 JVM 模式参数；现代 Java 不需要它。 -->
+    <default_scheme name="KeyRow" desc="字段所在行，从 1 开始">2</default_scheme>
+    <!-- 可选：复制上游资源转换示例.xlsx 后开启宏表。
+    <default_scheme name="MacroSource">资源转换示例.xlsx|macro|2,1</default_scheme>
+    -->
+    <!-- 可选 UE CSV 包裹字符；正确名称是 UeCfg，不是 UeCg。
+    <default_scheme name="UeCfg-CsvObjectWrapper">{|}</default_scheme>
+    -->
+    <!-- 可选：准备好相应 YAML 后开启自定义验证器。
+    <option>&#45;&#45;validator-rules custom_validator.yaml</option>
+    -->
+    <option name="美化文本输出">--pretty 2</option>
+  </global>
+  <groups desc="分组元数据，可选">
+    <group id="client" name="客户端" />
+    <group id="server" name="服务器" />
+  </groups>
+  <category desc="GUI 树形分类，可嵌套">
+    <tree id="all_cats" name="全部配置"><tree id="kind" name="角色配置" /></tree>
+    <tree id="test" name="内联映射示例" />
+  </category>
+  <list>
+    <item file="tables.xlsx" scheme="scheme_kind" name="人物表" cat="kind" class="server" />
+    <item file="tables.xlsx" scheme="scheme_upgrade" name="升级表" cat="kind" class="server">
+      <option name="移除空数组项">--list-strip-all-empty</option>
+    </item>
+    <item name="内联升级表" cat="test" class="client server" tag="public">
+      <scheme name="DataSource">tables.xlsx|upgrade|3,1</scheme>
+      <scheme name="ProtoName">role_upgrade_cfg</scheme>
+      <scheme name="OutputFile">role_upgrade_inline.bin</scheme>
+    </item>
+    <!-- 可选：使用上游完整 workbook 和 proto_v3/kind.pb 时开启嵌套数组。
+    <item name="嵌套数组测试" cat="test" class="client server">
+      <scheme name="DataSource">资源转换示例.xlsx|arr_in_arr|3,1</scheme>
+      <scheme name="ProtoName">arr_in_arr_cfg</scheme>
+      <scheme name="OutputFile">arr_in_arr_cfg.bin</scheme>
+    </item>
+    -->
+  </list>
+  <gui>
+    <set_name><![CDATA[
+      if (item_data.file) {
+        const base = item_data.file.replace(/^.*[\\/]/, "").replace(/\.[^.]+$/, "");
+        item_data.name += " (" + base + ")";
+      }
+    ]]></set_name>
+    <on_before_convert name="打印工作目录" type="text/javascript" timeout="15000"><![CDATA[
+      // 参数分别传递；不用 shell 拼接工作目录。Windows 子进程不弹出窗口。
+      const spawn = require("node:child_process").spawn;
+      const child = spawn(require("node:process").execPath,
+        ["-e", "process.stdout.write(process.cwd())"],
+        { cwd: work_dir, shell: false, windowsHide: true });
+      child.stdout.setEncoding("utf8");
+      child.stderr.setEncoding("utf8");
+      child.stdout.on("data", log_info);
+      child.stderr.on("data", log_error);
+      let finished = false;
+      function finish(reason) {
+        if (finished) return;
+        finished = true;
+        if (reason) reject(reason); else resolve();
+      }
+      child.on("error", error => finish(error.message));
+      child.on("close", code => finish(code === 0 ? null : "子进程失败: " + code));
+    ]]></on_before_convert>
+    <on_after_convert name="转表完成后事件" type="text/javascript" timeout="60000"><![CDATA[
+      alert_warning("转表事件完成，请核对日志中的结果。");
+      resolve();
+    ]]></on_after_convert>
+    <script name="delaycall" type="text/javascript" timeout="15000"><![CDATA[
+      if (data.running) {
+        reject("上一次未完成");
+      } else {
+        data.running = true;
+        let left = 5;
+        function counter() {
+          if (left > 0) {
+            log_notice("定时器计数: " + left--);
+            setTimeout(counter, 1000);
+          } else {
+            data.running = false; // 结束后允许再次点击。
+            log_notice("定时器结束");
+            resolve();
+          }
+        }
+        counter();
+      }
+    ]]></script>
+    <script name="自定义脚本" type="text/javascript"><![CDATA[
+      data.call_times = (data.call_times || 0) + 1;
+      alert_warning("自定义脚本，可用于自定义按钮");
+      log_notice("自定义脚本调用次数: " + data.call_times);
+      log_warning("可用于项目检查或工具集成");
+      resolve();
+    ]]></script>
+  </gui>
+</root>

@@ -18,7 +18,7 @@ Excel里编辑过的单元格即便删除了也会留下不可见的样式配置
 
 ## 为什么Excel里填的时间，但是转出来是一个负数？
 
-Excel里的日期时间类型转成协议里整数时会转为Unix时间戳，但是Excel的时间是以1900年1月0号为基准的，这意味着如果时间格式是 `hh:mm:ss` 的话，`49:30:01` 会被转为 `1900-1-2 1:31:01` 。 时间戳因为是相对于 `1970-01-01 00:00:00` 的秒数，所以会是一个绝对值很大的负数。
+先区分绝对时间 Timestamp、周期 Duration 与普通数值。默认流式读取不探测日期格式，依赖日期单元格时需显式启用实时公式模式并核对值；Excel 序列时间、保存缓存和文本时间不能混用。具体规则见 [日期时间与 Duration](./data-types#日期和时间类型)。
 
 ## Windows下控制台里执行执行会报文件编码错误？（java.nio.charset.UnsupportedCharsetException: cp65001）
 
@@ -46,10 +46,13 @@ java.lang.IllegalStateException: No factory method found for class org.apache.lo
 ...
 ```
 
-这是因为在Windows控制台中，如果编码是UTF-8，java获取编码时会获取到cp65001，而这个编码java本身是不识别的。这种情况可以按下面的方法解决：
+以上是旧 Java/log4j 环境的历史错误。当前工具统一使用 UTF-8，先核对 java -version、JAR 版本和实际启动环境；JVM 编码参数需放在 -jar 前：
 
-- 第一种: 执行xresloader之前先执行 chcp 936，切换到GBK编码
-- 第二种: 在powershell里执行
+```sh
+java -Dfile.encoding=UTF-8 -jar xresloader.jar --version
+```
+
+不要为了加载当前 GUI/XML 全局切换 GBK。若仍出现相同异常，保留原始日志，检查 log4j2 配置和所用 JRE 是否确实为预期版本。
 
 ## C++加载代码编译时出现xresloader符号重定义（multiple definition of `org::xresloader::pb::xresloader_XXX）`
 
@@ -67,11 +70,11 @@ pb_header.pb.cc 和 pb_header_v3.pb.cc 只能保留一个
 
 ## proto v2版本API解析repeated的整数或浮点数类型字段失败(Wire Type)
 
-我们转表默认使用的是proto v3模式，几乎所有编码规则都是向前兼容到proto v2的，但是也有一个例外，就是repeated的数值类型。
+Repeated 的可打包数值在 proto2 默认 packed=false，proto3 默认 packed=true；实际编码取决于 descriptor 的语法与 packed 选项。符合规范的解析器需要同时接受两种形式，不能把“使用 proto2 API”本身判定为不兼容。
 
-repeated的数值类型在proto v2里默认是 `[ packed = false ]` 而在proto v3里是 `[ packed = true ]` 。解决方法是显式指定打包方式。
+若旧版第三方解析库只支持一种形式，先核对库版本和生成代码，再显式设置 packed 并做实际解码检查。
 
-详见 `output-format-proto v2 and proto v3` 。
+详见 [proto2/proto3 与 packed 编码](./output-format#proto-v2和proto-v3)。
 
 ## 为什么在proto里定义的是一个无符号(unsigned)类型(uint32、uint64等)，实际输出的UE代码是有符号(signed)的(int32/int64)？
 
@@ -96,3 +99,25 @@ repeated的数值类型在proto v2里默认是 `[ packed = false ]` 而在proto 
 在 v2.10.0 版本以后，可以通过使用 `--disable-excel-formular` 关闭公式实时计算，这时候会使用内部的索引器，能够大幅降低内存和CPU开销。
 
 \> 关闭公式实时计算并不是指不支持公式。Excel在保存时会保存一份公式计算结果的缓存，关闭公式实时计算后会使用这个缓存。
+
+## CLI 预览成功却没有文件？
+
+--test 不执行 Java。去掉 --test 后检查退出码、工作目录和真实产物。即使预览为 0 job(s) failed，表格或 descriptor 仍可能在实际运行时失败。
+
+## GUI 搜索后为什么还转换了未显示的条目？
+
+搜索保留已选集合。运行前取消不需要的选择，再检查预览；只隐藏条目不会取消选择。
+
+## GUI 3.0 的脚本为什么找不到 Electron、jQuery 或 console？
+
+3.0 的脚本在独立 Node worker 中运行，使用 log_* 日志和兼容树接口。事件必须显式 resolve/reject，见 [脚本迁移](./xresconv-scripts)。
+
+## GUI 启动时没有显示自定义按钮？ {#gui-启动时没有显示自定义按钮}
+
+先确认 JSON 路径、编码、名称和规则。如果 3.0.0 同时传入 --input 与 --custom-selector，即使参数正确，启动时的 XML 加载与选择器接线也可能竞争，导致按钮未加载。退出后只用以下命令启动，等待按钮出现，再在界面打开 XML：
+
+```sh
+xresconv-gui --custom-selector selectors.json
+```
+
+这属于当前版本的启动顺序问题；仅点击“重载配置”不会重新读取已经丢失的启动接线。选择器规则和按钮脚本见 [扩展文档](./xresconv-scripts)。

@@ -1,0 +1,9 @@
+[
+  { "name": "选择升级表", "by_schemes": [{ "file": "tables.xlsx", "scheme": "scheme_upgrade" }], "default_selected": false, "style": "outline-primary" },
+  { "name": "选择内联表", "by_sheets": [{ "file": "tables.xlsx", "sheet": "upgrade" }], "style": "outline-info" },
+  { "name": "五秒计时", "action": ["script: delaycall"] },
+  { "name": "自定义脚本", "action": ["script: 自定义脚本"] },
+  { "name": "全部选中", "action": ["select_all"] },
+  { "name": "全部取消", "action": ["unselect_all"] },
+  { "name": "重载按钮", "action": ["reload"] }
+]

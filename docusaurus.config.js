@@ -5,7 +5,7 @@ const { themes } = require("prism-react-renderer");
 const config = {
   title: "xresloader 文档",
   tagline: "跨平台游戏数据转表工具链",
-  favicon: "img/logo.png",
+  favicon: "img/brand-mark.svg",
   url: "https://xresloader.atframe.work",
   baseUrl: "/",
   organizationName: "xresloader",
@@ -73,7 +73,8 @@ const config = {
       title: "xresloader",
       logo: {
         alt: "xresloader Logo",
-        src: "img/logo.png",
+        src: "img/brand-mark.svg",
+        srcDark: "img/brand-mark-dark.svg",
       },
       items: [
         {
@@ -82,6 +83,8 @@ const config = {
           position: "left",
           label: "文档",
         },
+        { to: "/docs/users/quick-start", label: "快速上手", position: "left" },
+        { to: "/docs/development/build", label: "开发", position: "left" },
         {
           href: "https://github.com/xresloader/xresloader",
           label: "GitHub",

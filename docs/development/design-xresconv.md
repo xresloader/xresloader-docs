@@ -1,117 +1,63 @@
 ---
-title: xresconv 设计
-description: xresconv 架构设计解析
+title: xresconv 架构与接口
+description: Rust CLI 与 Tauri GUI 的职责、配置、通信、转换和扩展边界
 ---
-# 批量转表工具设计模型
 
-批量转表工具都以 [xresconv-conf](https://github.com/xresloader/xresconv-conf) 作为配置规范。具体的配置和功能点如下：
+# xresconv 架构与接口
 
-```xml title="sample/xresconv_conf.xml"
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- <?xml-stylesheet type="text/xsl" href="helper/view.xsl"?> -->
-<root>
-    <include desc="可以包含其他文件配置，然后本文件里的配置将会覆盖或合并配置，相对于当前xml的目录">sample.xml</include>
-    <global>
-        <work_dir desc="工作目录，相对于当前xml的目录">../xresloader/sample</work_dir>
-        <xresloader_path desc="xresloader地址，相对于当前xml的目录">../target/xresloader-2.22.3.jar</xresloader_path>
+两种批量工具共享 XML 格式和 xresloader 后端，使用不同的宿主实现。配置语义见 [用户配置参考](../users/xresconv)，运行方式见 [CLI](../users/xresconv-cli) 与 [GUI](../users/xresconv-gui)。
 
-        <proto desc="协议类型，-p选项">protobuf</proto>
-        <output_type desc="输出类型，-t选项，支持多个同时配置多种输出">bin</output_type>
-        <output_type desc="多种输出时可以额外定义某个节点的重命名规则" rename="/(?i)\.bin$/\.json/">json</output_type>
-        <output_type desc="可以通过指定class来限制输出的规则" rename="/(?i)\.bin$/\.csv/" class="client" >ue-csv</output_type>
-        <!-- output_type 里的class标签对应下面item里的class标签，均可配置多个，多个用空格隔开，任意一个class匹配都会启用这个输出 -->
-        <proto_file desc="协议描述文件，-f选项">proto_v3/kind.pb</proto_file>
+## Rust CLI 2.x
 
-        <output_dir desc="输出目录，-o选项"></output_dir>
-        <data_src_dir desc="数据源目录，-d选项"></data_src_dir>
-        <data_version desc="数据版本号，留空则自动生成">1.0.0.0</data_version>
+单 Cargo package 按 cli、xml_conf、options、plan、runner、process_tree、color 分工。加载 XML 和 include 后合并环境与条目，构造转换计划，再用有界 Java 进程池通过 stdin 派发命令。
 
-        <rename desc="重命名规则，正则表达式：/搜索模式/替换内容/，对应xresloader的-n选项, 如果在output_type里设置了rename，以output_type里的rename为准，否则使用这里的全局配置" placeholder="/(?i)\.bin$/\.json/"></rename>
+stdout/stderr 分别排空，JVM 参数位于 -jar 前，后端任务参数通过已核验的 token 协议编码。写入失败不盲目重发，以免重复执行；进程启动、管道、转换或剩余任务失败均影响退出状态。Windows 用 Job Object，Unix 用独立进程组回收本次所属子树。
 
-        <java_option desc="java选项-最大内存限制2GB">-Xmx2048m</java_option>
-        <java_option desc="java选项-客户端模式">-client</java_option>
+Python 文件仅实现提示、定位/下载原生二进制与转交，不再维护一套独立转表逻辑。迁移合同与源码入口见 [上游](https://github.com/xresloader/xresconv-cli/blob/main/doc/migration-contract.md)。
 
-        <default_scheme name="KeyRow" desc="默认scheme模式参数-Key行号">2</default_scheme>
-        <default_scheme name="MacroSource" desc="默认scheme模式参数-Key行号">资源转换示例.xlsx|macro|2,1</default_scheme>
-    </global>
+## Tauri GUI 3.0
 
-    <groups desc="分组信息">
-        <group id="client" name="客户端"></group>
-        <group id="server" name="服务器"></group>
-    </groups>
+![GUI 3.0 的进程职责与通信](/img/development/xresconv-3-architecture.svg)
 
-    <category desc="类信息">
-        <tree id="all_cats" name="大分类">
-            <tree id="kind" name="角色配置"></tree>
-        </tree>
-        <tree id="test" name="测试"></tree>
-    </category>
+| 模块 | 职责与所有权 |
+| --- | --- |
+| apps/desktop | React、适配器、状态快照、编辑草稿、树和日志表现 |
+| src-tauri | 窗口、原生接口、启动和转发 |
+| packages/guardian | 监督 backend、worker 与健康状态 |
+| packages/backend | 配置、选择、会话设置、转换、日志、RPC |
+| packages/script-host | 隔离脚本上下文、树镜像、合法操作、回调 |
+| packages/contracts / ipc | JSON Schema、生成类型、有界帧与通信 |
+| packages/compat-service | 三态选择、匹配与兼容数据语义 |
+| packages/packaging | 平台目标、依赖闭包、清单、打包和验证 |
 
-    <list>
-        <item file="资源转换示例.xlsx" scheme="scheme_kind" name="人物表" cat="kind" class="server"></item>
-        <item file="资源转换示例.xlsx" scheme="scheme_upgrade" name="升级表" cat="kind" class="server">
-            <option desc="自定义选项" name="移除空列表项">--disable-empty-list</option>
-        </item>
-        <item name="嵌套数组测试" cat="test" class="client server">
-            <scheme name="DataSource" desc="数据源(文件名|表名|数据起始行号,数据起始列号)">资源转换示例.xlsx|arr_in_arr|3,1</scheme>
-            <scheme name="ProtoName" desc="协议名">arr_in_arr_cfg</scheme>
-            <scheme name="OutputFile" desc="输出文件名">arr_in_arr_cfg.bin</scheme>
-        </item>
-    </list>
+配置在隔离 helper 中读取和解析，命名与初始化成功后才原子替换会话；失败或取消保留已提交版本。后端拥有业务状态，前端和脚本不能通过共享对象直接修改它。
 
-    <gui>
-        <set_name desc="这个脚本用于修改树形节点的显示数据,便于策划核对具体的表名">
-            if (item_data.file) {
-                item_data.name += " (" + item_data.file.match(/([^.]+)\.\w+$/)[1] + ")"
-            }
-        </set_name>
-        <on_before_convert type="text/javascript" timeout="15000" description="事件执行结束必须调用resolve(value)或reject(reason)函数，以触发进行下一步">
-            // 这里可以执行nodejs代码，比如下面是Windows平台执行 echo work_dir
-            var os = require("os");
-            var spawn = require("child_process").spawn;
-            if (os.type().substr(0, 7).toLowerCase() == "windows") {
-                var exec = spawn("cmd", ["/c", "echo " + work_dir], {
-                    cwd: work_dir,
-                    encoding: 'utf-8'
-                });
-                exec.stdout.on("data", function(data) {
-                    log_info(data);
-                });
-                exec.stderr.on("data", function(data) {
-                    log_error(data);
-                });
-                exec.on("error", function(data) {
-                    log_error(data.toString());
-                    resolve();
-                    // reject("执行失败" + data.toString());
-                });
-                exec.on("exit", function(code) {
-                    if (code === 0) {
-                        resolve();
-                    } else {
-                        resolve();
-                        // reject("执行失败");
-                    }
-                });
-            } else {
-                resolve();
-            }
-        </on_before_convert>
-        <on_after_convert type="text/javascript" timeout="60000" description="事件执行结束必须调用resolve(value)或reject(reason)函数，以触发进行下一步">
-            // 同上
-            alert_warning("自定义转表完成后事件，可以执行任意nodejs脚本");
-            resolve();
-        </on_after_convert>
-        <script name="自定义脚本" desc="用于自定义按钮" type="text/javascript">
-            // 同上
-            resolve();
-        </script>
-    </gui>
-</root>
-```
+## 通信与错误
 
-流程如下:
+桌面层和 guardian 通过私有 stdin/stdout 字节管道通信，4 字节大端长度加 UTF-8 JSON；stdout 专供协议，诊断走 stderr。默认帧上限 64 MiB。协议结构以 [contracts/schema](https://github.com/xresloader/xresconv-gui/tree/main/packages/contracts/schema) 为准。
 
-<div class="diagram-panel">
-![image](/img/development/xresconv_process.png)
-</div>
+envelope 包含 protocol_version、kind、id、role、payload，按消息携带 session_id、revision、run_id、invocation_id、generation 等关联字段。会话、代际和树版本防止迟到响应修改新状态。业务错误返回 RPC 错误；毒帧、失联和监督故障按通道/健康故障处理。
+
+主要 RPC 包括 loadConfig/reload、getSnapshot、applyOps、updateSettings、preview/run、cancel/reset、getLogs、respondDialog、setHookEnabled、setCustomSelectors、invokeCustomButton、checkJava。reset 是后端能力，UI 通过加载、重载和取消组织操作。Schema 变化后生成类型并运行 test:contracts，不直接修改 generated 目录。
+
+## 转换与日志
+
+开始时固定条目集合，转换前事件结束后构造命令。Java 用可执行文件和参数数组启动，不经 shell；stdin 无法准确表示的任务回退 argv。并行度默认 2，范围 1–16，写入遵循背压，取消停止派发并等待进程、管道和子树收尾。
+
+JAR 累计退出码无法可靠还原逐条失败数，没有任务确认时保留批次结果与未知的条目结果。不得把任务已提交记为产物已成功。
+
+后端内存日志默认保留 10000 条，前端窗口最多 2000 条，分页最多 1000 条。按 seq 去重合并，导出只能读取仍保留的数据。log4js 在独立 sink 进程中执行，有队列和关闭期限，失败明确报告。
+
+## 扩展与原生界面
+
+脚本操作在 worker 的镜像中同步发生，再带版本回传；按钮 data 按按钮身份保存，重建改变代际。取消或重载撤销旧弹窗回调。脚本具有本机能力，VM 和监督进程只隔离故障，不能作为恶意脚本的安全沙箱。
+
+显示设置通过 Tauri 持久化，语言目录以英文键集合为基准。Windows 字体枚举前调用 allow_local_fonts，只授权当前应用来源。浏览器适配测试不能证明原生权限持久化，必须用真实 WebView2 profile 验证。
+
+更多实现细节见上游 [架构](https://github.com/xresloader/xresconv-gui/blob/main/docs/development/architecture.md)、[接口](https://github.com/xresloader/xresconv-gui/blob/main/docs/development/interfaces.md)、[前端](https://github.com/xresloader/xresconv-gui/blob/main/docs/development/frontend.md) 与 [多语言](https://github.com/xresloader/xresconv-gui/blob/main/docs/development/localization.md)。
+
+## 3.0.0 启动加载的已知边界
+
+原生正式包实测同时传入 --input 与 --custom-selector 时，参数解析正确，但 getSnapshot 的 customSelectors 仍为空。useCliCustomSelectors 先标记 wired，setCustomSelectors 固定 sessionEpoch；同期 loadConfig 推进 epoch 后，选择器流程会提前返回。本机连续复现三次。
+
+用户流程先只加载选择器，再打开 XML，见 [FAQ](../users/faq#gui-启动时没有显示自定义按钮)。本次仅更新文档与规避步骤，未修改独立 GUI 仓库；后续上游修复后重新验证同时传参和会话加载顺序。

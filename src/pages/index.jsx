@@ -1,491 +1,340 @@
-import React from 'react';
-import clsx from 'clsx';
-import Layout from '@theme/Layout';
-import Link from '@docusaurus/Link';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import styles from './index.module.css';
+import React from "react";
+import Layout from "@theme/Layout";
+import Link from "@docusaurus/Link";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import styles from "./index.module.css";
+import ToolchainCatalog from "../components/ToolchainCatalog";
+import ThemedImage from "@theme/ThemedImage";
+
+const references = [
+  {
+    title: "数据如何映射",
+    text: "字段、数组、嵌套结构与数据源范围",
+    to: "/docs/users/data-mapping",
+  },
+  {
+    title: "清单与输出矩阵",
+    text: "include、目录、重命名与标签筛选",
+    to: "/docs/users/xresconv",
+  },
+  {
+    title: "校验与项目扩展",
+    text: "验证器、脚本、事件和自定义按钮",
+    to: "/docs/users/validator",
+  },
+  {
+    title: "开发与集成",
+    text: "依赖、构建、进程架构与接口",
+    to: "/docs/development/build",
+  },
+];
 
 const features = [
-  {
-    title: '跨平台覆盖',
-    description: '基于 Java 17+ 的 CLI/GUI，支持 include 复用，Windows、macOS、Linux 一致体验。',
-    icon: 'layers',
-  },
-  {
-    title: '多格式导出',
-    description: 'Excel 可导出 protobuf、MsgPack、Lua、JavaScript、JSON、XML 以及 UE DataTable(JSON/CSV)。',
-    icon: 'data_object',
-  },
-  {
-    title: '协议结构支持',
-    description: '兼容 proto v2/v3、嵌套 message、数组嵌套、oneof、map 与 plain 字符串转复杂结构。',
-    icon: 'hub',
-  },
-  {
-    title: '枚举与描述导出',
-    description: '可输出 proto 枚举值与 descriptor 到 Lua/JavaScript/JSON/XML，并可扩展自定义反射插件。',
-    icon: 'emoji_objects',
-  },
-  {
-    title: '流程编排',
-    description: 'xresconv CLI/GUI 支持 include、多模板/class 分流，轻松应对多项目流水线。',
-    icon: 'integration_instructions',
-  },
-  {
-    title: '别名与校验',
-    description: '别名表提升策划可读性，validator 直接识别 proto 字段与枚举，导出前自动校验数据。',
-    icon: 'fact_check',
-  },
-  {
-    title: '版本对比',
-    description: '配合 xresloader-dump-bin 可快速比较不同版本数据包，追踪差异来源。',
-    icon: 'compare_arrows',
-  },
-  {
-    title: '插件与合表',
-    description: '通过 protobuf 插件控制部分输出，并可自动将多张 Excel 合并成单一目标文件。',
-    icon: 'schema',
-  },
-  {
-    title: '内容生态',
-    description: '支持 UE JSON/CSV，自动生成 DataTable 加载代码，适配 Lua/JavaScript 多模块形态。',
-    icon: 'view_in_ar',
-  },
+  [
+    "01",
+    "跨平台批量转换",
+    "Java 引擎、原生 Rust CLI 与 Tauri GUI 协作，支持 Windows、macOS 和 Linux，让策划选表与构建流水线复用清单。",
+    "/docs/users/xresconv",
+  ],
+  [
+    "02",
+    "一份表格，多种格式",
+    "protobuf、MsgPack、Lua、JavaScript、JSON、XML，以及 Unreal Engine DataTable JSON / CSV，满足客户端和服务端的不同需求。",
+    "/docs/users/output-format",
+  ],
+  [
+    "03",
+    "复杂协议，直接表达",
+    "proto2 / proto3、嵌套 message、repeated、oneof、map 和单元格 Plain 结构，让配置按业务模型组织。",
+    "/docs/users/data-types",
+  ],
+  [
+    "04",
+    "枚举与描述信息导出",
+    "导出协议枚举、常量和 descriptor，生成 Lua / JavaScript 代码或 JSON / XML 数据，配合自定义插件扩展反射信息。",
+    "/docs/users/advance-usage",
+  ],
+  [
+    "05",
+    "校验与策划可读性",
+    "字段和枚举别名、宏、范围、跨表引用与逻辑组合校验，把输入错误提前暴露在转表环节。",
+    "/docs/users/validator",
+  ],
+  [
+    "06",
+    "灵活映射与合表",
+    "多张 Excel 合并输出，支持字段名正则映射、范围、转置和数组；协议插件控制输出行为。",
+    "/docs/users/data-mapping",
+  ],
+  [
+    "07",
+    "按项目控制数据输出",
+    "公式缓存或显式实时计算、空数据裁剪与定长保留、数据版本号、多格式输出目录和标签筛选。",
+    "/docs/users/xresloader-core",
+  ],
+  [
+    "08",
+    "多语言加载与索引",
+    "配套 C++、C#、Go、upb、pbc、lua-protobuf 等接入方式；Lua 支持 global / require / module，JavaScript 支持 global / Node.js / AMD。",
+    "/docs/users/xres-code-generator",
+  ],
+  [
+    "09",
+    "Unreal Engine 与项目扩展",
+    "输出 UE DataTable，生成加载代码；通过 GUI 事件、自定义按钮和 Node.js 脚本接入项目工具。dump-bin 用于查看二进制数据。",
+    "/docs/users/ecosystem-and-tools",
+  ],
 ];
 
-const featureIcons = {
-  layers: (
-    <svg viewBox="0 0 48 48" role="img" aria-hidden="true">
-      <path
-        d="M24 6l16 9-16 9-16-9 16-9zm0 21l13.9-7.8 4.1 2.3-18 10-18-10 4.1-2.3L24 27zm0 8l13.9-7.8 4.1 2.3-18 10-18-10 4.1-2.3L24 35z"
-        fill="currentColor"
-      />
-    </svg>
-  ),
-  data_object: (
-    <svg viewBox="0 0 48 48" role="img" aria-hidden="true">
-      <path
-        d="M10 12c0-3.31 6.27-6 14-6s14 2.69 14 6-6.27 6-14 6-14-2.69-14-6zm0 12c0-3.31 6.27-6 14-6s14 2.69 14 6v12c0 3.31-6.27 6-14 6s-14-2.69-14-6V24z"
-        fill="currentColor"
-      />
-    </svg>
-  ),
-  hub: (
-    <svg viewBox="0 0 48 48" role="img" aria-hidden="true">
-      <circle cx="24" cy="24" r="6" fill="currentColor" />
-      <circle cx="9" cy="12" r="4" fill="currentColor" />
-      <circle cx="39" cy="12" r="4" fill="currentColor" />
-      <circle cx="9" cy="34" r="4" fill="currentColor" />
-      <circle cx="39" cy="34" r="4" fill="currentColor" />
-      <path
-        d="M24 18V8m0 32v-10m10-6h10M4 24h10m-4.5-8.5l10 5m13 5 10 5m-30 0 10-5m13-5 10-5"
-        stroke="currentColor"
-        strokeWidth="2"
-        fill="none"
-      />
-    </svg>
-  ),
-  emoji_objects: (
-    <svg viewBox="0 0 48 48" role="img" aria-hidden="true">
-      <path
-        d="M24 6l3.24 9.96h10.48L29.48 22.6l3.24 9.96L24 29.92 15.28 32.56 18.52 22.6 10.28 15.96h10.48z"
-        fill="currentColor"
-      />
-      <rect x="20" y="34" width="8" height="8" rx="2" fill="currentColor" opacity="0.5" />
-    </svg>
-  ),
-  integration_instructions: (
-    <svg viewBox="0 0 48 48" role="img" aria-hidden="true">
-      <path
-        d="M18 6h12l12 12v18a6 6 0 01-6 6H12a6 6 0 01-6-6V12a6 6 0 016-6zm4 14h-4v8h4v-2h-2v-4h2zm8 0v2h2v4h-2v2h4v-8z"
-        fill="currentColor"
-      />
-      <path d="M21 12h6v6h-6z" fill="currentColor" opacity="0.6" />
-    </svg>
-  ),
-  fact_check: (
-    <svg viewBox="0 0 48 48" role="img" aria-hidden="true">
-      <path
-        d="M24 6l16 8v12c0 10-7 14.5-16 20-9-5.5-16-10-16-20V14z"
-        fill="currentColor"
-        opacity="0.8"
-      />
-      <path
-        d="M20 24l3.5 3.5 8.5-8.5"
-        stroke="#fff"
-        strokeWidth="3"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  ),
-  compare_arrows: (
-    <svg viewBox="0 0 48 48" role="img" aria-hidden="true">
-      <path
-        d="M34 14l6 6-6 6v-4H12v-4h22zM14 26l-6 6 6 6v-4h22v-4H14z"
-        fill="currentColor"
-      />
-    </svg>
-  ),
-  schema: (
-    <svg viewBox="0 0 48 48" role="img" aria-hidden="true">
-      <rect x="8" y="8" width="12" height="12" rx="3" fill="currentColor" />
-      <rect x="28" y="8" width="12" height="12" rx="3" fill="currentColor" opacity="0.7" />
-      <rect x="18" y="28" width="12" height="12" rx="3" fill="currentColor" opacity="0.5" />
-      <path
-        d="M14 20v6h10"
-        stroke="currentColor"
-        strokeWidth="2"
-        fill="none"
-        strokeLinecap="round"
-      />
-      <path
-        d="M34 20v6H24"
-        stroke="currentColor"
-        strokeWidth="2"
-        fill="none"
-        strokeLinecap="round"
-      />
-    </svg>
-  ),
-  view_in_ar: (
-    <svg viewBox="0 0 48 48" role="img" aria-hidden="true">
-      <path
-        d="M24 6l16 9v18l-16 9-16-9V15l16-9zm0 5.2l-11 6.2v13.2l11 6.2 11-6.2V17.4z"
-        fill="currentColor"
-      />
-      <path d="M24 17l6 3.5v7L24 31l-6-3.5v-7z" fill="#fff" opacity="0.7" />
-    </svg>
-  ),
-};
-
-const featureAccents = {
-  layers: {background: 'linear-gradient(120deg,#c7d2fe,#818cf8)', color: '#312e81'},
-  data_object: {background: 'linear-gradient(120deg,#fde68a,#f97316)', color: '#7c2d12'},
-  hub: {background: 'linear-gradient(120deg,#a5f3fc,#06b6d4)', color: '#0f172a'},
-  emoji_objects: {background: 'linear-gradient(120deg,#fcd34d,#fb7185)', color: '#7f1d1d'},
-  integration_instructions: {background: 'linear-gradient(120deg,#bbf7d0,#34d399)', color: '#064e3b'},
-  fact_check: {background: 'linear-gradient(120deg,#f5d0fe,#c084fc)', color: '#581c87'},
-  compare_arrows: {background: 'linear-gradient(120deg,#fed7aa,#f97316)', color: '#7c2d12'},
-  schema: {background: 'linear-gradient(120deg,#fbcfe8,#f472b6)', color: '#831843'},
-  view_in_ar: {background: 'linear-gradient(120deg,#bfdbfe,#60a5fa)', color: '#1e3a8a'},
-};
-
-const downloadLinks = [
-  {
-    title: 'xresloader',
-    description: '核心转表工具，下载 jar 文件即可使用',
-    link: 'https://github.com/xresloader/xresloader/releases',
-    badge: '核心',
-  },
-  {
-    title: 'xresconv-cli',
-    description: '命令行批量转表工具，适合 CI/CD 集成',
-    link: 'https://github.com/xresloader/xresconv-cli/releases',
-    badge: 'CLI',
-  },
-  {
-    title: 'xresconv-gui',
-    description: 'GUI 批量转表工具，可视化操作更便捷',
-    link: 'https://github.com/xresloader/xresconv-gui/releases',
-    badge: 'GUI',
-  },
-  {
-    title: 'xresconv-conf',
-    description: '批量转表配置模板仓库，包含完整示例',
-    link: 'https://github.com/xresloader/xresconv-conf',
-    badge: '模板',
-  },
-];
-
-const quickLinks = [
-  {
-    title: '下载与安装',
-    description: '准备 CLI/GUI 运行环境与示例工程。',
-    to: '/docs/users/download',
-  },
-  {
-    title: '快速上手',
-    description: '三步完成 Excel -> protobuf/JSON 的导出流程。',
-    to: '/docs/users/quick-start',
-  },
-  {
-    title: '了解核心',
-    description: '深入数据映射、校验及生成工具的组合玩法。',
-    to: '/docs/users/xresloader-core',
-  },
-];
-
-const cliDemos = [
-  {
-    badge: 'CLI',
-    title: '批量脚本式导出',
-    description: 'xresconv-cli 在构建机上批量驱动 xresloader，适合自动化流水线与版本对比。',
-    image: 'img/users/quick_start_cli_sample.gif',
-    link: '/docs/users/xresconv',
-    linkLabel: '查看 CLI 演示',
-  },
-  {
-    badge: 'GUI',
-    title: '所见即所得配置',
-    description: 'xresconv-gui 以树形结构管理模板，便于运营与策划自行开关导出项。',
-    image: 'img/users/quick_start_gui_sample.gif',
-    link: '/docs/users/xresconv',
-    linkLabel: '查看 GUI 指南',
-  },
-];
-
-const mappingDemos = [
-  {
-    badge: 'Mapping',
-    title: '数据源绑定',
-    description: '“数据源”章节演示如何声明 Excel 文件、工作表以及行列范围，让转表器精准定位输入。',
-    image: 'img/users/data_mapping_data_source.png',
-    link: '/docs/users/data-mapping',
-    linkLabel: '查看数据源示例',
-  },
-  {
-    badge: 'Mapping',
-    title: 'Key 与 proto 对应',
-    description: '“数据索引”把 Excel Key 与 proto 字段成对绑定，涵盖枚举、常量与多列拼接等配置模式。',
-    image: 'img/users/data_mapping_data_key_and_proto.png',
-    link: '/docs/users/data-mapping',
-    linkLabel: '查看字段映射',
-  },
-  {
-    badge: 'Mapping',
-    title: '嵌套 Message',
-    description: '“数据嵌套和 Message 嵌套”章节展示 record/message 复用写法，子结构可以跨表共享。',
-    image: 'img/users/data_mapping_rec_message.png',
-    link: '/docs/users/data-mapping',
-    linkLabel: '了解嵌套配置',
-  },
-  {
-    badge: 'Mapping',
-    title: '数组嵌套',
-    description: '“数组嵌套”示例通过 scheme 组合把二维 Excel 区域映射为 repeated message，适配复杂表格导出。',
-    image: 'img/users/data_mapping_arr_in_arr.png',
-    link: '/docs/users/data-mapping',
-    linkLabel: '查看数组嵌套',
-  },
-];
-
-
-function HomepageHeader() {
-  const heroImage = useBaseUrl('img/logo.png');
-
-  return (
-    <header className={clsx('hero hero--primary', styles.heroBanner)}>
-      <div className={clsx('container', styles.heroGrid)}>
-        <div className={styles.heroCopy}>
-          <span className={styles.sectionTag}>xresloader · 游戏配置管理解决方案</span>
-          <h1 className="hero__title">xresloader 转表工具套件</h1>
-          <p className="hero__index_subtitle">
-            xresloader 是一个面向游戏团队的数据转表工具链：把 Excel 中的策划数据转换为 protobuf、JSON、MsgPack、Lua、JavaScript、XML 等多种结构化格式，并配套批量化、校验和代码生成工具。
-          </p>
-          <div className={styles.heroActions}>
-            <Link className="button button--lg button--secondary" to="/docs/intro">
-              文档概览
-            </Link>
-            <Link className="button button--lg button--primary" to="/docs/users/quick-start">
-              快速上手
-            </Link>
-            <Link className="button button--lg button--outline button--light" to="/docs/users/download">
-              立即下载
-            </Link>
-            <Link
-              className="button button--lg button--outline button--light"
-              to="https://github.com/xresloader/xresloader"
-            >
-              GitHub
-            </Link>
-          </div>
-        </div>
-        <div className={styles.heroVisual}>
-          <img src={heroImage} alt="xresloader logo" className={styles.heroImage} />
-          <p className={styles.heroCaption}>跨平台 Excel 转表工具</p>
-        </div>
-      </div>
-    </header>
-  );
-}
-
-function FeatureCard({title, description, icon}) {
-  const accent = featureAccents[icon] || {};
-  return (
-    <div className={clsx('col col--4', styles.featureItem)}>
-      <div className={clsx('card', styles.materialCard)}>
-        <div
-          className={styles.featureIllustration}
-          style={{background: accent.background, color: accent.color}}
-        >
-          {featureIcons[icon]}
-        </div>
-        <h3>{title}</h3>
-        <p className={styles.featureDescription}>{description}</p>
-      </div>
-    </div>
-  );
-}
-
-function FeatureSection() {
-  return (
-    <section className={styles.materialSection}>
-      <div className="container">
-        <div className={styles.sectionHeader}>
-          <p className={styles.sectionTag}>项目特点 · 功能与优势</p>
-          <h2>让 Excel 数据一键落地任意运行时</h2>
-        </div>
-        <div className="row">
-          {features.map((feature) => (
-            <FeatureCard key={feature.title} {...feature} />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function QuickStartSection() {
-  return (
-    <section className={clsx(styles.materialSection, styles.quickStartSection)}>
-      <div className="container">
-        <div className={styles.quickStartCard}>
-          <div className={styles.quickStartContent}>
-            <p className={styles.sectionTag}>快速上手</p>
-            <h2>几分钟构建第一条导出流水线</h2>
-            <p>
-              按照下载、配置、导出的顺序即可完成最小可用流程。文档提供脚本、模板与常见问题解答，贴合 mkdocs-material
-              风格的阅读体验。
-            </p>
-            <div className={styles.quickActions}>
-              <Link className="button button--lg button--secondary" to="/docs/users/quick-start">
-                查看操作步骤
-              </Link>
-              <Link className="button button--lg button--outline button--primary" to="/docs/users/download">
-                准备运行环境
-              </Link>
-            </div>
-          </div>
-          <ul className={styles.quickList}>
-            {quickLinks.map((item) => (
-              <li key={item.title} className={styles.quickListItem}>
-                <Link to={item.to} className={styles.quickListLink}>
-                  <span className={styles.quickListTitle}>{item.title}</span>
-                  <span className={styles.quickListDescription}>{item.description}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function ShowcaseCard({badge, title, description, image, link, linkLabel}) {
-  const media = useBaseUrl(image);
-  return (
-    <div className={styles.showcaseCard}>
-      <div className={styles.showcaseMedia}>
-        <img src={media} alt={`${title} 演示`} loading="lazy" />
-      </div>
-      <div className={styles.showcaseBody}>
-        <span className={styles.showcaseBadge}>{badge}</span>
-        <h3>{title}</h3>
-        <p>{description}</p>
-        <Link className="button button--sm button--secondary" to={link}>
-          {linkLabel}
-        </Link>
-      </div>
-    </div>
-  );
-}
-
-function ShowcaseSection() {
-  return (
-    <section className={clsx(styles.materialSection, styles.showcaseSection)}>
-      <div className="container">
-        <div className={styles.sectionHeader}>
-          <p className={styles.sectionTag}>功能演示</p>
-          <h2>CLI + GUI 命令行集成工具和图形化客户端</h2>
-          <p>
-            首页即可预览 xresconv-cli 与 xresconv-gui 的真实操作动图<br />
-            <Link to="/docs/users/xresconv">查阅文档</Link> 前就能体会脚本自动化与 GUI 工作台的差异化体验
-          </p>
-        </div>
-        <div className={styles.showcaseGrid}>
-          {cliDemos.map((demo) => (
-            <ShowcaseCard key={demo.title} {...demo} />
-          ))}
-        </div>
-        <div className={clsx(styles.sectionHeader, styles.mappingHeader)}>
-          <h2>支持 Excel 数组和复杂结构映射和多种配置模式</h2>
-          <p>
-            下列示意来自 <Link to="/docs/users/data-mapping">数据映射</Link>，涵盖数据源、Key 映射、Message 复用与数组嵌套等配置场景。<br />
-            帮助评估 scheme 在复杂策划表中的扩展能力。
-          </p>
-        </div>
-        <div className={clsx(styles.showcaseGrid, styles.mappingGrid)}>
-          {mappingDemos.map((demo) => (
-            <ShowcaseCard key={demo.title} {...demo} />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function DownloadCard({title, description, link, badge}) {
-  return (
-    <div className={styles.downloadCard}>
-      <div className={styles.downloadCardHeader}>
-        <span className={styles.downloadBadge}>{badge}</span>
-        <h3>{title}</h3>
-      </div>
-      <p className={styles.downloadDescription}>{description}</p>
-      <Link className="button button--sm button--primary" to={link}>
-        前往下载
-      </Link>
-    </div>
-  );
-}
-
-function DownloadSection() {
-  return (
-    <section className={clsx(styles.materialSection, styles.downloadSection)}>
-      <div className="container">
-        <div className={styles.sectionHeader}>
-          <p className={styles.sectionTag}>工具下载</p>
-          <h2>获取 xresloader 工具套件</h2>
-          <p>
-            选择适合你工作流程的工具组合，核心转表引擎 + CLI/GUI 批量工具 + 配置模板
-          </p>
-        </div>
-        <div className={styles.downloadGrid}>
-          {downloadLinks.map((item) => (
-            <DownloadCard key={item.title} {...item} />
-          ))}
-        </div>
-        <div className={styles.downloadMore}>
-          <Link className="button button--lg button--outline button--secondary" to="/docs/users/download">
-            查看完整下载指南
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
+function Arrow() {
+  return <span aria-hidden="true">↗</span>;
 }
 
 export default function Home() {
+  const screenshot = useBaseUrl("/img/users/gui-main-light.png");
+  const darkScreenshot = useBaseUrl("/img/users/gui-main-dark.png");
+  const sampleDownload = useBaseUrl("/examples/quick-start.zip");
   return (
-    <Layout>
-      <HomepageHeader />
-      <main>
-        <FeatureSection />
-        <DownloadSection />
-        <QuickStartSection />
-        <ShowcaseSection />
+    <Layout
+      title="Excel 数据转表工具链"
+      description="xresloader、Rust CLI 与 Tauri GUI：从 Excel 到结构化游戏配置，快速上手与完整参考。"
+    >
+      <main className={styles.home}>
+        <section className={styles.hero}>
+          <div className={`container ${styles.wide} ${styles.heroGrid}`}>
+            <div className={styles.heroCopy}>
+              <p className={styles.eyebrow}>
+                <span className={styles.dot} /> XRESLOADER TOOLCHAIN
+              </p>
+              <h1>
+                从 Excel 到<br />
+                <span>游戏数据。</span>
+              </h1>
+              <p className={styles.lead}>
+                让策划专注表格，让程序获得结构化配置。
+                <br />
+                协议、校验、批量转换和读表代码，在一条清晰的流程里协作。
+              </p>
+              <div className={styles.actions}>
+                <Link
+                  className="button button--primary button--lg"
+                  to="/docs/users/quick-start"
+                >
+                  开始第一次转换 <Arrow />
+                </Link>
+                <Link
+                  className="button button--outline button--primary button--lg"
+                  to="/docs/users/download"
+                >
+                  下载工具
+                </Link>
+              </div>
+              <p className={styles.heroNote}>
+                准备好的 Excel、协议和 XML · 入门无需安装 protoc
+              </p>
+            </div>
+            <div
+              className={styles.pipeline}
+              aria-label="从表格到结构化配置的转换流程"
+            >
+              <div className={styles.pipelineHeader}>
+                <span>一份数据，多种输出</span>
+                <span className={styles.pipelineBadge}>配置工作流</span>
+              </div>
+              <div className={styles.sources}>
+                <div>
+                  <span className={styles.sourceIcon}>X</span>
+                  <strong>Excel</strong>
+                  <small>策划数据</small>
+                </div>
+                <span className={styles.plus}>+</span>
+                <div>
+                  <span className={styles.protoIcon}>P</span>
+                  <strong>Protobuf</strong>
+                  <small>结构与约束</small>
+                </div>
+              </div>
+              <div className={styles.connector} aria-hidden="true">
+                ↓
+              </div>
+              <div className={styles.engine}>
+                <strong>xresloader</strong>
+                <span>字段映射 / 数据校验 / 转换</span>
+              </div>
+              <div className={styles.connector} aria-hidden="true">
+                ↓
+              </div>
+              <div className={styles.outputs}>
+                {[
+                  "protobuf",
+                  "JSON",
+                  "Lua",
+                  "MsgPack",
+                  "JavaScript",
+                  "UE DataTable",
+                ].map((format) => (
+                  <span key={format}>{format}</span>
+                ))}
+              </div>
+              <div className={styles.command}>
+                <span aria-hidden="true">$</span>
+                <code>xresconv-cli -p 1 convert.xml</code>
+              </div>
+              <p className={styles.pipelineFoot}>
+                命令行接入流水线，桌面工具交互选表。
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section
+          className={`container ${styles.wide} ${styles.section}`}
+          aria-labelledby="tools-heading"
+        >
+          <div className={styles.sectionHeading}>
+            <div>
+              <p className={styles.eyebrow}>选择适合你的入口</p>
+              <h2 id="tools-heading">工具链组件与最新下载</h2>
+            </div>
+            <Link to="/docs/intro">
+              工具链概览 <Arrow />
+            </Link>
+          </div>
+          <ToolchainCatalog />
+        </section>
+
+        <section
+          className={`container ${styles.wide} ${styles.section} ${styles.featureSection}`}
+          aria-labelledby="features-heading"
+        >
+          <div className={styles.sectionHeading}>
+            <div>
+              <p className={styles.eyebrow}>为游戏配置工作流设计</p>
+              <h2 id="features-heading">从数据表达，到可靠的运行时配置</h2>
+            </div>
+            <Link to="/docs/intro">
+              完整能力概览 <Arrow />
+            </Link>
+          </div>
+          <div className={styles.featureGrid}>
+            {features.map(([number, title, text, to]) => (
+              <article className={styles.featureCard} key={title}>
+                <span className={styles.featureNumber} aria-hidden="true">
+                  {number}
+                </span>
+                <h3>{title}</h3>
+                <p>{text}</p>
+                <Link to={to}>
+                  查看功能与示例 <Arrow />
+                </Link>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className={styles.startBand} aria-labelledby="start-heading">
+          <div className={`container ${styles.wide} ${styles.startGrid}`}>
+            <div>
+              <p className={styles.eyebrow}>第一次使用</p>
+              <h2 id="start-heading">
+                先跑通示例，
+                <br />
+                再接入自己的项目。
+              </h2>
+              <p>
+                准备好的示例只包含基础数据和两种输出，
+                <br />
+                详细功能可以在需要时逐项查阅。
+              </p>
+              <a
+                className="button button--primary"
+                href={sampleDownload}
+                download
+              >
+                下载示例 ZIP <span aria-hidden="true">↓</span>
+              </a>
+            </div>
+            <ol className={styles.steps}>
+              <li>
+                <span>01</span>
+                <div>
+                  <h3>准备工具</h3>
+                  <p>Java、xresloader JAR，再选 CLI 或 GUI。</p>
+                </div>
+              </li>
+              <li>
+                <span>02</span>
+                <div>
+                  <h3>打开配置，检查预览</h3>
+                  <p>用同一份 XML 关联表格、协议与输出。</p>
+                </div>
+              </li>
+              <li>
+                <span>03</span>
+                <div>
+                  <h3>核对并加载数据</h3>
+                  <p>对照 Excel、查看 bin，用示例代码加载 JSON 或 protobuf。</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </section>
+
+        <section
+          className={`container ${styles.wide} ${styles.section} ${styles.showcase}`}
+          aria-labelledby="gui-heading"
+        >
+          <div className={styles.showcaseCopy}>
+            <p className={styles.eyebrow}>XRESCONV-GUI 3.0</p>
+            <h2 id="gui-heading">
+              看清条目，
+              <br />
+              掌握转换进度。
+            </h2>
+            <p>
+              树形选择、输出矩阵、可筛选日志与取消控制集中在一个工作台。轻量桌面壳与独立业务进程各司其职。
+            </p>
+            <Link to="/docs/users/xresconv-gui">
+              查看界面与操作 <Arrow />
+            </Link>
+            <Link to="/docs/users/xresconv-scripts">
+              接入项目脚本 <Arrow />
+            </Link>
+          </div>
+          <figure className={styles.screenshot}>
+            <ThemedImage
+              sources={{ light: screenshot, dark: darkScreenshot }}
+              alt="xresconv-gui 3.0 正式版选择人物表和升级表，真实转换完成并显示四个输出的成功日志"
+              width="1980"
+              height="1320"
+              loading="lazy"
+            />
+            <figcaption>3.0 正式版 · 使用入门示例实际转换</figcaption>
+          </figure>
+        </section>
+
+        <section
+          className={`container ${styles.wide} ${styles.section} ${styles.referenceSection}`}
+          aria-labelledby="reference-heading"
+        >
+          <div className={styles.sectionHeading}>
+            <div>
+              <p className={styles.eyebrow}>按需查阅</p>
+              <h2 id="reference-heading">从基础映射到项目集成</h2>
+            </div>
+          </div>
+          <div className={styles.referenceGrid}>
+            {references.map((ref) => (
+              <Link className={styles.referenceCard} key={ref.to} to={ref.to}>
+                <div>
+                  <h3>{ref.title}</h3>
+                  <p>{ref.text}</p>
+                </div>
+                <Arrow />
+              </Link>
+            ))}
+          </div>
+        </section>
       </main>
     </Layout>
   );

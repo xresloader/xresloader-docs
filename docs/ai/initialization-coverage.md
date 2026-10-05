@@ -1,6 +1,6 @@
 # AI 初始化覆盖与验收
 
-核验日期：2026-10-05。范围为本仓库 AI 维护入口、三个 Skills、按需参考及内部资料站点隔离；不安装客户端、升级依赖、接入 MCP、提交或发布。本文件为唯一覆盖和交接记录，普通业务维护不重跑初始化。
+核验日期：2026-10-05。范围为本仓库 AI 维护入口、四个 Skills、按需参考及内部资料站点隔离；不安装客户端、升级依赖、接入 MCP、提交或发布。本文件为唯一覆盖和交接记录，普通业务维护不重跑初始化。
 
 ## 输入、授权与状态
 
@@ -10,7 +10,7 @@
 
 ## 覆盖统计
 
-当前结论：部分完成。24 个源章节均已登记和核对；未映射要求 0。章节汇总：已覆盖 21，不适用 0，待处理 0，阻塞 3。独立子项 272：已覆盖 256，不适用 11，待处理 0，阻塞 5。
+当前结论：初始化运行验收部分完成；新增写作 Skill 已编写并完成本地检查。原 24 个源章节及新增写作要求 C24 均已登记和核对；未映射要求 0。章节汇总 25：已覆盖 22，不适用 0，待处理 0，阻塞 3。独立子项 288：已覆盖 272，不适用 11，待处理 0，阻塞 5。真实触发与产物对照继续保留在原运行子项，不能以新增文件或格式校验代替。
 
 ## 章节核对目录
 
@@ -40,6 +40,7 @@
 | C21 | 首次初始化建议 / 515–522 | 7 | 阻塞 |
 | C22 | 参考来源 / 524–619 | 4 | 已覆盖 |
 | C23 | 维护提示 / 621–631 | 6 | 已覆盖 |
+| C24 | 用户补充：按指定 AI 写作指南编写仓库 Skill / 指南 1–577 | 16 | 已覆盖 |
 
 ## 验证证据
 
@@ -51,10 +52,11 @@
 | E04 | 2026-10-05 实际打开官方正文：Codex AGENTS/Skills、Agent Skills specification/evaluation、Claude memory、VS Code Skills/prompt files、Kilo/Pi、其余客户端官方入口、Docusaurus docs plugin、MCP versioning、GitHub安全、ClawHub API、markdownlint-cli2 与 cargo-binstall README。采用范围/未复核细节见 source-index.md、clients.md；未引用搜索摘要为证据。 |
 | E05 | CLI0.160.0 根与 docs/users 执行 codex debug prompt-input，均退出0；规则与3个Skill元数据存在，Skill正文/覆盖表正文未预加载。单次 -c skills.config 禁用 site-change 后其元数据消失、其他2项保留。独立临时Git fixture 同名Skill元数据2项，ROOT和NESTED_OVERRIDE存在，NESTED_PLAIN不存在，两份Skill正文未加载；无模型调用、无全局配置变化。 |
 | E06 | Python3.14.8 / PyYAML6.0.3；python -X utf8 加系统 skill-creator/scripts/quick_validate.py，对三个Skill逐个运行，3/3有效、退出0。最初默认gbk读UTF-8失败，修正验证器调用编码后通过；这是验证环境问题。skills-ref 未安装，未声称运行。 |
-| E07 | 最终完整回读15份Markdown与lint配置，校验本地引用/资源、frontmatter、覆盖ID/状态/路径、31项CLI与20条评估样本；命令、数量和退出码见下方最终检查。 |
+| E07 | 初次初始化完整回读15份Markdown与lint配置，校验本地引用/资源、frontmatter、覆盖ID/状态/路径、31项CLI与20条评估样本；新增写作 Skill 后的最终检查见 E11 和下表。 |
 | E08 | 配置修改前和修改后在仓库根 npm run build 均退出0；两次都有既有 blogDir 不存在警告。pnpm build 退出1：本机11自动依赖检查试图重装modules，因无TTY中止，未强制清理。未执行CI pnpm9安装/构建；依赖与锁文件未修改。 |
 | E09 | 修改后构建doc metadata共29份，其中27份具有source/permalink，为27篇原始公开文档，另2份为plugin/loader元数据；sitemap及1份search-index未含/docs/ai/，内部内容未发布。与git中27篇公开源文档一致。 |
 | E10 | 本地静态门禁/无模型诊断没有真实Skill调用、隐式路由、权限拒绝或有/无Skill产物比较；Q01–Q20和T01–T03尚未运行，保留5个阻塞子项。未运行浏览器视觉、上游样例、CI或生产发布；本次没有相关页面/样例行为修改。 |
+| E11 | 写作补充：用户指南 577 行完整读取，SHA-256 见 source-index；SKILL.md、详细规则和示例改编后回读。新增后 Markdown lint 为 18 份、0问题，四个 Skill 的 quick_validate 均退出0。根与 docs/users 的 codex debug prompt-input 均退出0、发现四个 Skill 元数据和新仓库路径，写作正文及细则未预载；未调用模型。Q21–Q28、T04–T05 仅建立验收条件，效果未测；未重跑已通过且配置未再改动的站点构建。最终结构与差异复核见下表。 |
 
 ## 最终检查命令与结果
 
@@ -62,10 +64,10 @@
 
 | 检查 | 实际命令或方法 | 结果 |
 | --- | --- | --- |
-| Markdown | `npx --yes markdownlint-cli2@0.23.3`（根规则集） | 15份Markdown，0问题，退出0 |
-| Skill格式 | `python -X utf8 C:/Users/owt50/.codex/skills/.system/skill-creator/scripts/quick_validate.py .agents/skills/docs-maintenance`；另分别使用 `.agents/skills/site-change`、`.agents/skills/ai-agent-maintenance` 作为参数 | 3/3有效，退出0 |
-| 全文件结构与引用 | 任务临时Python脚本逐份UTF-8读取、解析链接/YAML/覆盖表和查询表 | 15份Markdown、322个本地引用、24章、272子项、31候选、20查询；无缺路径/重复ID，退出0 |
-| 发现/禁用/覆盖 | `codex debug prompt-input`；根、docs/users、单次禁用参数和临时fixture | 3份元数据/正文不预载；禁用后2份；fixture同名2份及override优先，退出0 |
+| Markdown | `npx --yes markdownlint-cli2@0.23.3`（根规则集） | 18份Markdown，0问题，退出0 |
+| Skill格式 | `python -X utf8 C:/Users/owt50/.codex/skills/.system/skill-creator/scripts/quick_validate.py .agents/skills/docs-maintenance`；另分别使用 `.agents/skills/site-change`、`.agents/skills/ai-agent-maintenance`、`.agents/skills/writing-guidance` 作为参数 | 4/4有效，退出0 |
+| 全文件结构与引用 | 任务临时Python脚本逐份UTF-8读取、解析本地链接/覆盖表/查询表/CLI候选表；YAML格式由quick_validate另验 | 18份Markdown、356个本地引用、25章、288子项、31候选、28查询；无缺路径/重复ID，退出0 |
+| 发现/禁用/覆盖 | `codex debug prompt-input`；根、docs/users、单次禁用参数和临时fixture | 新增后根/子目录4份元数据、写作正文/细则不预载；原三Skill时禁用后2份、fixture同名2份及override优先，退出0 |
 | 站点构建 | `npm run build` | 成功，退出0；保留既有blogDir警告 |
 | 公开产物 | 逐个解析doc metadata，读取sitemap/search-index | 27篇公开源文档、1份搜索索引，无/docs/ai/路由，退出0 |
 | 差异 | `git diff --check`、最终Git状态与完整回读 | 空白检查通过；无依赖/锁文件/CI发布改动 |
@@ -178,7 +180,7 @@
 | C06.13 / Antigravity的实际使用、版本、入口、采用与未验证状态 | 适用；本次维护合同 | [clients.md](../../.agents/skills/ai-agent-maintenance/references/clients.md) / 使用、入口与边界 | 已覆盖 | E03/E04；安装不等于仓库采用 |
 | C06.14 / 从根与相关子目录实际加载规则和Skills | 适用；本次维护合同 | [clients.md](../../.agents/skills/ai-agent-maintenance/references/clients.md) / Codex的实际发现 | 已覆盖 | E05；根与docs/users均发现3个Skill元数据 |
 | C06.15 / 同名Skill和局部override实际加载顺序 | 适用；本次维护合同 | [clients.md](../../.agents/skills/ai-agent-maintenance/references/clients.md) / Codex的实际发现 | 已覆盖 | E05；独立fixture同名2项；override加载、同目录普通入口未加载 |
-| C06.16 / 真实目标客户端明确调用与资源读取 | 适用；格式/发现不代替实际调用 | [skill-evaluation.md](skill-evaluation.md) / 本次结果与未测项 | 阻塞 | 缺独立真实调用轨迹；在受控目标会话显式调用三个Skill |
+| C06.16 / 真实目标客户端明确调用与资源读取 | 适用；格式/发现不代替实际调用 | [skill-evaluation.md](skill-evaluation.md) / 本次结果与未测项 | 阻塞 | 缺独立真实调用轨迹；在受控目标会话显式调用四个Skill |
 | C06.17 / 禁用或权限限制实际生效 | 适用；本次维护合同 | [clients.md](../../.agents/skills/ai-agent-maintenance/references/clients.md) / Codex的实际发现 | 已覆盖 | E05；单次CLI参数禁用site-change后元数据消失；执行权限拒绝未测 |
 
 ### C07 / AGENTS.md 编写规则
@@ -238,12 +240,12 @@
 
 | ID / 具体要求 | 适用性与依据 | 实际落点（文件 + 章节） | 状态 | 核验证据或缺口与下一步 |
 | --- | --- | --- | --- | --- |
-| C10.01 / 20条正例、负例、近似、口语、隐式与边界查询 | 适用；本次维护合同 | [skill-evaluation.md](skill-evaluation.md) / 路由集合 | 已覆盖 | E07；调优13、留出7，仅预期标注 |
-| C10.02 / 真实路由轨迹、误触发与漏触发 | 适用；本次维护合同 | [skill-evaluation.md](skill-evaluation.md) / 真实路由与产物实验 | 阻塞 | Q01–Q20尚无真实调用；目标客户端多次回放留轨迹 |
+| C10.01 / 至少20条正例、负例、近似、口语、隐式与边界查询 | 适用；本次维护合同及写作补充 | [skill-evaluation.md](skill-evaluation.md) / 路由集合 | 已覆盖 | E07/E11；现有28条，调优18、留出10，仅预期标注 |
+| C10.02 / 真实路由轨迹、误触发与漏触发 | 适用；本次维护合同 | [skill-evaluation.md](skill-evaluation.md) / 真实路由与产物实验 | 阻塞 | Q01–Q28尚无真实调用；目标客户端多次回放留轨迹 |
 | C10.03 / 2–3个代表任务含边界及确定性验收 | 适用；本次维护合同 | [skill-evaluation.md](skill-evaluation.md) / 真实路由与产物实验 | 已覆盖 | T01文档、T02窄屏、T03遗漏回放 |
-| C10.04 / 同输入有/无Skill产物、正确性、耗时/token对照 | 适用；本次维护合同 | [skill-evaluation.md](skill-evaluation.md) / 本次结果与未测项 | 阻塞 | 缺独立可比模型运行；执行T01–T03后记录真实产物和预算 |
+| C10.04 / 同输入有/无Skill产物、正确性、耗时/token对照 | 适用；本次维护合同 | [skill-evaluation.md](skill-evaluation.md) / 本次结果与未测项 | 阻塞 | 缺独立可比模型运行；执行T01–T05后记录真实产物和预算 |
 | C10.05 / 保持模型/工具/版本/预算与隔离可比，失败归类/必要盲评 | 适用；本次维护合同 | [skill-evaluation.md](skill-evaluation.md) / 真实路由与产物实验 | 已覆盖 | 实验合同已写；未将设计称为效果验证 |
-| C10.06 / 未调优留出集、拒绝/恶意输入/副作用真实回放 | 适用；本次维护合同 | [skill-evaluation.md](skill-evaluation.md) / 本次结果与未测项 | 阻塞 | Q05/06/11/12/16/17/20运行未执行 |
+| C10.06 / 未调优留出集、拒绝/恶意输入/副作用真实回放 | 适用；本次维护合同 | [skill-evaluation.md](skill-evaluation.md) / 本次结果与未测项 | 阻塞 | Q05/06/11/12/16/17/20/22/25/28运行未执行 |
 | C10.07 / 如实报告样本、次数、版本、基线和未测，非机械阈值 | 适用；本次维护合同 | [skill-evaluation.md](skill-evaluation.md) / 全部章节 | 已覆盖 | 明确未运行次数；发现诊断与模型回放分开 |
 
 ### C11 / 自定义 Agent 规则
@@ -257,7 +259,7 @@
 | C11.05 / 继承规则/Skills/权限/上下文和文件隔离需验证 | 适用；本次维护合同 | [maintenance.md](../../.agents/skills/ai-agent-maintenance/references/maintenance.md) / 自定义Agent与委派 | 已覆盖 | 无独立角色需求；保留未来采用的具体门禁 |
 | C11.06 / 委派条件、文件所有权、DB/端口/缓存隔离及主Agent整合 | 适用；本次维护合同 | [maintenance.md](../../.agents/skills/ai-agent-maintenance/references/maintenance.md) / 自定义Agent与委派 | 已覆盖 | 无独立角色需求；保留未来采用的具体门禁 |
 | C11.07 / 模型按任务预算与已验证能力选，保留用户指定 | 适用；本次维护合同 | [maintenance.md](../../.agents/skills/ai-agent-maintenance/references/maintenance.md) / 自定义Agent与委派 | 已覆盖 | 无独立角色需求；保留未来采用的具体门禁 |
-| C11.08 / 本次创建并运行自定义Agent | 本仓库三个任务Skill已足够；本次会话不委派 | [maintenance.md](../../.agents/skills/ai-agent-maintenance/references/maintenance.md) / 自定义Agent与委派 | 不适用 | 没有稳定独立职责或工具限制需求；未创建配置 |
+| C11.08 / 本次创建并运行自定义Agent | 本仓库四个任务Skill已足够；本次会话不委派 | [maintenance.md](../../.agents/skills/ai-agent-maintenance/references/maintenance.md) / 自定义Agent与委派 | 不适用 | 没有稳定独立职责或工具限制需求；未创建配置 |
 
 ### C12 / 任务分流与新增功能工作流
 
@@ -468,11 +470,32 @@
 | C23.05 / 遗漏回放涵盖章节/子项/已有规则/迁移与替代，实际效果不作保证 | 适用；本次维护合同 | [ai-agent-maintenance/SKILL.md](../../.agents/skills/ai-agent-maintenance/SKILL.md) / 输入与工作流、纠错与复核 | 已覆盖 | 本表与E06–E09；真实回放在C10保留阻塞 |
 | C23.06 / 最终表/文件/证据核对，有阻塞只部分完成 | 适用；本次维护合同 | [ai-agent-maintenance/SKILL.md](../../.agents/skills/ai-agent-maintenance/SKILL.md) / 输入与工作流、纠错与复核 | 已覆盖 | 本表与E06–E09；真实回放在C10保留阻塞 |
 
+### C24 / 用户补充：仓库写作规范 Skill
+
+| ID / 具体要求 | 适用性与依据 | 实际落点（文件 + 章节） | 状态 | 核验证据或缺口与下一步 |
+| --- | --- | --- | --- | --- |
+| C24.01 / 完整读取指定指南并记录版本与来源 | 适用；用户指定原稿 | [source-index.md](source-index.md) / 写作规范的本地来源 | 已覆盖 | E11；577行、源研究日期与SHA-256，未写入外部笔记 |
+| C24.02 / 简版规则及按需细节，单句修改不扩成全文流程 | 适用；源简版及使用说明1–50 | [SKILL.md](../../.agents/skills/writing-guidance/SKILL.md) / 日常流程、按需细节 | 已覆盖 | E11；短入口与仓库内细则/示例，可脱离外部路径 |
+| C24.03 / 事实强度、读者与作者声音 | 适用；源52–79 | [writing-rules.md](../../.agents/skills/writing-guidance/references/writing-rules.md) / 事实、读者与作者声音 | 已覆盖 | E11；不编造、不扩大范围、保留判断及第一人称 |
+| C24.04 / 结构、段落、标题和真实逻辑关系 | 适用；源81–118 | [writing-rules.md](../../.agents/skills/writing-guidance/references/writing-rules.md) / 结构与句式 | 已覆盖 | E11；可选顺序、必要摘要与提醒、无固定点数或句数 |
+| C24.05 / 对举、转折、递进及语法检查 | 适用；源120–160 | [writing-rules.md](../../.agents/skills/writing-guidance/references/writing-rules.md) / 结构与句式 | 已覆盖 | E11；对举否A肯B，转折/递进保留A，禁止机械换连接词 |
+| C24.06 / 用词按含义调整，保护准确术语 | 适用；源162–209 | [writing-rules.md](../../.agents/skills/writing-guidance/references/writing-rules.md) / 用词按语义判断 | 已覆盖 | E11；原词表各类含义与例外已转写，无禁词或全局替换 |
+| C24.07 / 英文与双语文风 | 适用；源211–221 | [writing-rules.md](../../.agents/skills/writing-guidance/references/writing-rules.md) / 结构与句式、用词按语义判断 | 已覆盖 | E11；目标语言语序、词义/术语与否定/递进 |
+| C24.08 / 注释、接口、教程及日志的技术含义 | 适用；源223–251 | [writing-rules.md](../../.agents/skills/writing-guidance/references/writing-rules.md) / 技术文本与本站格式 | 已覆盖 | E11；次数、时间、范围、状态、错误、承诺及原始输出 |
+| C24.09 / 文章、博客、作者判断与图表 | 适用；源253–265 | [writing-rules.md](../../.agents/skills/writing-guidance/references/writing-rules.md) / 事实、读者与作者声音、技术文本与本站格式 | 已覆盖 | E11；保留过程、判断与元数据，不虚构经历或装饰图表 |
+| C24.10 / 改写例与应保留的反例 | 适用；源267–365 | [examples.md](../../.agents/skills/writing-guidance/references/examples.md) / 全文 | 已覆盖 | E11；假设性质、数量/状态、作者声音、句式和正常术语 |
+| C24.11 / 新写与改写的流程、停止与撤回条件 | 适用；源367–386 | [SKILL.md](../../.agents/skills/writing-guidance/SKILL.md) / 输入与范围、日常流程 | 已覆盖 | E11；先事实论证，再结构措辞，语义退化时停止该轮 |
+| C24.12 / 交付检查与真实验证状态 | 适用；源388–405 | [SKILL.md](../../.agents/skills/writing-guidance/SKILL.md) / 验证与交付 | 已覆盖 | E11；按需检查、区分未验证/缺样本/未通过，不以构建证明示例 |
+| C24.13 / 研究依据与适用边界 | 适用；源407–445、575–577 | [source-index.md](source-index.md) / 写作规范的本地来源 | 已覆盖 | E11；保留源研究日期，论文未重新核验，模型效果未测 |
+| C24.14 / 后续调研、样本对照与规范更新 | 适用；源447–573 | [writing-rules.md](../../.agents/skills/writing-guidance/references/writing-rules.md) / 交付与规则维护 | 已覆盖 | E11；版本/阅读范围/反例、分开新写与润色、调优/留出和语义优先 |
+| C24.15 / 本站格式与按需入口同步 | 适用；仓库Docusaurus及现有共享规则 | [AGENTS.md](../../AGENTS.md) / 规则入口；[docs-maintenance](../../.agents/skills/docs-maintenance/SKILL.md) / 工作流 | 已覆盖 | E11；四Skill索引、MDX/frontmatter/资源条件，不复制整份指南 |
+| C24.16 / 格式、引用、发现与新增评估条件 | 适用；静态交付与运行效果分开 | [skill-evaluation.md](skill-evaluation.md) / Q21–Q28、T04–T05；本表E11 | 已覆盖 | E11；格式/lint/无模型发现已执行，真实回放沿用C06.16与C10阻塞 |
+
 ## 未完成、例外与交接
 
 当前目标：交付可维护AI规则与Skills并完成完整初始化验收。已完成所有不依赖真实模型回放的规则落地、静态/构建验证与无模型发现诊断；授权范围仍为本仓库可逆维护，无发布、全局配置或模型会话委派。
 
-未完成 ID：`C06.16`（明确调用）、`C10.02`（真实路由）、`C10.04`（质量对照）、`C10.06`（留出/拒绝/恶意输入回放）、`C21.06`（完整运行验收）。具体缺失条件为当前会话没有新Skill的独立真实目标调用与可比有/无Skill回放；无模型诊断只验证发现。下一步在团队目标客户端受控独立会话完成 Q01–Q20 和 T01–T03，记录客户端/模型/工具/预算/次数/轨迹/产物，再更新这同一份覆盖表。不把结构检查或预期路由计为运行成功。
+未完成 ID：`C06.16`（明确调用）、`C10.02`（真实路由）、`C10.04`（质量对照）、`C10.06`（留出/拒绝/恶意输入回放）、`C21.06`（完整运行验收）。具体缺失条件为当前会话没有新Skill的独立真实目标调用与可比有/无Skill回放；无模型诊断只验证发现。下一步在团队目标客户端受控独立会话完成 Q01–Q28 和 T01–T05，记录客户端/模型/工具/预算/次数/轨迹/产物，再更新这同一份覆盖表。不把结构检查或预期路由计为运行成功。
 
 11项不适用：Claude专属桥接运行（本次未确认采用/无桥接）、自定义Agent创建运行（无稳定角色需求）、八项OpenSpec实际步骤（未采用/未安装）、MCP接入运行（无仓库接入需求）。各项未来条件流程及替代能力已写，不把缺工具或未知答案当不适用依据。
 

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <!-- 复用入门清单；本文件的 output_type 组替换 bin / JSON，仅输出 Lua。 -->
+  <include>convert.xml</include>
+  <global>
+    <output_type rename="/(?i)\.bin$/\.lua/">lua</output_type>
+  </global>
+</root>

@@ -9,7 +9,9 @@ description: xres-code-generator 使用指南与各语言生态入口
 - 转表工具仓库：[https://github.com/xresloader/xresloader](https://github.com/xresloader/xresloader)
 - 读表代码生成工具仓库：[https://github.com/xresloader/xres-code-generator](https://github.com/xresloader/xres-code-generator)
 
-> 建议先完成 `docs/users/quick-start.md` 中的流程，确保能产出 `.bytes` 与 `.pb` 文件。
+> 建议先完成 [快速上手](./quick-start)，确认生成 bin 与 descriptor。本文示例使用 .bytes 后缀，文件路径需与实际输出统一。
+
+**正式项目最推荐用生成器加载配置并按索引读表。** C++ 和原生 Lua 的简短查询示例见 [推荐加载方式](./data-loading#使用-xres-code-generator-加载最推荐)。
 
 ## 公共前置步骤
 
@@ -37,6 +39,9 @@ message role_upgrade_cfg {
         tags : "server"
     };
 
+    uint32 Id = 1;
+    uint32 Level = 2;
+    uint32 CostType = 3;
     int32 CostValue = 4;
     int32 ScoreAdd  = 5;
 }
@@ -50,9 +55,12 @@ PROTOC_BIN="$(which protoc)"
 "$PROTOC_BIN" \
     -I "$REPO_DIR/sample/proto" \
     -I "$REPO_DIR/pb_extension" \
+    --include_imports \
     "$REPO_DIR/sample/proto/"*.proto \
     -o "$REPO_DIR/sample/sample.pb"
 ```
+
+上游 sample/proto 中包含 pb_header_v3.proto。自己的工程也要将该包装头纳入 descriptor，连同加载选项及其依赖一起交给生成器；仅含业务消息的入门 kind.pb 不能直接替代这一步。
 
 ### xrescode-gen.py 常用参数
 
@@ -76,7 +84,7 @@ PROTOC_BIN="$(which protoc)"
 
 - [C++（原生工程）](xres-code-generator/cpp.md)
 - [Unreal Engine / Blueprint](xres-code-generator/unreal.md)
-- [Lua（标准 C protobuf 运行时）](xres-code-generator/lua.md)
+- [Lua（原生 table）](xres-code-generator/lua.md)
 - [C# / Unity](xres-code-generator/csharp.md)
 - [Lua（upb 运行时）](xres-code-generator/lua-upb.md)
 - [Lua（lua-protobuf 运行时）](xres-code-generator/lua-protobuf.md)
@@ -90,4 +98,4 @@ PROTOC_BIN="$(which protoc)"
 - 使用 `--set` 传入定制变量；
 - 通过 `--add-path` 指定额外的模板目录。
 
-在 CI/CD 流程中，可在 xresloader 导出阶段直接调用 `xrescode-gen.py`，确保 `.bytes`、`.pb` 与读表代码始终一致。
+在 CI/CD 流程中，可在 xresloader 导出阶段直接调用 `xrescode-gen.py`，让转换出的数据、descriptor 与读表代码使用同一份协议。数据后缀由项目决定，本站入门示例使用 `.bin`。
