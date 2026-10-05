@@ -1,0 +1,13 @@
+{
+  "config": {
+    "default": true,
+    // Chinese prose, evidence tables and source URLs have no useful 80-column limit.
+    "MD013": false
+  },
+  "globs": [
+    "AGENTS.md",
+    "README.md",
+    ".agents/skills/**/*.md",
+    "docs/ai/**/*.md"
+  ]
+}

@@ -16,7 +16,7 @@
 
 ## 仓库结构
 
-- `docs/`：全部 Markdown/MDX 文档，按“用户文档 / 开发文档 / 关于” 分类组织。
+- `docs/`：公开 Markdown/MDX 文档，按“用户文档 / 开发文档 / 关于” 分类组织；`docs/ai/` 为不发布的工程维护资料。
 - `static/`：静态资源，主要为 Material 风格的插图与示意图。
 - `src/`：自定义页面与样式，其中 `src/css/custom.css` 调整为类似 mkdocs-material 的观感。
 - `source/sample/`：历史示例工程及测试数据，供文档引用或下载。

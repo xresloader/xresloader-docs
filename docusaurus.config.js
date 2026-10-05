@@ -25,6 +25,14 @@ const config = {
       "classic",
       {
         docs: {
+          // Preserve the docs plugin defaults while keeping maintenance records private.
+          exclude: [
+            "**/_*.{js,jsx,ts,tsx,md,mdx}",
+            "**/_*/**",
+            "**/*.test.{js,jsx,ts,tsx}",
+            "**/__tests__/**",
+            "ai/**",
+          ],
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl: "https://github.com/xresloader/xresloader-docs/edit/main/",
           showLastUpdateAuthor: false,
