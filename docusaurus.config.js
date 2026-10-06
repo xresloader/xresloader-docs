@@ -3,8 +3,8 @@ const { themes } = require("prism-react-renderer");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "xresloader 文档",
-  tagline: "跨平台游戏数据转表工具链",
+  title: "xresloader Documentation",
+  tagline: "Cross-platform game data conversion tools",
   favicon: "img/brand-mark.svg",
   url: "https://xresloader.atframe.work",
   baseUrl: "/",
@@ -12,8 +12,12 @@ const config = {
   projectName: "xresloader-docs",
   onBrokenLinks: "throw",
   i18n: {
-    defaultLocale: "zh-Hans",
-    locales: ["zh-Hans"],
+    defaultLocale: "en",
+    locales: ["en", "zh-Hans"],
+    localeConfigs: {
+      en: { label: "English", htmlLang: "en", translate: true },
+      "zh-Hans": { label: "简体中文", htmlLang: "zh-Hans" },
+    },
   },
   markdown: {
     hooks: {
@@ -35,6 +39,7 @@ const config = {
           ],
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl: "https://github.com/xresloader/xresloader-docs/edit/main/",
+          editLocalizedFiles: true,
           showLastUpdateAuthor: false,
           showLastUpdateTime: false,
         },
@@ -51,6 +56,7 @@ const config = {
     ],
   ],
   plugins: [
+    require.resolve("./plugins/locale-preference.cjs"),
     [
       require.resolve("@easyops-cn/docusaurus-search-local"),
       {
@@ -86,6 +92,11 @@ const config = {
         { to: "/docs/users/quick-start", label: "快速上手", position: "left" },
         { to: "/docs/development/build", label: "开发", position: "left" },
         {
+          type: "localeDropdown",
+          position: "right",
+          queryString: "?persistLocale=true",
+        },
+        {
           href: "https://github.com/xresloader/xresloader",
           label: "GitHub",
           position: "right",
@@ -98,7 +109,7 @@ const config = {
         {
           title: "文档",
           items: [
-            { label: "快速开始", to: "/docs/users/quick-start" },
+            { label: "快速上手", to: "/docs/users/quick-start" },
             { label: "高级用法", to: "/docs/users/advance-usage" },
             { label: "FAQ", to: "/docs/users/faq" },
           ],
@@ -166,4 +177,18 @@ const config = {
   },
 };
 
-module.exports = config;
+module.exports = () => {
+  const currentLocale = process.env.DOCUSAURUS_CURRENT_LOCALE || "en";
+  return {
+    ...config,
+    title: currentLocale === "zh-Hans" ? "xresloader 文档" : config.title,
+    tagline: currentLocale === "zh-Hans" ? "跨平台游戏数据转表工具链" : config.tagline,
+    themeConfig: {
+      ...config.themeConfig,
+      footer: {
+        ...config.themeConfig.footer,
+        copyright: `${currentLocale === "zh-Hans" ? "版权所有" : "Copyright"} © ${new Date().getFullYear()} owent & xresloader contributors.`,
+      },
+    },
+  };
+};

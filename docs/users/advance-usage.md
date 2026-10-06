@@ -349,7 +349,7 @@ CallbackScript指向的javascript脚本中，需要满足已下条件:
 - 可使用 `gOurInstance` 访问数据源接口（ `DataSrcImpl.getOurInstance()` ）
 - 可使用 `gSchemeConf` 访问数据转换配置接口（ `SchemeConf.getInstance()` ）
 - 提供 `function initDataSource()` 函数，将在切换数据源时触发（文件名或sheet名）。
-- 提供 `function currentMessageCallback(originMsg, typeDesc)` 函数，将在切换数据源时触发（文件名或sheet名）。
+- 提供 `function currentMessageCallback(originMsg, typeDesc)` 函数，在处理每条 message 时触发；切换文件或 Sheet 的初始化由 initDataSource 负责。
   - `originMsg` 为原始数据结构的 `HashMap` 结构
   - `typeDesc` 为数据类型描述信息, `org.xresloader.core.data.dst.DataDstWriterNode.DataDstTypeDescriptor` 结构
 更多详情请参考 [xresloader sample](https://github.com/xresloader/xresloader/tree/main/sample) 的 `process_by_script1` 和 `process_by_script2` 表，还有 `cb_script.js` 文件。

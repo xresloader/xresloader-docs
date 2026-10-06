@@ -1,4 +1,6 @@
+import { translate } from "@docusaurus/Translate";
 import React from "react";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
@@ -8,23 +10,23 @@ import ThemedImage from "@theme/ThemedImage";
 
 const references = [
   {
-    title: "数据如何映射",
-    text: "字段、数组、嵌套结构与数据源范围",
+    title: translate({"id":"site.message.1","message":"Data mapping"}),
+    text: translate({"id":"site.message.2","message":"Fields, arrays, nested messages and data ranges"}),
     to: "/docs/users/data-mapping",
   },
   {
-    title: "清单与输出矩阵",
-    text: "include、目录、重命名与标签筛选",
+    title: translate({"id":"site.message.3","message":"Manifests and output matrices"}),
+    text: translate({"id":"site.message.4","message":"Includes, directories, renaming and tag filters"}),
     to: "/docs/users/xresconv",
   },
   {
-    title: "校验与项目扩展",
-    text: "验证器、脚本、事件和自定义按钮",
+    title: translate({"id":"site.message.5","message":"Validation and extensions"}),
+    text: translate({"id":"site.message.6","message":"Validators, scripts, events and custom buttons"}),
     to: "/docs/users/validator",
   },
   {
-    title: "开发与集成",
-    text: "依赖、构建、进程架构与接口",
+    title: translate({"id":"site.message.7","message":"Development and integration"}),
+    text: translate({"id":"site.message.8","message":"Dependencies, builds, processes and interfaces"}),
     to: "/docs/development/build",
   },
 ];
@@ -32,56 +34,56 @@ const references = [
 const features = [
   [
     "01",
-    "跨平台批量转换",
-    "Java 引擎、原生 Rust CLI 与 Tauri GUI 协作，支持 Windows、macOS 和 Linux，让策划选表与构建流水线复用清单。",
+    translate({"id":"site.message.9","message":"Batch conversion across platforms"}),
+    translate({"id":"site.message.10","message":"A Java engine, native Rust CLI and Tauri GUI work together on Windows, macOS and Linux. Designers and build pipelines use the same manifests."}),
     "/docs/users/xresconv",
   ],
   [
     "02",
-    "一份表格，多种格式",
-    "protobuf、MsgPack、Lua、JavaScript、JSON、XML，以及 Unreal Engine DataTable JSON / CSV，满足客户端和服务端的不同需求。",
+    translate({"id":"site.message.11","message":"Multiple output formats"}),
+    translate({"id":"site.message.12","message":"Export protobuf, MsgPack, Lua, JavaScript, JSON, XML and Unreal Engine DataTable JSON / CSV for clients and servers."}),
     "/docs/users/output-format",
   ],
   [
     "03",
-    "复杂协议，直接表达",
-    "proto2 / proto3、嵌套 message、repeated、oneof、map 和单元格 Plain 结构，让配置按业务模型组织。",
+    translate({"id":"site.message.13","message":"Nested messages and field types"}),
+    translate({"id":"site.message.14","message":"Use proto2 / proto3, nested messages, repeated fields, oneof, map and in-cell Plain structures to describe your data model."}),
     "/docs/users/data-types",
   ],
   [
     "04",
-    "枚举与描述信息导出",
-    "导出协议枚举、常量和 descriptor，生成 Lua / JavaScript 代码或 JSON / XML 数据，配合自定义插件扩展反射信息。",
+    translate({"id":"site.message.15","message":"Export enums and descriptors"}),
+    translate({"id":"site.message.16","message":"Export schema enums, constants and descriptors as Lua / JavaScript code or JSON / XML data, with custom options for reflection."}),
     "/docs/users/advance-usage",
   ],
   [
     "05",
-    "校验与策划可读性",
-    "字段和枚举别名、宏、范围、跨表引用与逻辑组合校验，把输入错误提前暴露在转表环节。",
+    translate({"id":"site.message.17","message":"Aliases and validation"}),
+    translate({"id":"site.message.18","message":"Field and enum aliases, macros, ranges, cross-table references and composed validators catch input errors during conversion."}),
     "/docs/users/validator",
   ],
   [
     "06",
-    "灵活映射与合表",
-    "多张 Excel 合并输出，支持字段名正则映射、范围、转置和数组；协议插件控制输出行为。",
+    translate({"id":"site.message.19","message":"Field mapping and merged tables"}),
+    translate({"id":"site.message.20","message":"Merge Excel sources, map field names with regular expressions, select ranges and transpose data. Schema options control export behavior."}),
     "/docs/users/data-mapping",
   ],
   [
     "07",
-    "按项目控制数据输出",
-    "公式缓存或显式实时计算、空数据裁剪与定长保留、数据版本号、多格式输出目录和标签筛选。",
+    translate({"id":"site.message.21","message":"Output controls"}),
+    translate({"id":"site.message.22","message":"Choose cached or explicitly evaluated formulas, trim or retain empty data, set data versions, and filter outputs by format, directory and tags."}),
     "/docs/users/xresloader-core",
   ],
   [
     "08",
-    "多语言加载与索引",
-    "配套 C++、C#、Go、upb、pbc、lua-protobuf 等接入方式；Lua 支持 global / require / module，JavaScript 支持 global / Node.js / AMD。",
+    translate({"id":"site.message.23","message":"Data loaders and indexes"}),
+    translate({"id":"site.message.24","message":"Integrate with C++, C#, Go, upb, pbc or lua-protobuf. Lua supports global / require / module; JavaScript supports global / Node.js / AMD."}),
     "/docs/users/xres-code-generator",
   ],
   [
     "09",
-    "Unreal Engine 与项目扩展",
-    "输出 UE DataTable，生成加载代码；通过 GUI 事件、自定义按钮和 Node.js 脚本接入项目工具。dump-bin 用于查看二进制数据。",
+    translate({"id":"site.message.25","message":"Unreal Engine and project extensions"}),
+    translate({"id":"site.message.26","message":"Export UE DataTables and generate loaders. Connect project tools through GUI events, custom buttons and Node.js scripts; inspect binary data with dump-bin."}),
     "/docs/users/ecosystem-and-tools",
   ],
 ];
@@ -91,13 +93,17 @@ function Arrow() {
 }
 
 export default function Home() {
-  const screenshot = useBaseUrl("/img/users/gui-main-light.png");
-  const darkScreenshot = useBaseUrl("/img/users/gui-main-dark.png");
-  const sampleDownload = useBaseUrl("/examples/quick-start.zip");
+  const { i18n: { currentLocale } } = useDocusaurusContext();
+  const imagePrefix = currentLocale === "en" ? "/img/en/users" : "/img/users";
+  const screenshot = useBaseUrl(`${imagePrefix}/gui-main-light.png`);
+  const darkScreenshot = useBaseUrl(`${imagePrefix}/gui-main-dark.png`);
+  const cliPreview = useBaseUrl(`${imagePrefix}/cli-preview.png`);
+  const cliConversion = useBaseUrl(`${imagePrefix}/cli-conversion.png`);
+  const sampleDownload = useBaseUrl(currentLocale === "en" ? "/examples/quick-start-en.zip" : "/examples/quick-start.zip");
   return (
     <Layout
-      title="Excel 数据转表工具链"
-      description="xresloader、Rust CLI 与 Tauri GUI：从 Excel 到结构化游戏配置，快速上手与完整参考。"
+      title={translate({"id":"site.message.27","message":"Excel game data conversion tools"})}
+      description={translate({"id":"site.message.28","message":"Excel game data conversion with schema mapping, validation, batch tools and data loader generation. Quick start and technical reference."})}
     >
       <main className={styles.home}>
         <section className={styles.hero}>
@@ -106,52 +112,42 @@ export default function Home() {
               <p className={styles.eyebrow}>
                 <span className={styles.dot} /> XRESLOADER TOOLCHAIN
               </p>
-              <h1>
-                从 Excel 到<br />
-                <span>游戏数据。</span>
+              <h1>{translate({"id":"site.message.29","message":"Excel game data"})}<br />
+                <span>{translate({"id":"site.message.30","message":"conversion tools"})}</span>
               </h1>
-              <p className={styles.lead}>
-                让策划专注表格，让程序获得结构化配置。
-                <br />
-                协议、校验、批量转换和读表代码，在一条清晰的流程里协作。
-              </p>
+              <p className={styles.lead}>{translate({"id":"site.message.31","message":"Convert Excel workbooks into structured game configuration."})}<br />{translate({"id":"site.message.32","message":"Map and validate fields against schemas, convert batches with the CLI or GUI, and generate data loaders."})}</p>
               <div className={styles.actions}>
                 <Link
                   className="button button--primary button--lg"
                   to="/docs/users/quick-start"
-                >
-                  开始第一次转换 <Arrow />
+                >{translate({"id":"site.message.33","message":"Quick start"})}<Arrow />
                 </Link>
                 <Link
                   className="button button--outline button--primary button--lg"
                   to="/docs/users/download"
-                >
-                  下载工具
-                </Link>
+                >{translate({"id":"site.message.34","message":"Download tools"})}</Link>
               </div>
-              <p className={styles.heroNote}>
-                准备好的 Excel、协议和 XML · 入门无需安装 protoc
-              </p>
+              <p className={styles.heroNote}>{translate({"id":"site.message.35","message":"Ready-to-use Excel, schema and XML · No protoc needed to get started"})}</p>
             </div>
             <div
               className={styles.pipeline}
-              aria-label="从表格到结构化配置的转换流程"
+              aria-label={translate({"id":"site.message.36","message":"Spreadsheet mapping, validation and conversion workflow"})}
             >
               <div className={styles.pipelineHeader}>
-                <span>一份数据，多种输出</span>
-                <span className={styles.pipelineBadge}>配置工作流</span>
+                <span>{translate({"id":"site.message.37","message":"Inputs and output formats"})}</span>
+                <span className={styles.pipelineBadge}>{translate({"id":"site.message.38","message":"Configuration workflow"})}</span>
               </div>
               <div className={styles.sources}>
                 <div>
                   <span className={styles.sourceIcon}>X</span>
                   <strong>Excel</strong>
-                  <small>策划数据</small>
+                  <small>{translate({"id":"site.message.39","message":"Design data"})}</small>
                 </div>
                 <span className={styles.plus}>+</span>
                 <div>
                   <span className={styles.protoIcon}>P</span>
                   <strong>Protobuf</strong>
-                  <small>结构与约束</small>
+                  <small>{translate({"id":"site.message.40","message":"Structure and constraints"})}</small>
                 </div>
               </div>
               <div className={styles.connector} aria-hidden="true">
@@ -159,7 +155,7 @@ export default function Home() {
               </div>
               <div className={styles.engine}>
                 <strong>xresloader</strong>
-                <span>字段映射 / 数据校验 / 转换</span>
+                <span>{translate({"id":"site.message.41","message":"Field mapping / validation / conversion"})}</span>
               </div>
               <div className={styles.connector} aria-hidden="true">
                 ↓
@@ -180,9 +176,7 @@ export default function Home() {
                 <span aria-hidden="true">$</span>
                 <code>xresconv-cli -p 1 convert.xml</code>
               </div>
-              <p className={styles.pipelineFoot}>
-                命令行接入流水线，桌面工具交互选表。
-              </p>
+              <p className={styles.pipelineFoot}>{translate({"id":"site.message.42","message":"Use the CLI in pipelines and select tables interactively in the desktop app."})}</p>
             </div>
           </div>
         </section>
@@ -193,11 +187,10 @@ export default function Home() {
         >
           <div className={styles.sectionHeading}>
             <div>
-              <p className={styles.eyebrow}>选择适合你的入口</p>
-              <h2 id="tools-heading">工具链组件与最新下载</h2>
+              <p className={styles.eyebrow}>{translate({"id":"site.message.43","message":"Components"})}</p>
+              <h2 id="tools-heading">{translate({"id":"site.message.44","message":"Tools and downloads"})}</h2>
             </div>
-            <Link to="/docs/intro">
-              工具链概览 <Arrow />
+            <Link to="/docs/intro">{translate({"id":"site.message.45","message":"Toolchain overview"})}<Arrow />
             </Link>
           </div>
           <ToolchainCatalog />
@@ -209,11 +202,10 @@ export default function Home() {
         >
           <div className={styles.sectionHeading}>
             <div>
-              <p className={styles.eyebrow}>为游戏配置工作流设计</p>
-              <h2 id="features-heading">从数据表达，到可靠的运行时配置</h2>
+              <p className={styles.eyebrow}>{translate({"id":"site.message.46","message":"Game configuration"})}</p>
+              <h2 id="features-heading">{translate({"id":"site.message.47","message":"Capabilities"})}</h2>
             </div>
-            <Link to="/docs/intro">
-              完整能力概览 <Arrow />
+            <Link to="/docs/intro">{translate({"id":"site.message.48","message":"Explore all capabilities"})}<Arrow />
             </Link>
           </div>
           <div className={styles.featureGrid}>
@@ -224,8 +216,7 @@ export default function Home() {
                 </span>
                 <h3>{title}</h3>
                 <p>{text}</p>
-                <Link to={to}>
-                  查看功能与示例 <Arrow />
+                <Link to={to}>{translate({"id":"site.message.49","message":"Read the guide and examples"})}<Arrow />
                 </Link>
               </article>
             ))}
@@ -235,45 +226,36 @@ export default function Home() {
         <section className={styles.startBand} aria-labelledby="start-heading">
           <div className={`container ${styles.wide} ${styles.startGrid}`}>
             <div>
-              <p className={styles.eyebrow}>第一次使用</p>
-              <h2 id="start-heading">
-                先跑通示例，
-                <br />
-                再接入自己的项目。
-              </h2>
-              <p>
-                准备好的示例只包含基础数据和两种输出，
-                <br />
-                详细功能可以在需要时逐项查阅。
-              </p>
+              <p className={styles.eyebrow}>{translate({"id":"site.message.50","message":"Quick start"})}</p>
+              <h2 id="start-heading">{translate({"id":"site.message.51","message":"Conversion example"})}</h2>
+              <p>{translate({"id":"site.message.53","message":"The example includes Excel workbooks, schema descriptors and XML manifests, with bin and JSON outputs."})}<br />{translate({"id":"site.message.54","message":"The quick start covers conversion, data checks and loading."})}</p>
               <a
                 className="button button--primary"
                 href={sampleDownload}
                 download
-              >
-                下载示例 ZIP <span aria-hidden="true">↓</span>
+              >{translate({"id":"site.message.55","message":"Download example ZIP"})}<span aria-hidden="true">↓</span>
               </a>
             </div>
             <ol className={styles.steps}>
               <li>
                 <span>01</span>
                 <div>
-                  <h3>准备工具</h3>
-                  <p>Java、xresloader JAR，再选 CLI 或 GUI。</p>
+                  <h3>{translate({"id":"site.message.56","message":"Prepare the tools"})}</h3>
+                  <p>{translate({"id":"site.message.57","message":"Install Java and the xresloader JAR, then choose the CLI or GUI."})}</p>
                 </div>
               </li>
               <li>
                 <span>02</span>
                 <div>
-                  <h3>打开配置，检查预览</h3>
-                  <p>用同一份 XML 关联表格、协议与输出。</p>
+                  <h3>{translate({"id":"site.message.58","message":"Preview conversion tasks"})}</h3>
+                  <p>{translate({"id":"site.message.59","message":"One XML manifest connects workbooks, schemas and outputs."})}</p>
                 </div>
               </li>
               <li>
                 <span>03</span>
                 <div>
-                  <h3>核对并加载数据</h3>
-                  <p>对照 Excel、查看 bin，用示例代码加载 JSON 或 protobuf。</p>
+                  <h3>{translate({"id":"site.message.60","message":"Check and load the data"})}</h3>
+                  <p>{translate({"id":"site.message.61","message":"Compare with Excel, inspect bin files, and use the sample loaders for JSON or protobuf."})}</p>
                 </div>
               </li>
             </ol>
@@ -286,31 +268,64 @@ export default function Home() {
         >
           <div className={styles.showcaseCopy}>
             <p className={styles.eyebrow}>XRESCONV-GUI 3.0</p>
-            <h2 id="gui-heading">
-              看清条目，
-              <br />
-              掌握转换进度。
-            </h2>
-            <p>
-              树形选择、输出矩阵、可筛选日志与取消控制集中在一个工作台。轻量桌面壳与独立业务进程各司其职。
-            </p>
-            <Link to="/docs/users/xresconv-gui">
-              查看界面与操作 <Arrow />
+            <h2 id="gui-heading">{translate({"id":"site.message.62","message":"Desktop batch conversion"})}</h2>
+            <p>{translate({"id":"site.message.64","message":"Select entries in a tree, configure output formats, and inspect conversion progress and logs. Filter logs or cancel a running conversion."})}</p>
+            <Link to="/docs/users/xresconv-gui">{translate({"id":"site.message.65","message":"Explore the interface"})}<Arrow />
             </Link>
-            <Link to="/docs/users/xresconv-scripts">
-              接入项目脚本 <Arrow />
+            <Link to="/docs/users/xresconv-scripts">{translate({"id":"site.message.66","message":"Connect project scripts"})}<Arrow />
             </Link>
           </div>
           <figure className={styles.screenshot}>
             <ThemedImage
               sources={{ light: screenshot, dark: darkScreenshot }}
-              alt="xresconv-gui 3.0 正式版选择人物表和升级表，真实转换完成并显示四个输出的成功日志"
+              alt={translate({"id":"site.message.67","message":"xresconv-gui 3.0 release with three entries selected, showing a completed conversion and six successful outputs"})}
               width="1980"
               height="1320"
               loading="lazy"
             />
-            <figcaption>3.0 正式版 · 使用入门示例实际转换</figcaption>
+            <figcaption>{translate({"id":"site.message.68","message":"3.0 release · Actual conversion of the full configuration example"})}</figcaption>
           </figure>
+        </section>
+
+        <section
+          className={`container ${styles.wide} ${styles.section} ${styles.consoleSection}`}
+          aria-labelledby="cli-heading"
+        >
+          <div className={styles.sectionHeading}>
+            <div>
+              <p className={styles.eyebrow}>XRESCONV-CLI</p>
+              <h2 id="cli-heading">{translate({ id: "home.cli.title", message: "Command-line batch conversion" })}</h2>
+            </div>
+            <Link to="/docs/users/xresconv-cli">{translate({ id: "home.cli.guide", message: "CLI reference" })}<Arrow /></Link>
+          </div>
+          <p className={styles.consoleIntro}>{translate({ id: "home.cli.description", message: "Preview the commands for an XML manifest with --test. Run the same manifest to export bin and JSON files; the exit status and logs report the result." })}</p>
+          <div className={styles.consoleGallery}>
+            {[
+              {
+                src: cliPreview,
+                title: translate({ id: "home.cli.preview", message: "Task preview" }),
+                command: "xresconv-cli --test -p 1 convert.xml",
+                alt: translate({ id: "home.cli.previewAlt", message: "Actual xresconv-cli 2.0.2 preview output: four commands for two tables, with no data written" }),
+              },
+              {
+                src: cliConversion,
+                title: translate({ id: "home.cli.conversion", message: "Conversion results" }),
+                command: "xresconv-cli -p 1 convert.xml",
+                alt: translate({ id: "home.cli.conversionAlt", message: "Actual xresconv-cli 2.0.2 conversion output: four successful bin and JSON exports, three records per output, zero failed jobs" }),
+              },
+            ].map(({ src, title, command, alt }) => (
+              <figure className={styles.consoleFigure} key={src}>
+                <h3>{title}</h3>
+                <code className={styles.consoleCommand}>{command}</code>
+                <div className={styles.consoleViewport} tabIndex={0} role="region" aria-label={title}>
+                  <a href={src} target="_blank" rel="noopener noreferrer" aria-label={translate({ id: "home.cli.fullImage", message: "View full-size image: {title}" }, { title })}>
+                    <img src={src} alt={alt} width="2640" height={currentLocale === "en" ? 924 : 930} loading="lazy" />
+                  </a>
+                </div>
+                <figcaption>{translate({ id: "home.cli.caption", message: "Actual output snapshot · Paths shortened; tool diagnostics retain their original language. Scroll horizontally on narrow screens or open the image at full size." })}</figcaption>
+              </figure>
+            ))}
+          </div>
         </section>
 
         <section
@@ -319,8 +334,8 @@ export default function Home() {
         >
           <div className={styles.sectionHeading}>
             <div>
-              <p className={styles.eyebrow}>按需查阅</p>
-              <h2 id="reference-heading">从基础映射到项目集成</h2>
+              <p className={styles.eyebrow}>{translate({"id":"site.message.69","message":"Technical reference"})}</p>
+              <h2 id="reference-heading">{translate({"id":"site.message.70","message":"Configuration and integration"})}</h2>
             </div>
           </div>
           <div className={styles.referenceGrid}>

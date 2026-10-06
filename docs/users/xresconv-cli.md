@@ -5,7 +5,7 @@ description: xresconv-cli 2.0.2 的选项、自动化、路径和 Python 迁移
 
 # xresconv-cli 2.x
 
-CLI 用于按 XML 清单批量驱动 xresloader，适合构建机和自动化。2.0 起使用 Rust 原生程序，XML 继续采用 xresconv-conf。第一次使用见 [快速上手](./quick-start)，共用配置见 [XML 与输出矩阵](./xresconv)。
+CLI 用于按 XML 清单批量驱动 xresloader，适合构建机和自动化。2.0 起使用 Rust 原生程序，XML 继续采用 xresconv-conf。入门步骤见 [快速上手](./quick-start)，共用配置见 [XML 与输出矩阵](./xresconv)。
 
 ## 命令和参数
 
@@ -33,7 +33,9 @@ CLI 的 `-p` 是并发数，xresloader 的 `-p` 是协议类型；后端参数�
 
 `--test` 会检查 XML、工作目录和 JAR 是否存在，但不验证表格、descriptor 或 JAR 内容。预览显示 `0 job(s) failed` 只代表规划成功；执行后还需检查退出码和输出文件。GUI 专用分组、分类和脚本不会在 CLI 中执行。
 
-![原生 CLI 实际运行](/img/users/cli-conversion.png)
+[![原生 CLI 实际转换输出快照，路径已缩写](/img/users/cli-conversion.png)](/img/users/cli-conversion.png)
+
+点击图片查看原图；诊断保留工具原始语言。
 
 ## 路径和 include
 

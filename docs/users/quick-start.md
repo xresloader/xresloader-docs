@@ -5,12 +5,12 @@ description: 用准备好的示例完成 Excel 转换，核对数据并加载 JS
 
 # 快速上手
 
-先用现成的 Excel 和协议描述文件跑通一次转换，再换成自己的数据。本页使用 xresloader 2.23.7、xresconv-cli 2.0.2 或 xresconv-gui 3.0.0，详细参数分别见 [CLI](./xresconv-cli)、[GUI](./xresconv-gui) 和 [XML 配置](./xresconv)。
+本页介绍如何使用准备好的 Excel、协议描述文件和 XML 清单完成转换、核对数据并加载输出。示例使用 xresloader 2.23.7、xresconv-cli 2.0.2 或 xresconv-gui 3.0.0，详细参数分别见 [CLI](./xresconv-cli)、[GUI](./xresconv-gui) 和 [XML 配置](./xresconv)。
 
 ## 1. 准备工具和示例
 
 1. 安装 Java 17 或以上版本，在终端执行 `java -version` 确认可用。
-2. 从 [xresloader 最新发行页](https://github.com/xresloader/xresloader/releases/latest) 下载完整的 **xresloader-版本号.jar**，重命名为 `xresloader.jar`。也可用 [按系统下载入口](./download#按系统下载最新版本)。
+2. 从 [xresloader 最新发行页](https://github.com/xresloader/xresloader/releases/latest) 下载完整的 **xresloader-版本号.jar**，重命名为 `xresloader.jar`。也可用 [最新版本下载入口](./download#按系统下载最新版本)。
 3. 下载 [快速上手示例 ZIP](/examples/quick-start.zip)，解压后把 JAR 放进去。
 4. 从 [下载与安装](./download) 选择 CLI 或 GUI；只需选一种。CLI 无需 Python，GUI 完整发行包自带 Node.js。
 
@@ -25,7 +25,7 @@ quick-start/
 └── output/          运行后生成的 bin 和 JSON
 ```
 
-示例取用 xresloader sample 的基础人物数据和本站升级数据，使用简化协议，保留数据来源与生成源。已经准备好 descriptor，第一次转换无需安装 protoc。
+示例取用 xresloader sample 的基础人物数据和本站升级数据，使用简化协议，保留数据来源与生成源。示例已包含 descriptor，无需安装 protoc。
 
 打开 `tables.xlsx` 可以先核对数据。`kind` Sheet 包含三个人物：
 
@@ -45,7 +45,7 @@ quick-start/
 
 这里的货币类别沿用上游金币枚举值 **10001**。`scheme_kind` 和 `scheme_upgrade` 两个 Sheet 保存转换规则，不是需要导出的游戏数据。
 
-## 2. 看一眼配置 {#quick-start-configure-sheme}
+## 2. 检查转换配置 {#quick-start-configure-sheme}
 
 `convert.xml` 把人物表与升级表各导出为 bin 和 JSON。相对路径以配置中的工作目录为准；此处工作目录就是 XML 所在目录。
 
@@ -78,6 +78,8 @@ quick-start/
 
 ![GUI 3.0 的示例配置、条目与真实转换日志](/img/users/gui-main-light.png)
 
+截图使用可选的完整 sample.xml，除两项入门条目外还增加内联条目，生成六个输出；上述基础 convert.xml 生成四个。
+
 ### 用 CLI
 
 在示例目录打开终端执行以下命令。Windows PowerShell 中，把程序名写为 `./xresconv-cli.exe`，或使用已加入 PATH 的 `xresconv-cli`。
@@ -89,7 +91,9 @@ xresconv-cli -p 1 convert.xml
 
 第一行只预览，不生成数据；第二行执行转换。确认退出码为 0，再检查 `output/role_cfg.bin`、`output/role_cfg.json`、`output/role_upgrade_cfg.bin`、`output/role_upgrade_cfg.json`。JSON 可以直接打开核对记录，bin 供程序加载。
 
-![CLI 2.0.2 的实际转换输出快照，工作目录路径已缩写](/img/users/cli-conversion.png)
+[![CLI 2.0.2 的实际转换输出快照，路径已缩写](/img/users/cli-conversion.png)](/img/users/cli-conversion.png)
+
+点击图片查看原图；诊断保留工具原始语言。
 
 ## 4. 核对并加载数据
 
@@ -155,7 +159,7 @@ xresloader-dump-bin --pretty -p kind.pb -b output/role_upgrade_cfg.bin
 - 推荐通过 [读表代码生成器](./xres-code-generator) 生成 C++、C#、Go、Lua 或 UE 项目的加载代码与索引。
 - [协议生成与完整加载示例](./data-loading) 保留自定义协议、C++ 手动解析和旧 libresloader 模板的方法及编译命令。当前可编辑源代码也随示例 ZIP 提供。
 
-## 换成自己的表
+## 接入项目数据 {#换成自己的表}
 
 写自己的 `.proto`，用 protoc 生成包含依赖的 descriptor，再在 XML 中设置 `proto_file`。把 Excel 的字段名与 proto 对齐，通过内联 `DataSource`、`ProtoName`、`OutputFile` 和 `KeyRow` 指定映射，或沿用示例的 scheme Sheet。
 

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="450" viewBox="0 0 1040 450" role="img" aria-labelledby="title desc">
+  <title id="title">xresconv-gui 3.0 process architecture</title>
+  <desc id="desc">React connects through Tauri and a private byte pipe to the guardian, which supervises the backend and script workers. The backend handles configuration, Java conversion and file logs.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#526783"/></marker></defs>
+  <rect width="1040" height="450" rx="18" fill="#f5f8fc"/>
+  <g font-family="Segoe UI, Microsoft YaHei, sans-serif" fill="#19324a">
+    <text x="32" y="42" font-size="24" font-weight="700">xresconv-gui 3.0</text>
+    <text x="32" y="68" font-size="15" fill="#526783">Separate processes for UI, state and project scripts</text>
+    <g stroke="#526783" stroke-width="2" fill="none" marker-end="url(#arrow)">
+      <path d="M216 145h45"/><path d="M446 145h50"/><path d="M681 145h55"/>
+      <path d="M828 182v48H130v56"/><path d="M828 230H354v56"/><path d="M828 230H578v56"/>
+      <path d="M828 230v56"/>
+    </g>
+    <g fill="#fff" stroke="#b4c7d8" stroke-width="1.5">
+      <rect x="32" y="108" width="184" height="74" rx="12"/>
+      <rect x="261" y="108" width="185" height="74" rx="12"/>
+      <rect x="496" y="108" width="185" height="74" rx="12" fill="#e4f5f2" stroke="#4b998e"/>
+      <rect x="736" y="108" width="185" height="74" rx="12" fill="#e8efff" stroke="#7093c8"/>
+      <rect x="38" y="286" width="184" height="80" rx="12"/>
+      <rect x="262" y="286" width="184" height="80" rx="12"/>
+      <rect x="486" y="286" width="184" height="80" rx="12"/>
+      <rect x="736" y="286" width="185" height="80" rx="12" fill="#fff3df" stroke="#c9a05d"/>
+    </g>
+    <g text-anchor="middle" font-size="18" font-weight="600">
+      <text x="124" y="138">React / WebView</text><text x="354" y="138">Tauri desktop</text>
+      <text x="588" y="138">Node guardian</text><text x="828" y="138">Node backend</text>
+      <text x="130" y="318">Config helper</text><text x="354" y="318">Java / xresloader</text>
+      <text x="578" y="318">log4js sink</text><text x="828" y="318">script workers</text>
+    </g>
+    <g text-anchor="middle" font-size="14" fill="#526783">
+      <text x="124" y="161">UI and snapshots</text><text x="354" y="161">Native APIs and forwarding</text>
+      <text x="588" y="161">Supervision and cleanup</text><text x="828" y="161">Sessions, selections and runs</text>
+      <text x="130" y="344">Isolated XML parsing</text><text x="354" y="344">Conversion and output</text>
+      <text x="578" y="344">Bounded queue and file writes</text><text x="828" y="344">Tree, actions and callbacks</text>
+      <text x="473" y="99">Private byte pipe</text>
+    </g>
+    <text x="38" y="411" font-size="15" fill="#526783">The guardian supervises owned processes. The backend holds state; script operations carry session and version.</text>
+  </g>
+</svg>

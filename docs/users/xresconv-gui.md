@@ -5,7 +5,7 @@ description: xresconv-gui 3.0 的界面、运行、日志、显示设置及旧�
 
 # xresconv-gui 3.0
 
-GUI 用同一份 xresconv-conf XML 管理条目、输出矩阵和转换事件。3.0 采用 Tauri 2 与独立 Node.js 内核，发行包完整解压即可使用。平台包和运行时见 [下载与安装](./download)，第一次转换见 [快速上手](./quick-start)。
+GUI 用同一份 xresconv-conf XML 管理条目、输出矩阵和转换事件。3.0 采用 Tauri 2 与独立 Node.js 内核，发行包完整解压即可使用。平台包和运行时见 [下载与安装](./download)，入门步骤见 [快速上手](./quick-start)。
 
 ## 加载和选择
 

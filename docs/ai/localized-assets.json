@@ -1,0 +1,26 @@
+{
+  "verifiedAt": "2026-10-06",
+  "gui": {"version": "3.0.0", "sourceCommit": "4b4f55aa122945c20a6ccf100f09c9631f950cda", "archiveSha256": "fd256760c87ce9ae20c089caa621233770a4b68fe093fc795b2c55f3a11345ce", "method": "Formal Windows bootstrap archive, native Tauri WebDriver, language en / zh-CN, localized sample.xml plus selectors; real clicks, preview, six outputs, repeated timer and script."},
+  "console": {"engine": "2.23.7", "cli": "2.0.2", "dump": "2.6.0", "method": "Fresh locale ZIPs, real executables and rejected invalid.xlsx CostValue@0-10; typeset snapshots. Strip terminal control codes and shorten working-directory paths; preserve raw diagnostic language. RUST_LOG=info, RUST_LOG_STYLE=never."},
+  "homepageCli": {"verifiedAt": "2026-10-06", "engine": "2.23.7", "cli": "2.0.2", "method": "Fresh locale ZIPs; real --test preview writes no output; real conversion produces four files, three records each and zero failed jobs. Full output, strip control codes, shorten working directory and resolved Java path, replace tabs with spaces. Edge screenshots at deviceScaleFactor 2; 1320 CSS pixels, 20px text; en 2640x924, zh 2640x930. Full-size image links and local horizontal scrolling; cap display at 1320 CSS pixels."},
+  "assets": [
+    {"en": "/img/en/users/gui-main-light.png", "zh": "/img/users/gui-main-light.png", "kind": "native GUI", "input": "sample.xml; three entries and six outputs"},
+    {"en": "/img/en/users/gui-main-dark.png", "zh": "/img/users/gui-main-dark.png", "kind": "native GUI"},
+    {"en": "/img/en/users/gui-output-matrix.png", "zh": "/img/users/gui-output-matrix.png", "kind": "native GUI; expanded matrix"},
+    {"en": "/img/en/users/gui-display-settings.png", "zh": "/img/users/gui-display-settings.png", "kind": "native GUI; explicit language"},
+    {"en": "/img/en/users/gui-scripts-selectors.png", "zh": "/img/users/gui-scripts-selectors.png", "kind": "native GUI; localized buttons and repeated actions"},
+    {"en": "/img/en/users/gui-config-example.png", "zh": "/img/users/gui-config-example.png", "kind": "native GUI; full XML example"},
+    {"en": "/img/en/users/cli-conversion.png", "zh": "/img/users/cli-conversion.png", "kind": "real output snapshot", "input": "convert.xml; two entries and four outputs"},
+    {"en": "/img/en/users/cli-preview.png", "zh": "/img/users/cli-preview.png", "kind": "real output snapshot", "input": "--test -p 1 convert.xml; four commands; no data written"},
+    {"en": "/img/en/users/dump-bin-output.png", "zh": "/img/users/dump-bin-output.png", "kind": "real output snapshot", "input": "role_upgrade_cfg.bin; three records"},
+    {"en": "/img/en/users/custom_validator.png", "zh": "/img/users/custom_validator.png", "kind": "real output snapshot", "input": "invalid.xlsx; 50 rejected by 0-10"},
+    {"en": "/img/en/development/xresconv-3-architecture.svg", "zh": "/img/development/xresconv-3-architecture.svg", "kind": "editable architecture source"},
+    {"en": "/img/en/development/xresloader-architecture.svg", "zh": "/img/development/xresloader-architecture.png", "kind": "English editable illustration; Chinese historical diagram"},
+    {"en": "/img/en/development/conversion-pipeline.svg", "zh": "/img/development/xresconv_process.png", "kind": "English editable illustration; Chinese historical diagram"},
+    {"en": "/img/en/users/data-source.svg", "zh": "/img/users/data_mapping_data_source.png", "kind": "English editable illustration; Chinese historical screenshot"},
+    {"en": "/img/en/users/data-index.svg", "zh": "/img/users/data_mapping_data_key_and_proto.png", "kind": "English editable illustration; Chinese historical screenshot"},
+    {"en": "/img/en/users/nested-message.svg", "zh": "/img/users/data_mapping_rec_message.png", "kind": "English editable illustration; Chinese historical screenshot"},
+    {"en": "/img/en/users/nested-arrays.svg", "zh": "/img/users/data_mapping_arr_in_arr.png", "kind": "English editable illustration; Chinese historical screenshot"},
+    {"en": "/img/users/ue-blueprint.png", "zh": "/img/users/ue-blueprint.png", "kind": "shared original screenshot", "reason": "Visible UE interface and identifiers are already English; visually reviewed. This task did not rerun UE."}
+  ]
+}

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 300" role="img" aria-labelledby="title desc">
+  <title id="title">Excel to application data</title><desc id="desc">Schema and mapping rules connect workbook records to validation and output. Applications load the resulting files.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="#526783"/></marker></defs>
+  <rect width="1080" height="300" rx="18" fill="#f5f8fc"/>
+  <g font-family="Segoe UI,sans-serif" fill="#19324a" text-anchor="middle">
+    <text x="540" y="38" font-size="23" font-weight="700">Data conversion pipeline</text>
+    <g fill="#fff" stroke="#b4c7d8" stroke-width="2"><rect x="25" y="128" width="180" height="70" rx="10"/><rect x="260" y="128" width="220" height="70" rx="10"/><rect x="540" y="128" width="230" height="70" rx="10"/><rect x="830" y="128" width="225" height="70" rx="10"/></g>
+    <g font-size="18" font-weight="600"><text x="115" y="157">Excel workbook</text><text x="370" y="157">Map and validate</text><text x="655" y="157">Write output files</text><text x="942" y="157">Load in application</text></g>
+    <g font-size="14" fill="#526783"><text x="115" y="180">tables.xlsx</text><text x="370" y="180">DataSource / KeyRow</text><text x="655" y="180">Protobuf / JSON / Lua / …</text><text x="942" y="180">Generated or custom readers</text><text x="370" y="82">Schema descriptor + mapping rules</text><text x="540" y="250">Illustration · field names and record values retain their protocol meaning</text></g>
+    <g stroke="#526783" stroke-width="2" marker-end="url(#arrow)"><path d="M205 163h55"/><path d="M480 163h60"/><path d="M770 163h60"/><path d="M370 92v36"/></g>
+  </g>
+</svg>

@@ -8,9 +8,19 @@ from xml.sax.saxutils import escape
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--protoc', required=True, help='Path to the project-compatible protoc')
+parser.add_argument('--locale', choices=['zh-Hans', 'en'], default='zh-Hans',
+                    help='Language of the documentation sample')
 args = parser.parse_args()
 sample = Path(__file__).resolve().parent.parent / 'source/sample/current'
+if args.locale == 'en':
+    sample = sample / 'en'
 tables = json.loads((sample / 'tables.json').read_text(encoding='utf-8'))
+# These are parser keywords, not freely translatable display headings.
+for name, rows in tables.items():
+    if name.startswith('scheme_'):
+        expected = ['header', 'Description', 'major', 'minor', 'addition'] if args.locale == 'en' else ['字段', '说明', '主配置', '次配置', '补充配置']
+        if rows[0] != expected:
+            raise ValueError(f'{name}: expected converter-compatible headers {expected}')
 ns = 'http://schemas.openxmlformats.org/spreadsheetml/2006/main'
 rel = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'
 

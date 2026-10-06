@@ -1,36 +1,36 @@
 ---
 title: 下载与安装
-description: 当前组件版本、平台包选择和运行环境
+description: 最新正式版下载、平台包选择和运行环境
 ---
 
 # 下载与安装
 
 import ToolchainCatalog from '@site/src/components/ToolchainCatalog';
 
-## 按系统下载最新版本
+## 下载最新版本 {#按系统下载最新版本}
 
-以下清单自动查询各组件的 **latest 正式 Release**，列出适合目标操作系统的实际下载链接。先确认系统，再选 CPU 架构；JAR 和协议包各系统通用。GUI 的 bootstrap / offline 区别见下文。
+每个组件提供一个 **下载最新版本** 入口，在最新发布页选择适合目标系统和 CPU 架构的包。JAR 和协议包各系统通用；GUI 的 bootstrap / offline 区别见下文。尚无正式版的组件提供当前源码。
 
 <ToolchainCatalog />
 
-## 本文核验版本
+## 组件与运行时 {#本文核验版本}
 
-截至 2026-10-05，以下四个组件的正式版已经核验。表中的版本用于说明本文示例的验证环境，下载以页面上方实时查询的最新版本为准。它们独立发布，版本号无需相同；CLI 和 GUI 都调用同一个 xresloader JAR。
+各组件独立发布，版本号无需相同；CLI 和 GUI 都调用同一个 xresloader JAR。上方目录显示查询到的正式版本，发行包以最新发布页为准。
 
-| 组件 | 当前正式版 | 运行时与用途 |
-| --- | --- | --- |
-| [xresloader](https://github.com/xresloader/xresloader/releases/latest) | 2.23.7 | Java 17+；核心转换引擎 |
-| [xresconv-cli](https://github.com/xresloader/xresconv-cli/releases/latest) | 2.0.2 | 原生 Rust 程序；CLI 批量转表工具 |
-| [xresconv-gui](https://github.com/xresloader/xresconv-gui/releases/latest) | 3.0.0 | Tauri 2、系统 WebView、包内 Node.js；GUI 批量转表工具 |
-| [xresloader-dump-bin](https://github.com/xresloader/xresloader-dump-bin/releases/latest) | 2.6.0 | 原生 Rust 程序；查看导出的二进制文件 |
+| 组件 | 运行时与用途 |
+| --- | --- |
+| xresloader | Java 17+；核心转换引擎 |
+| xresconv-cli | 原生 Rust 程序；CLI 批量转表工具 |
+| xresconv-gui | Tauri 2、系统 WebView、包内 Node.js；GUI 批量转表工具 |
+| xresloader-dump-bin | 原生 Rust 程序；查看导出的二进制文件 |
 
 ## 核心引擎
 
-安装 [Java](https://adoptium.net/) 17 或以上版本，优先使用与机器架构相符的 64 位版本。下载 `xresloader-2.23.7.jar`，这是包含依赖的可运行包；`original-xresloader-2.23.7.jar` 不是快速上手使用的完整包。
+安装 [Java](https://adoptium.net/) 17 或以上版本，优先使用与机器架构相符的 64 位版本。下载最新完整包 `xresloader-<version>.jar`，并保存为 `xresloader.jar` 以使用下方命令。`<version>` 是发行版本号；`original-xresloader-<version>.jar` 不包含快速上手需要的完整依赖。
 
 ```sh
 java -version
-java -jar xresloader-2.23.7.jar --version
+java -jar xresloader.jar --version
 ```
 
 创建自己的协议时，还需从 [protobuf 官方发行页](https://github.com/protocolbuffers/protobuf/releases/latest) 下载完整 protoc 包，并取得引擎发行页的 `protocols.zip`。`tools.zip` 提供 Python 辅助脚本和扩展 descriptor，**不包含 protoc 可执行文件**。用于生成应用加载代码的 protoc 应与应用的 protobuf 库匹配，不能直接复用历史 `.pb.cc`。
@@ -39,11 +39,11 @@ java -jar xresloader-2.23.7.jar --version
 
 选择对应操作系统和架构的包，解压后将可执行文件放到 PATH，或用完整路径运行。正式 CLI 不需要安装 Python 或 Rust。
 
-| 平台 | 核心发行包 |
+| 平台 | 发行包名格式（`<version>` 为最新版本号） |
 | --- | --- |
-| Windows x64 / ARM64 | `xresconv-cli-2.0.2-<target>-pc-windows-msvc.zip`，target 为 x86_64 / aarch64 |
-| Linux x64 / ARM64 | `xresconv-cli-2.0.2-<target>-unknown-linux-gnu.tar.gz` 或 musl 包 |
-| macOS Intel / Apple Silicon | `xresconv-cli-2.0.2-x86_64-apple-darwin.tar.gz` / `aarch64-apple-darwin.tar.gz` |
+| Windows x64 / ARM64 | `xresconv-cli-<version>-<target>-pc-windows-msvc.zip`，target 为 x86_64 / aarch64 |
+| Linux x64 / ARM64 | `xresconv-cli-<version>-<target>-unknown-linux-gnu.tar.gz` 或 musl 包 |
+| macOS Intel / Apple Silicon | `xresconv-cli-<version>-<target>-apple-darwin.tar.gz`，target 为 x86_64 / aarch64 |
 
 发行页另有尽力构建的扩展平台，具体以该版本资产为准。用同名 `.sha256` 文件核对包的摘要。
 
@@ -57,7 +57,7 @@ Java 由 `-J`、`JAVA_HOME` 或 PATH 指定，见 [CLI 参考与 Python 迁移](
 
 下载与系统和 CPU 匹配的包并完整解压，保留 Node.js、资源和预检文件的相对位置。只复制 `.exe` 不能得到完整的可运行安装。
 
-| 平台 | 最低环境 | 当前包 |
+| 平台 | 最低环境 | 包格式 |
 | --- | --- | --- |
 | Windows x64 / ARM64 | Windows 10 1809；WebView2 120+ | bootstrap / offline `.7z` |
 | Linux x64 / ARM64 | Ubuntu 22.04 / glibc 2.35 基线；受支持发行版 | bootstrap `.tar.zst`、offline `.tar.zst` / `.AppImage` |
@@ -69,11 +69,11 @@ Java 由 `-J`、`JAVA_HOME` 或 PATH 指定，见 [CLI 参考与 Python 迁移](
 
 macOS 打开 DMG 后将应用复制到 Applications。Linux AppImage 需执行权限与挂载支持，无法挂载可选 offline `.tar.zst`。GUI 包内含 Node.js，Java 和 xresloader JAR 需单独准备。
 
-详细操作见 [GUI 3.0 使用与迁移](./xresconv-gui)。
+详细操作见 [GUI 使用与迁移](./xresconv-gui)。
 
 ## 示例与其他组件
 
-dump-bin 解压后即可运行，不要求 Java。用与数据对应的 descriptor 查看 bin，见 [二进制查看与提取](./ecosystem-and-tools)。代码生成器、配置模板和协议仓库目前没有 Release，组件清单提供最新 main 源码 ZIP；它们的运行依赖分别见使用文档。
+dump-bin 解压后即可运行，不要求 Java。用与数据对应的 descriptor 查看 bin，见 [二进制查看与提取](./ecosystem-and-tools)。尚未发布正式版的组件提供当前 main 源码 ZIP；首次发布正式版后，目录会显示最新版本入口。它们的运行依赖分别见使用文档。
 
 - [快速上手示例](/examples/quick-start.zip)：准备好的 Excel、descriptor 和 XML。
 - [xresconv-conf](https://github.com/xresloader/xresconv-conf)：完整配置与 include 示例。

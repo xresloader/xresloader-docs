@@ -463,6 +463,60 @@
 .referenceSection {
   border-top: 1px solid var(--line);
 }
+.consoleSection {
+  border-top: 1px solid var(--line);
+}
+.consoleIntro {
+  color: var(--muted);
+  line-height: 1.85;
+}
+.consoleGallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.8rem;
+  margin-top: 1.8rem;
+}
+.consoleFigure {
+  flex: 1 1 1100px;
+  max-width: 1320px;
+  margin: 0;
+  min-width: 0;
+}
+.consoleFigure h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.6rem;
+}
+.consoleCommand {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  margin-bottom: 0.8rem;
+}
+.consoleViewport {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 0.65rem;
+  background: #11232c;
+}
+.consoleViewport img {
+  display: block;
+  width: 100%;
+  min-width: 1100px;
+  max-width: none;
+  height: auto;
+}
+.consoleViewport:focus-visible,
+.consoleViewport a:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+.consoleFigure figcaption {
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.7;
+  margin-top: 0.6rem;
+}
 
 .referenceGrid {
   display: grid;

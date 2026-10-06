@@ -1,0 +1,10 @@
+{
+  "link.title.文档": { "message": "Documentation" },
+  "link.title.生态": { "message": "Ecosystem" },
+  "link.title.更多": { "message": "More" },
+  "link.item.label.快速上手": { "message": "Quick start" },
+  "link.item.label.高级用法": { "message": "Advanced usage" },
+  "link.item.label.读表代码生成": { "message": "Data loader generation" },
+  "link.item.label.用户群": { "message": "Community" },
+  "link.item.label.问题反馈": { "message": "Report an issue" }
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <!-- Load sample.xml first, then apply this file; the working directory stays at the sample directory. -->
+  <include>sample.xml</include>
+  <global>
+    <!-- This output_type group replaces the included group; only Lua is exported. -->
+    <output_type desc="Maps to -t">lua</output_type>
+    <output_dir desc="Relative to work_dir">output/lua</output_dir>
+    <rename desc="Maps to -n">/(?i)\.bin$/\.lua/</rename>
+    <option name="Pretty-print output">--pretty 2</option>
+  </global>
+</root>

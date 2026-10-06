@@ -1,0 +1,9 @@
+[
+  { "name": "Select upgrades", "by_schemes": [{ "file": "tables.xlsx", "scheme": "scheme_upgrade" }], "default_selected": false, "style": "outline-primary" },
+  { "name": "Select inline table", "by_sheets": [{ "file": "tables.xlsx", "sheet": "upgrade" }], "style": "outline-info" },
+  { "name": "Five-second timer", "action": ["script: delaycall"] },
+  { "name": "Custom script", "action": ["script: Custom script"] },
+  { "name": "Select all", "action": ["select_all"] },
+  { "name": "Deselect all", "action": ["unselect_all"] },
+  { "name": "Reload buttons", "action": ["reload"] }
+]

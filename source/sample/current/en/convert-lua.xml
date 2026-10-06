@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <!-- Reuse the starter manifest; this output_type group replaces bin / JSON with Lua. -->
+  <include>convert.xml</include>
+  <global>
+    <output_type rename="/(?i)\.bin$/\.lua/">lua</output_type>
+  </global>
+</root>

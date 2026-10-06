@@ -1,0 +1,7 @@
+{
+  "sidebar.docsSidebar.category.用户文档": { "message": "User guides" },
+  "sidebar.docsSidebar.category.批量转表": { "message": "Batch conversion" },
+  "sidebar.docsSidebar.category.读表代码生成": { "message": "Data loader generation" },
+  "sidebar.docsSidebar.category.开发文档": { "message": "Development" },
+  "sidebar.docsSidebar.category.关于项目": { "message": "About" }
+}

@@ -33,13 +33,13 @@ xresloader 将 Excel 策划数据转换为结构化配置，配合批量工具�
 | [xresconv-conf](https://github.com/xresloader/xresconv-conf) | XML 配置与 GUI 扩展示例 | [最新源码](https://github.com/xresloader/xresconv-conf/archive/refs/heads/main.zip) |
 | [xresloader-protocol](https://github.com/xresloader/xresloader-protocol) | 数据头与协议扩展 | [最新源码](https://github.com/xresloader/xresloader-protocol/archive/refs/heads/main.zip) |
 
-后面三个项目尚无 Release。按当前操作系统下载实际发行包见 [下载与安装](./users/download)。[文档仓库](https://github.com/xresloader/xresloader-docs) 保留配置、脚本和示例源。
+尚无正式版的组件可下载当前源码；最新版本与平台包选择见 [下载与安装](./users/download)。[文档仓库](https://github.com/xresloader/xresloader-docs) 保留配置、脚本和示例源。
 
 ## 选择入口
 
 | 目标 | 从这里开始 |
 | --- | --- |
-| 第一次导出数据 | [快速上手](./users/quick-start)：下载准备好的示例，检查四个输出 |
+| 快速上手 | [快速上手](./users/quick-start)：下载准备好的示例，检查四个输出 |
 | 安装当前工具 | [下载与安装](./users/download)：Java、平台包和 WebView |
 | 接入自动化 | [CLI 使用与迁移](./users/xresconv-cli)：Rust 原生程序、参数和退出状态 |
 | 交互式选表 | [GUI 使用与迁移](./users/xresconv-gui)：Tauri 工作台、日志和显示设置 |
@@ -58,7 +58,7 @@ xresloader 将 Excel 策划数据转换为结构化配置，配合批量工具�
 - **映射**：多表合并、数据源范围、转置、数组和宏，见 [数据映射](./users/data-mapping)、[数据类型](./users/data-types) 与 [高级用法](./users/advance-usage)。
 - **运行时接入**：[读表代码生成](./users/xres-code-generator) 与 [周边工具](./users/ecosystem-and-tools)。
 
-## 升级时先确认
+## 升级注意事项 {#升级时先确认}
 
 CLI 2.x 已移除主程序对 Python 的依赖，旧 Python 文件负责转发。GUI 3.0 已替换 Electron，项目脚本不再获得 DOM、jQuery 或 Electron 接口。安装与迁移说明分别放在组件文档中。
 

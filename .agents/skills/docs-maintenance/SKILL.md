@@ -13,10 +13,10 @@ description: 核验并维护 xresloader 工具链文档、配置示例、侧栏�
 
 ## 工作流
 
-1. 阅读目标页面的 frontmatter、邻近文档、`sidebars.js` 与引用资源。新增页面先决定 `id`、`slug`、标题及侧栏位置；维持 `zh-Hans` 和现有 URL 合同。
+1. 阅读目标页面的 frontmatter、邻近文档、`sidebars.js` 与引用资源。新增页面先决定 `id`、`slug`、标题及侧栏位置；英文 `/docs/...`、中文 `/zh-Hans/docs/...` 保持页面 ID 与路径后缀一致。公开修改与截图更新按需读 [多语言维护](references/localization.md)，同步两个语言及可用锚点。
 2. 技术改动追到上游实现、调用参数及版本依据，核对命令示例、配置字段与结果。样例变更同时检查 `source/sample/` 中 proto、XML、Excel 和生成产物的来源；不要把静态样例存在称为执行成功。
 3. 编写或润色成段说明时按 [writing-guidance](../writing-guidance/SKILL.md) 处理结构、措辞和语义复核；面向使用者写清可观察行为、前提与适用版本。纯标点修正不必加载写作流程。
-4. 公开页面使用已有 `/docs/...` 路由与 `/img/...` 资源语义；本地相对 Markdown 引用用构建核验。修改能力摘要时同步 `docs/intro.md` 与 `src/pages/index.jsx` 中对应内容。图示源在 `static/img/development/*.drawio`，图片为对应 `.png`；修改后检查文字、连线、缩放和渲染。
+4. 文档内引用由 Docusaurus 保持当前语言，静态下载与资源使用全站路径；本地相对 Markdown 引用用双语言构建核验。组件下载遵循 [latest 合同](references/component-review.md)，不把当前验收版本写成固定下载入口。修改能力摘要时同步两个语言的 intro 与 `src/pages/index.jsx` 中对应翻译。图示沿用 Draw.io / PNG 或可编辑 SVG；含文字资源采用对应语言版本，修改后检查文字、连线、缩放和渲染。
 5. 回读正文、示例与引用，按 [工程工作流](../../../docs/ai/engineering-workflow.md) 的文档门禁验证。技术事实变化才更新来源索引；不把内部 `docs/ai/` 加到公开侧栏、链接或搜索。
 
 ## 异常与恢复

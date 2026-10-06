@@ -4,6 +4,8 @@ description: 常见问题与排障提示
 ---
 # FAQ
 
+网站默认英文，首次访问首页时根据浏览器的系统语言偏好选择英文或简体中文。语言菜单可手动切换、记住选择，也可恢复跟随系统；直接打开文档链接保持该链接语言。
+
 ## 哪里有完整的示例？
 
 转表功能和二进制数据读取的示例见： [https://github.com/xresloader/xresloader/tree/main/sample](https://github.com/xresloader/xresloader/tree/main/sample)
@@ -121,3 +123,7 @@ xresconv-gui --custom-selector selectors.json
 ```
 
 这属于当前版本的启动顺序问题；仅点击“重载配置”不会重新读取已经丢失的启动接线。选择器规则和按钮脚本见 [扩展文档](./xresconv-scripts)。
+
+## 网站语言与 GUI、日志为什么不同？ {#website-tool-language}
+
+GUI 的语言在自己的「显示设置」中选择，不跟随网页切换。项目条目名称、脚本按钮与提示来自 XML / selectors.json，应使用对应语言的入门包。当前 CLI、Java 引擎与 dump-bin 没有语言开关，原始诊断为英文；中文页面使用中文说明和数据，保留真实日志。

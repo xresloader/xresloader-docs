@@ -1,0 +1,130 @@
+{
+  "kind": [
+    [
+      "Character ID",
+      "Name"
+    ],
+    [
+      "id",
+      "name"
+    ],
+    [
+      10001,
+      "Aurora"
+    ],
+    [
+      10002,
+      "Jack"
+    ],
+    [
+      10003,
+      "Kula"
+    ]
+  ],
+  "upgrade": [
+    [
+      "Character ID",
+      "Level",
+      "Currency",
+      "Cost"
+    ],
+    [
+      "Id",
+      "Level",
+      "CostType",
+      "CostValue"
+    ],
+    [
+      10001,
+      1,
+      0,
+      0
+    ],
+    [
+      10001,
+      2,
+      10001,
+      50
+    ],
+    [
+      10001,
+      3,
+      10001,
+      100
+    ]
+  ],
+  "scheme_kind": [
+    [
+      "header",
+      "Description",
+      "major",
+      "minor",
+      "addition"
+    ],
+    [
+      "DataSource",
+      "Character data",
+      "tables.xlsx",
+      "kind",
+      "3,1"
+    ],
+    [
+      "ProtoName",
+      "Schema",
+      "role_cfg",
+      "",
+      ""
+    ],
+    [
+      "OutputFile",
+      "Output",
+      "role_cfg.bin",
+      "",
+      ""
+    ],
+    [
+      "KeyRow",
+      "Field row",
+      "2",
+      "",
+      ""
+    ]
+  ],
+  "scheme_upgrade": [
+    [
+      "header",
+      "Description",
+      "major",
+      "minor",
+      "addition"
+    ],
+    [
+      "DataSource",
+      "Upgrade data",
+      "tables.xlsx",
+      "upgrade",
+      "3,1"
+    ],
+    [
+      "ProtoName",
+      "Schema",
+      "role_upgrade_cfg",
+      "",
+      ""
+    ],
+    [
+      "OutputFile",
+      "Output",
+      "role_upgrade_cfg.bin",
+      "",
+      ""
+    ],
+    [
+      "KeyRow",
+      "Field row",
+      "2",
+      "",
+      ""
+    ]
+  ]
+}

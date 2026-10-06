@@ -1,0 +1,305 @@
+{
+  "site.message.1": {
+    "message": "数据映射"
+  },
+  "site.message.2": {
+    "message": "字段、数组、嵌套结构与数据源范围"
+  },
+  "site.message.3": {
+    "message": "清单与输出矩阵"
+  },
+  "site.message.4": {
+    "message": "include、目录、重命名与标签筛选"
+  },
+  "site.message.5": {
+    "message": "校验与项目扩展"
+  },
+  "site.message.6": {
+    "message": "验证器、脚本、事件和自定义按钮"
+  },
+  "site.message.7": {
+    "message": "开发与集成"
+  },
+  "site.message.8": {
+    "message": "依赖、构建、进程架构与接口"
+  },
+  "site.message.9": {
+    "message": "跨平台批量转换"
+  },
+  "site.message.10": {
+    "message": "Java 引擎、原生 Rust CLI 与 Tauri GUI 支持 Windows、macOS 和 Linux。桌面选表与构建流水线可复用同一份 XML 清单。"
+  },
+  "site.message.11": {
+    "message": "多格式输出"
+  },
+  "site.message.12": {
+    "message": "protobuf、MsgPack、Lua、JavaScript、JSON、XML，以及 Unreal Engine DataTable JSON / CSV，满足客户端和服务端的不同需求。"
+  },
+  "site.message.13": {
+    "message": "嵌套结构与字段类型"
+  },
+  "site.message.14": {
+    "message": "支持 proto2 / proto3、嵌套 message、repeated、oneof、map，以及单元格内的 Plain 结构。"
+  },
+  "site.message.15": {
+    "message": "枚举与描述信息导出"
+  },
+  "site.message.16": {
+    "message": "导出协议枚举、常量和 descriptor，生成 Lua / JavaScript 代码或 JSON / XML 数据，配合自定义插件扩展反射信息。"
+  },
+  "site.message.17": {
+    "message": "别名与数据校验"
+  },
+  "site.message.18": {
+    "message": "字段和枚举可使用别名与宏；范围、跨表引用和逻辑组合验证器在转换时检查输入数据。"
+  },
+  "site.message.19": {
+    "message": "字段映射与合表"
+  },
+  "site.message.20": {
+    "message": "多张 Excel 合并输出，支持字段名正则映射、范围、转置和数组；协议插件控制输出行为。"
+  },
+  "site.message.21": {
+    "message": "输出控制"
+  },
+  "site.message.22": {
+    "message": "公式缓存或显式实时计算、空数据裁剪与定长保留、数据版本号、多格式输出目录和标签筛选。"
+  },
+  "site.message.23": {
+    "message": "数据加载与索引"
+  },
+  "site.message.24": {
+    "message": "配套 C++、C#、Go、upb、pbc、lua-protobuf 等接入方式；Lua 支持 global / require / module，JavaScript 支持 global / Node.js / AMD。"
+  },
+  "site.message.25": {
+    "message": "Unreal Engine 与项目扩展"
+  },
+  "site.message.26": {
+    "message": "输出 UE DataTable，生成加载代码；通过 GUI 事件、自定义按钮和 Node.js 脚本接入项目工具。dump-bin 用于查看二进制数据。"
+  },
+  "site.message.27": {
+    "message": "Excel 数据转表工具链"
+  },
+  "site.message.28": {
+    "message": "Excel 游戏配置转换，支持协议映射、数据校验、CLI 与 GUI 批量转换及读表代码生成。提供快速上手和技术参考。"
+  },
+  "site.message.29": {
+    "message": "Excel 游戏配置"
+  },
+  "site.message.30": {
+    "message": "转换工具链"
+  },
+  "site.message.31": {
+    "message": "将 Excel 表格转换为结构化游戏配置。"
+  },
+  "site.message.32": {
+    "message": "按协议映射和校验字段，用 CLI 或 GUI 批量转换，并生成项目所需的读表代码。"
+  },
+  "site.message.33": {
+    "message": "快速上手"
+  },
+  "site.message.34": {
+    "message": "下载工具"
+  },
+  "site.message.35": {
+    "message": "准备好的 Excel、协议和 XML · 入门无需安装 protoc"
+  },
+  "site.message.36": {
+    "message": "表格映射、校验与转换流程"
+  },
+  "site.message.37": {
+    "message": "输入与输出格式"
+  },
+  "site.message.38": {
+    "message": "配置工作流"
+  },
+  "site.message.39": {
+    "message": "策划数据"
+  },
+  "site.message.40": {
+    "message": "结构与约束"
+  },
+  "site.message.41": {
+    "message": "字段映射 / 数据校验 / 转换"
+  },
+  "site.message.42": {
+    "message": "命令行接入流水线，桌面工具交互选表。"
+  },
+  "site.message.43": {
+    "message": "工具链组件"
+  },
+  "site.message.44": {
+    "message": "组件与下载"
+  },
+  "site.message.45": {
+    "message": "工具链概览"
+  },
+  "site.message.46": {
+    "message": "游戏配置"
+  },
+  "site.message.47": {
+    "message": "主要功能"
+  },
+  "site.message.48": {
+    "message": "完整能力概览"
+  },
+  "site.message.49": {
+    "message": "查看功能与示例"
+  },
+  "site.message.50": {
+    "message": "快速上手"
+  },
+  "site.message.51": {
+    "message": "转换示例"
+  },
+  "site.message.53": {
+    "message": "示例包含 Excel、协议描述文件和 XML 清单，输出 bin 与 JSON。"
+  },
+  "site.message.54": {
+    "message": "快速上手介绍转换、数据核对和加载方法。"
+  },
+  "site.message.55": {
+    "message": "下载示例 ZIP"
+  },
+  "site.message.56": {
+    "message": "准备工具"
+  },
+  "site.message.57": {
+    "message": "安装 Java，下载 xresloader JAR，并选择 CLI 或 GUI。"
+  },
+  "site.message.58": {
+    "message": "预览转换任务"
+  },
+  "site.message.59": {
+    "message": "用同一份 XML 关联表格、协议与输出。"
+  },
+  "site.message.60": {
+    "message": "核对并加载数据"
+  },
+  "site.message.61": {
+    "message": "对照 Excel、查看 bin，用示例代码加载 JSON 或 protobuf。"
+  },
+  "site.message.62": {
+    "message": "桌面批量转换"
+  },
+  "site.message.64": {
+    "message": "在树形列表中选择条目、设置输出格式，并查看转换进度和日志。支持筛选日志和取消运行中的转换。"
+  },
+  "site.message.65": {
+    "message": "查看界面与操作"
+  },
+  "site.message.66": {
+    "message": "接入项目脚本"
+  },
+  "site.message.67": {
+    "message": "xresconv-gui 3.0 正式版选择三项条目，真实转换完成并显示六个输出的成功日志"
+  },
+  "site.message.68": {
+    "message": "3.0 正式版 · 使用完整配置示例实际转换"
+  },
+  "site.message.69": {
+    "message": "技术参考"
+  },
+  "site.message.70": {
+    "message": "配置与集成"
+  },
+  "site.message.71": {
+    "message": "仓库 ↗"
+  },
+  "site.message.72": {
+    "message": "使用文档 ↗"
+  },
+  "site.message.74": {
+    "message": "版本信息暂不可用，仍可打开最新发布页。"
+  },
+  "site.message.75": {
+    "message": "正在查询最新正式版…"
+  },
+  "site.message.77": {
+    "message": "此项目尚无正式版本，提供当前 main 分支源码。"
+  },
+  "site.message.78": {
+    "message": "下载最新源码 ↓"
+  },
+  "site.message.84": {
+    "message": "在最新发布页选择适合目标系统的包；尚无正式版的项目提供当前源码。"
+  },
+  "catalog.latest": {
+    "message": "最新正式版 {version}"
+  },
+  "catalog.downloadLatest": {
+    "message": "下载最新版本 ↓"
+  },
+  "home.cli.title": {
+    "message": "命令行批量转换"
+  },
+  "home.cli.guide": {
+    "message": "CLI 参考"
+  },
+  "home.cli.description": {
+    "message": "使用 --test 预览 XML 清单对应的转换命令。执行同一清单可导出 bin 和 JSON，退出码和日志用于核对结果。"
+  },
+  "home.cli.preview": {
+    "message": "任务预览"
+  },
+  "home.cli.conversion": {
+    "message": "转换结果"
+  },
+  "home.cli.previewAlt": {
+    "message": "xresconv-cli 2.0.2 实际预览输出：两张表的四条转换命令，不生成数据文件"
+  },
+  "home.cli.conversionAlt": {
+    "message": "xresconv-cli 2.0.2 实际转换输出：四个 bin 和 JSON 文件成功导出，每个文件三条记录，失败任务数为零"
+  },
+  "home.cli.fullImage": {
+    "message": "查看原图：{title}"
+  },
+  "home.cli.caption": {
+    "message": "实际输出快照 · 路径已缩写，诊断保留工具原始语言。窄屏可横向滚动或点击查看原图。"
+  },
+  "catalog.xresloader.role": {
+    "message": "Excel 转表引擎"
+  },
+  "catalog.xresloader.purpose": {
+    "message": "按协议映射和校验表格，输出 protobuf、MsgPack、Lua、JavaScript、JSON、XML 与 UE DataTable。"
+  },
+  "catalog.xresconv-cli.role": {
+    "message": "CLI 批量转表工具"
+  },
+  "catalog.xresconv-cli.purpose": {
+    "message": "用 XML 批量转换多张表，预览任务、控制并发并接入构建流水线。Rust 原生程序，无需 Python。"
+  },
+  "catalog.xresconv-gui.role": {
+    "message": "GUI 批量转表工具"
+  },
+  "catalog.xresconv-gui.purpose": {
+    "message": "在桌面界面选表、预览和批量转换，查看日志与进度，接入项目事件和自定义按钮。"
+  },
+  "catalog.xresloader-dump-bin.role": {
+    "message": "二进制数据查看工具"
+  },
+  "catalog.xresloader-dump-bin.purpose": {
+    "message": "按 descriptor 展示已经转出的 bin 文件，核对头信息和记录，提取字符串或带标签的数据。"
+  },
+  "catalog.xres-code-generator.role": {
+    "message": "读表代码生成器"
+  },
+  "catalog.xres-code-generator.purpose": {
+    "message": "生成 C++、C#、Go、Lua、upb、lua-protobuf 和 Unreal Engine 的读表代码与索引。"
+  },
+  "catalog.xresconv-conf.role": {
+    "message": "批量转表配置与扩展示例"
+  },
+  "catalog.xresconv-conf.purpose": {
+    "message": "XML 清单、include、分组、输出规则及 GUI 事件和按钮的配置示例。"
+  },
+  "catalog.xresloader-protocol.role": {
+    "message": "数据头与协议扩展"
+  },
+  "catalog.xresloader-protocol.purpose": {
+    "message": "提供 bin 包装结构和 protobuf 自定义选项，供数据加载、校验及代码生成使用。"
+  },
+  "locale.followSystem": {
+    "message": "跟随系统语言"
+  }
+}

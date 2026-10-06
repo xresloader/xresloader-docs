@@ -12,7 +12,7 @@
 
 合同至少说明目标、范围、依赖、兼容/URL/数据影响、失败模式、验收场景、验证及回滚。已有 issue、设计或计划可复用，内容必须先核验。复杂或长期任务把合同留在已有计划；没有权威文件时按实际任务创建一个具体文档，不批量建模板。
 
-当前没有 `openspec/`、已启用 Superpowers、Plan 或 roadmap，也未安装 OpenSpec。采用现有 Markdown 设计/issue 与覆盖记录作为替代；不声称调用了这些工具，不为普通维护增加额外审批。OpenSpec/Superpowers 仅在项目明确决定且授权时采用，先核验已安装版本、profile、schema、客户端生成命令及其真实审批要求；最新 release 或参考理念不等于当前已执行。
+当前没有 `openspec/` 或已启用 Superpowers，也未安装 OpenSpec。采用现有 Markdown 设计/issue 与覆盖记录；多语言合同与进度维护在 [multilingual-plan.md](multilingual-plan.md)。不声称调用了这些工具，不为普通维护增加额外审批。OpenSpec/Superpowers 仅在项目明确决定且授权时采用，先核验已安装版本、profile、schema、客户端生成命令及其真实审批要求；最新 release 或参考理念不等于当前已执行。
 
 采用 OpenSpec 后才执行：读实现/specs/活动 changes/路线图；核验 profile 与命令映射；充分探索后生成 proposal、行为差异、design 和 tasks（以实际 schema 为准）；检查 status/show/validate；逐项实施及验收；合同有错先协调权威设计，不能改断言遮掩；检查 delta 与主 specs 并同步；解决阻塞后归档。归档警告或成功不代表实现正确。与 Superpowers 组合需项目显式设计，不能宣称自动集成；其 Native execution/子代理路径按实际版本核验。
 
@@ -25,6 +25,8 @@
 | 命令 | 前提与输出 | 验证范围 |
 | --- | --- | --- |
 | `npm run build` | 已安装依赖；输出 `build/` | MDX、页面编译、路由和链接，不运行样例语言代码 |
+| `npm run check:i18n` | 31 对公开文档及翻译摘要、对应语言资源；build 前自动运行 | 翻译同步、资源存在与语言选择场景，不证明翻译质量或真实浏览器行为 |
+| `npm run check:downloads` | latest API 与稳定发布页入口；npm build 前自动运行 | 版本更新、首次发布、无正式版及请求失败；单一入口、浏览器点击与真实 API 另行核验 |
 | `npm start -- --host 127.0.0.1` | 本地开发预览，持续进程 | 手动/浏览器验证修改页面；必须跟踪与结束本任务进程 |
 | `npm run serve -- --host 127.0.0.1` | 已构建产物 | 发布前静态预览；不向公网开放 |
 | `pnpm install --frozen-lockfile` / `pnpm build` | CI 为 pnpm 9 / Node 24 | 安装一致性与 CI 构建；本机 pnpm 11 不等同 |
@@ -35,11 +37,13 @@
 
 Markdown 根配置启用默认规则，只取消中文长表格/URL 不适用的行长约束；不因单个失败全局关规则。公开旧文档不强制套用新 lint 全仓修复。新引用、代码围栏、frontmatter、Skill 资源需回读；失效链接不能靠关检查通过。
 
+Docusaurus start 一次预览一个语言，显式传 `--locale en` / `--locale zh-Hans`。英文开发首页可带 `?persistLocale=true` 固定选择，避免浏览器偏好跳到未启动的中文路由；两种语言的自动选择和切换在 build + serve 中验收。
+
 ## 按变更验证
 
 - 文档：核验对应版本事实、命令参数、资源与链接，构建目标页面并核对侧栏/URL。样例执行缺少工具时记录具体缺失条件，不用站点构建替代。
 - 页面/CSS：构建后验证桌面与窄屏、浅色/深色、导航和搜索；实际浏览器工具不可用则保留视觉验收未执行。缺陷尽量保存改前/改后证据。
-- 内部资料排除：检查 `.docusaurus/docusaurus-plugin-content-docs/default/` 中全部 doc metadata，`build/sitemap.xml` 与 `build/search-index*.json` 不含 `/docs/ai/`；公开文档数量应与基线一致。侧栏没有条目不证明无公开路由。
+- 内部资料排除：检查 `.docusaurus/docusaurus-plugin-content-docs/default/` 中全部 doc metadata，两个语言的 sitemap 与 search-index 不含 `/docs/ai/`；每个语言公开文档数量应与源目录一致。侧栏没有条目不证明无公开路由。
 - 图表：沿用 Draw.io 源与 PNG，或按实际需要选 Mermaid/SVG/Excalidraw；数据图再选对应工具。修改时检查语法、实际渲染及缩放可读性，不统一强制工具或为未改图表安装依赖。
 - 规则/Skills：用可用的 `skills-ref validate <skill-dir>` 或现有 frontmatter 验证器；检查名称、资源和内容合同。规范检查通过与客户端发现、真实触发及任务质量分开报告。
 

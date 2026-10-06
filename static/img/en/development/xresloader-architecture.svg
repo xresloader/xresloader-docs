@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 380" role="img" aria-labelledby="title desc">
+  <title id="title">xresloader conversion engine modules</title><desc id="desc">Arguments select rule, schema and output modules. The schema and column mappings build an AST used to validate records and write files.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="#526783"/></marker></defs>
+  <rect width="1080" height="380" rx="18" fill="#f5f8fc"/>
+  <g font-family="Segoe UI,sans-serif" fill="#19324a" text-anchor="middle">
+    <text x="540" y="38" font-size="24" font-weight="700">xresloader engine</text>
+    <g fill="#fff" stroke="#b4c7d8" stroke-width="2"><rect x="30" y="85" width="205" height="70" rx="10"/><rect x="290" y="85" width="210" height="70" rx="10"/><rect x="560" y="85" width="220" height="70" rx="10"/><rect x="845" y="85" width="205" height="70" rx="10"/><rect x="30" y="230" width="205" height="70" rx="10"/><rect x="290" y="230" width="210" height="70" rx="10"/><rect x="560" y="230" width="220" height="70" rx="10"/><rect x="845" y="230" width="205" height="70" rx="10"/></g>
+    <g font-size="18" font-weight="600"><text x="132" y="115">Arguments / stdin</text><text x="395" y="115">Rule parser</text><text x="670" y="115">Schema module</text><text x="947" y="115">Mapping AST</text><text x="132" y="260">Excel records</text><text x="395" y="260">Record builder</text><text x="670" y="260">Validation</text><text x="947" y="260">Output module</text></g>
+    <g font-size="14" fill="#526783"><text x="132" y="138">Options and conversion tasks</text><text x="395" y="138">Scheme settings</text><text x="670" y="138">Protocol descriptor</text><text x="947" y="138">Columns → fields</text><text x="132" y="284">Source rows and cached data</text><text x="395" y="284">Structured messages</text><text x="670" y="284">Rules and target adaptation</text><text x="947" y="284">Binary / text files</text><text x="540" y="346">Illustration · conversion reuses input data and supports multiple output formats</text></g>
+    <g stroke="#526783" stroke-width="2" fill="none" marker-end="url(#arrow)"><path d="M235 120h55"/><path d="M500 120h60"/><path d="M780 120h65"/><path d="M947 155v40H395v35"/><path d="M235 265h55"/><path d="M500 265h60"/><path d="M780 265h65"/></g>
+  </g>
+</svg>

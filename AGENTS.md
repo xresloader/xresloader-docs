@@ -2,7 +2,7 @@
 
 ## 项目与范围
 
-本仓库维护 xresloader 工具链的中文 Docusaurus 文档站点。公开内容在 `docs/users/`、`docs/development/`、`docs/about/`；侧栏由 `sidebars.js` 显式维护，首页在 `src/pages/index.jsx`，样式在 `src/css/custom.css`。`source/sample/` 包含历史样例与生成代码，不能把它当成工具链实现或已验证的当前行为。
+本仓库维护 xresloader 工具链的英文/简体中文 Docusaurus 文档站点。中文源在 `docs/users/`、`docs/development/`、`docs/about/`，英文完整覆盖在 `i18n/en/docusaurus-plugin-content-docs/current/`；默认 `en`，中文路由前缀 `/zh-Hans/`。侧栏由 `sidebars.js` 显式维护，首页在 `src/pages/index.jsx`，样式在 `src/css/custom.css`。`source/sample/` 包含历史样例与生成代码，不能把它当成工具链实现或已验证的当前行为。
 
 站点使用 Node >=22、Docusaurus 3.10.2、React 19.3.0；CI 使用 Node 24 / pnpm 9。上游 xresloader、xresconv 和代码生成器是独立项目，修改本仓库不授权修改它们。`docs/ai/` 是内部维护资料，必须从站点路由和搜索索引排除。
 
@@ -16,11 +16,13 @@
 - 维护规则、Skills、客户端兼容或初始化时，读 [ai-agent-maintenance](.agents/skills/ai-agent-maintenance/SKILL.md)。
 - 非简单变更、缺陷诊断或长期计划，读 [工程工作流](docs/ai/engineering-workflow.md)；进程、重试、秘密、MCP 或部署，读 [操作约定](docs/ai/operations.md)。事实来源不明或升级时才读 [来源索引](docs/ai/source-index.md)。
 
+标题简短、正式，写明具体主题；宣传文案禁用“从……到……”和“先……再……”式口号，不用口语邀约或含义不清的能力承诺。链接与按钮采用目标页面名称，如“快速上手”；真实技术顺序、范围、引文和原始输出按语义保护，细则与反例由 writing-guidance 维护。
+
 ## 开发、构建与验证
 
 下列命令在仓库根执行。已有依赖时 `npm run build` 生成 `build/`；`npm start -- --host 127.0.0.1` 开发预览，`npm run serve -- --host 127.0.0.1` 预览构建。CI 的安装与构建合同为 `pnpm install --frozen-lockfile`、`pnpm build`（pnpm 9）。不要用本机其他 pnpm 版本自动重装模块来掩盖版本差异。
 
-当前没有 test、lint、format、typecheck 脚本，`tsconfig.json` 存在不表示类型检查已执行。验证内容、链接、MDX 编译与产物；行为变更补与风险相称的可复现检查。内部 Markdown 使用 [.markdownlint-cli2.jsonc](.markdownlint-cli2.jsonc)；命令和基线见 [工程工作流](docs/ai/engineering-workflow.md)。结束前执行 `git diff --check`。
+`npm run check:i18n` 校验翻译覆盖、已复核内容摘要、对应语言资源及入口语言行为，build 前自动运行。当前没有 test、lint、format、typecheck 脚本，`tsconfig.json` 存在不表示类型检查已执行。验证内容、链接、MDX 编译与产物；行为变更补与风险相称的可复现检查。内部 Markdown 使用 [.markdownlint-cli2.jsonc](.markdownlint-cli2.jsonc)；命令和基线见 [工程工作流](docs/ai/engineering-workflow.md)。结束前执行 `git diff --check`。
 
 ## 工具与执行约定
 

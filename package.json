@@ -6,6 +6,9 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
+    "check:i18n": "node scripts/check-i18n.mjs",
+    "check:downloads": "node scripts/check-downloads.mjs",
+    "prebuild": "npm run check:i18n && npm run check:downloads",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",

@@ -11,8 +11,8 @@ description: 实现或诊断本站页面、CSS、Docusaurus 配置与依赖的�
 
 1. 确认页面 URL、复现条件、预期结果及范围；先读 `package.json`、相关锁文件、`docusaurus.config.js`、`sidebars.js` 和目标 `src/` 文件。已有 Node 环境与 CI 的 pnpm 版本分别核验。
 2. 简单修改直接实施；缺陷先保存原症状与基线，复杂功能按 [工程工作流](../../../docs/ai/engineering-workflow.md) 写一个可审阅合同。涉及 MDX、搜索、路由或插件时查安装版本源码及官方文档，不能用新版建议推断已安装能力。
-3. 保持 `/` baseUrl、`zh-Hans`、公开文档 URL 和本地搜索语义，除非需求明确改变。内部维护文档排除使用现有 Docusaurus 默认 glob 加 `ai/**`，核对 route metadata、sitemap 和 search-index 产物，不能仅看侧栏。
-4. 修改 CSS/页面时验证实际桌面与窄屏、浅色与深色、导航和搜索；按变更选择键盘或辅助技术检查。先发现可用浏览器工具，不编造截图或 E2E 成功。配置与依赖变更只动必要合同，保持三个锁文件的关系可解释。
+3. 保持根 `/` baseUrl、默认英文和 `/zh-Hans/` 中文前缀；语言入口合同与对应资源见 [多语言维护](../docs-maintenance/references/localization.md)。页面文案用 Docusaurus Translate，中文 code.json 和配置标签的英文 JSON 同步。内部资料排除使用默认 glob 加 `ai/**`，核对两个语言的 route metadata、sitemap 和 search-index，不能仅看侧栏。
+4. 修改 CSS/页面时验证实际桌面与窄屏、浅色与深色、导航和搜索；按变更选择键盘或辅助技术检查。含终端图时检查展示字号、像素密度、局部滚动和原图入口；相同下载地址合并为一条，不添加无实际差异的平台选择。标题与按钮按 writing-guidance 复核。先发现可用浏览器工具，不编造截图或 E2E 成功。配置与依赖变更只动必要合同，保持三个锁文件的关系可解释。
 5. 执行根目录 `npm run build` 和 `git diff --check`。需要看运行页面时使用回环地址预览；进程、部署准备及回滚读 [操作约定](../../../docs/ai/operations.md)。同步公开文档或维护来源中受影响的事实。
 
 ## 异常与恢复
