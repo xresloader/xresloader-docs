@@ -1,10 +1,10 @@
 .home {
-  --surface: #fafbf7;
-  --card: #fff;
-  --muted: #53655e;
-  --line: #d4dfd7;
-  --soft: #e7efe7;
-  --ink: #183c34;
+  --surface: #edf1f5;
+  --card: #f4f7fa;
+  --muted: #536575;
+  --line: #d1dce5;
+  --soft: #e2edf1;
+  --ink: #17394b;
   color: var(--ink);
   background: var(--surface);
 }
@@ -79,7 +79,7 @@
 .hero {
   padding: clamp(3rem, 6vw, 6rem) 0;
   background:
-    linear-gradient(110deg, #e5efe2 0%, #edf3e8 55%, #dcece3 100%);
+    linear-gradient(110deg, #e5edf5 0%, #eaf0f6 55%, #deedf0 100%);
   border-bottom: 1px solid var(--line);
 }
 .heroGrid {
@@ -564,10 +564,10 @@
 :global(html[data-theme="light"]) .hero .eyebrow {
   width: fit-content;
   padding: 0.45rem 0.8rem;
-  border: 1px solid #b9d3bc;
+  border: 1px solid #b6cddc;
   border-radius: 0.45rem;
-  background: #f5f9ef;
-  color: #325d43;
+  background: #eaf1f6;
+  color: #32576b;
 }
 
 :global(html[data-theme="light"]) .actions a {
@@ -575,56 +575,56 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.85rem 1.35rem;
-  box-shadow: 0 3px 0 #164e3d12;
+  box-shadow: none;
 }
 
 :global(html[data-theme="light"]) .actions a:nth-child(2) {
-  background: #f9fcf5;
-  border-color: #a6bfaf;
-  color: #245743;
+  background: #edf3f7;
+  border-color: #a6bfce;
+  color: #245566;
 }
 
 :global(html[data-theme="light"]) .actions a:nth-child(2):hover {
-  background: #dfeddd;
-  border-color: #146b5d;
+  background: #dbeaf0;
+  border-color: #126d78;
 }
 
 :global(html[data-theme="light"]) .pipeline {
-  --muted: #c0d7cb;
-  --line: #527568;
-  --soft: #284f43;
-  --ifm-color-primary: #a8e2bc;
-  color: #f2f8ef;
-  background: #193f34;
-  border-color: #2d5748;
-  border-top: 4px solid #83b992;
-  box-shadow: 0 18px 40px #163d351a;
+  --muted: #c0d7e2;
+  --line: #527586;
+  --soft: #284f5f;
+  --ifm-color-primary: #a8dce8;
+  color: #eaf2f7;
+  background: #193f4b;
+  border-color: #2d5769;
+  border-top: 4px solid #83b9ce;
+  box-shadow: none;
 }
 
 :global(html[data-theme="light"]) .pipelineHeader {
   padding-bottom: 1.1rem;
-  border-bottom: 1px solid #3d6153;
+  border-bottom: 1px solid #3d6571;
 }
 
 :global(html[data-theme="light"]) .pipelineBadge {
-  background: #d9edce;
-  color: #28573b;
+  background: #d8eaf2;
+  color: #28576b;
 }
 
 :global(html[data-theme="light"]) .sourceIcon {
-  background: #d9edce;
-  color: #28573b;
+  background: #d8f0f2;
+  color: #28576b;
 }
 
 :global(html[data-theme="light"]) .protoIcon {
-  background: #f8dfae;
-  color: #724817;
+  background: #e9e4f6;
+  color: #66508d;
 }
 
 :global(html[data-theme="light"]) .engine {
-  background: #daeccf;
-  border-color: #daeccf;
-  color: #234a35;
+  background: #d8eaf2;
+  border-color: #d8eaf2;
+  color: #234a5b;
   padding-block: 1.2rem;
 }
 
@@ -634,22 +634,22 @@
 }
 
 :global(html[data-theme="light"]) .engine span {
-  color: #3f6549;
+  color: #3f6577;
 }
 
 :global(html[data-theme="light"]) .outputs span {
-  background: #2a5043;
-  color: #eef6e8;
+  background: #2a5060;
+  color: #eaf2f7;
 }
 
 :global(html[data-theme="light"]) .command {
-  background: #102e27;
-  border: 1px solid #456958;
+  background: #102e39;
+  border: 1px solid #456978;
 }
 
 :global(html[data-theme="light"]) .featureCard {
-  --feature-accent: #146b5d;
-  --feature-tint: #e5f0e4;
+  --feature-accent: #126d78;
+  --feature-tint: #deedf1;
   border-top: 3px solid var(--feature-accent);
   box-shadow: var(--site-shadow);
 }
@@ -660,8 +660,8 @@
 }
 
 :global(html[data-theme="light"]) .featureCard:nth-child(3n) {
-  --feature-accent: var(--site-accent-amber);
-  --feature-tint: var(--site-accent-amber-soft);
+  --feature-accent: var(--site-accent-violet);
+  --feature-tint: var(--site-accent-violet-soft);
 }
 
 :global(html[data-theme="light"]) .featureNumber {
@@ -677,28 +677,28 @@
 }
 
 :global(html[data-theme="light"]) .startBand {
-  --muted: #d2e3d6;
-  --ifm-heading-color: #f3f8ef;
-  --line: #638273;
-  background: #214d3e;
-  color: #f3f8ef;
+  --muted: #d2e3ed;
+  --ifm-heading-color: #eaf2f7;
+  --line: #638298;
+  background: #214957;
+  color: #eaf2f7;
   border: 0;
-  border-block: 4px solid #93b394;
+  border-block: 4px solid #8eb3c4;
 }
 
 :global(html[data-theme="light"]) .startBand .eyebrow {
-  color: #c2e4a7;
+  color: #b5e0ef;
 }
 
 :global(html[data-theme="light"]) .startBand a {
-  color: #234a35;
-  background: #deedc9;
-  border-color: #deedc9;
+  color: #234b58;
+  background: #d4e8f0;
+  border-color: #d4e8f0;
 }
 
 :global(html[data-theme="light"]) .startBand a:hover {
-  background: #f0f7e2;
-  border-color: #f0f7e2;
+  background: #e4eff5;
+  border-color: #e4eff5;
 }
 
 :global(html[data-theme="light"]) .startBand a:focus-visible {
@@ -706,16 +706,16 @@
 }
 
 :global(html[data-theme="light"]) .steps li > span {
-  background: #365e48;
-  color: #e0eecd;
+  background: #365c70;
+  color: #d8eaf2;
   font-weight: 700;
 }
 
 :global(html[data-theme="light"]) .screenshot {
   padding: 0.8rem;
-  background: #e8eff3;
+  background: #e3ebf1;
   border-color: #c7d7de;
-  box-shadow: 0 12px 32px #234d3910;
+  box-shadow: none;
 }
 
 :global(html[data-theme="light"]) .referenceCard > span {

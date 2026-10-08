@@ -2,64 +2,69 @@
   --ifm-font-family-base:
     "更纱黑体 SC", "Sarasa SC", "Noto Sans SC", "Roboto", "Microsoft YaHei",
     system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --ifm-color-primary: #146b5d;
-  --ifm-color-primary-dark: #126054;
-  --ifm-color-primary-darker: #115b4f;
-  --ifm-color-primary-darkest: #0e4b41;
-  --ifm-color-primary-light: #167666;
-  --ifm-color-primary-lighter: #177b6b;
-  --ifm-color-primary-lightest: #1a8b79;
+  --ifm-color-primary: #126d78;
+  --ifm-color-primary-dark: #10626c;
+  --ifm-color-primary-darker: #0f5d66;
+  --ifm-color-primary-darkest: #0d4c54;
+  --ifm-color-primary-light: #147884;
+  --ifm-color-primary-lighter: #157f8b;
+  --ifm-color-primary-lightest: #188d9c;
   --ifm-code-font-size: 0.9rem;
   --ifm-leading: 1.8;
   --md-elevation-1:
     0 10px 15px -3px rgba(60, 60, 60, 0.1),
     0 4px 6px -2px rgba(60, 60, 60, 0.05);
-  --md-strong-color: #193d36;
-  --md-em-color: #935012;
+  --md-strong-color: #234452;
+  --md-em-color: #66508d;
   --md-strong-em-color: #8c3870;
 }
 
-/* Warm reading surfaces and shared accents for the light theme. */
+/* Muted cool surfaces and crisp, shadow-free edges for the light theme. */
 html[data-theme="light"] {
-  --ifm-background-color: #fafbf7;
-  --ifm-background-surface-color: #ffffff;
-  --ifm-font-color-base: #34443f;
-  --ifm-font-color-secondary: #53655e;
-  --ifm-heading-color: #183c34;
-  --ifm-color-emphasis-100: #edf2ed;
-  --ifm-color-emphasis-200: #dce5de;
-  --ifm-color-emphasis-300: #c8d5cc;
-  --ifm-color-emphasis-600: #627269;
-  --ifm-color-emphasis-700: #53655e;
-  --ifm-color-emphasis-800: #34443f;
-  --ifm-color-emphasis-900: #203e33;
-  --ifm-navbar-background-color: #fafbf7;
-  --ifm-navbar-link-color: #34443f;
-  --ifm-navbar-search-input-background-color: #e7eee6;
-  --ifm-navbar-search-input-color: #34443f;
-  --ifm-navbar-search-input-placeholder-color: #53655e;
-  --ifm-menu-color: #53655e;
-  --ifm-menu-color-background-hover: #e0ebe3;
-  --ifm-menu-color-background-active: #d6e9dd;
-  --ifm-toc-border-color: #d1ded5;
-  --ifm-code-background: #e9eff2;
-  --ifm-table-border-color: #d4dfd7;
-  --ifm-table-stripe-background: #f0f5ef;
-  --ifm-breadcrumb-color-active: #146b5d;
-  --ifm-breadcrumb-item-background-active: #e3eee4;
-  --ifm-pagination-nav-color-hover: #146b5d;
-  --site-surface-muted: #edf2ed;
+  --ifm-background-color: #edf1f5;
+  --ifm-background-surface-color: #f4f7fa;
+  --ifm-font-color-base: #354655;
+  --ifm-font-color-secondary: #536575;
+  --ifm-heading-color: #17394b;
+  --ifm-color-emphasis-100: #e8edf2;
+  --ifm-color-emphasis-200: #d7e0e8;
+  --ifm-color-emphasis-300: #c5d2de;
+  --ifm-color-emphasis-600: #617383;
+  --ifm-color-emphasis-700: #536575;
+  --ifm-color-emphasis-800: #354655;
+  --ifm-color-emphasis-900: #203b4e;
+  --ifm-navbar-background-color: #edf1f5;
+  --ifm-navbar-link-color: #354655;
+  --ifm-navbar-search-input-background-color: #e4ebf1;
+  --ifm-navbar-search-input-color: #354655;
+  --ifm-navbar-search-input-placeholder-color: #536575;
+  --ifm-menu-color: #536575;
+  --ifm-menu-color-background-hover: #dde9ef;
+  --ifm-menu-color-background-active: #d0e5ec;
+  --ifm-toc-border-color: #cddbe5;
+  --ifm-code-background: #e4ebf1;
+  --ifm-table-border-color: #d1dce5;
+  --ifm-table-stripe-background: #eaf0f5;
+  --ifm-breadcrumb-color-active: #126d78;
+  --ifm-breadcrumb-item-background-active: #dfeaf0;
+  --ifm-pagination-nav-color-hover: #126d78;
+  --site-surface-muted: #e4eaf0;
   --site-accent-blue: #345f89;
-  --site-accent-blue-soft: #e8eff8;
-  --site-accent-amber: #86501b;
-  --site-accent-amber-soft: #f8edd8;
-  --site-shadow: 0 6px 20px #1d453608;
-  --search-local-muted-color: #53655e;
-  --search-local-input-active-border-color: #146b5d;
-  --search-local-modal-background: #edf2ed;
-  --search-local-modal-shadow: 0 12px 36px #183c3426;
-  --search-local-hit-background: #ffffff;
-  --search-local-hit-color: #34443f;
+  --site-accent-blue-soft: #e3ebf5;
+  --site-accent-violet: #66508d;
+  --site-accent-violet-soft: #e9e6f3;
+  --ifm-global-shadow-lw: none;
+  --ifm-global-shadow-md: none;
+  --ifm-global-shadow-tl: none;
+  --md-elevation-1: none;
+  --site-shadow: none;
+  --search-local-muted-color: #536575;
+  --search-local-input-active-border-color: #126d78;
+  --search-local-modal-background: #e8edf2;
+  --search-local-modal-shadow: none;
+  --search-local-hit-background: #f4f7fa;
+  --search-local-hit-shadow: none;
+  --search-local-hit-color: #354655;
 }
 
 html[data-theme="dark"] {
@@ -217,7 +222,7 @@ html[data-theme="dark"] {
 
 html[data-theme="light"] .navbar {
   border-bottom: 1px solid var(--ifm-color-emphasis-200);
-  box-shadow: 0 2px 12px #1d453605;
+  box-shadow: none;
 }
 
 html[data-theme="light"] .theme-doc-sidebar-container,
@@ -230,8 +235,8 @@ html[data-theme="light"] .menu__link {
 }
 
 html[data-theme="light"] .menu__link--active:not(.menu__link--sublist) {
-  color: #164e3d;
-  box-shadow: inset 3px 0 #146b5d;
+  color: #174e5d;
+  box-shadow: none;
   font-weight: 700;
 }
 
@@ -246,16 +251,26 @@ html[data-theme="light"] .theme-doc-toc-desktop .table-of-contents {
 
 html[data-theme="light"] .dropdown__menu {
   border: 1px solid var(--ifm-color-emphasis-200);
-  box-shadow: 0 12px 36px #183c3414;
+  box-shadow: none;
+}
+
+html[data-theme="light"] .markdown img,
+html[data-theme="light"] .diagram-panel,
+html[data-theme="light"] kbd {
+  box-shadow: none;
+}
+
+html[data-theme="light"] .hero__index_subtitle {
+  text-shadow: none;
 }
 
 html[data-theme="light"] .footer--dark {
-  --ifm-footer-background-color: #163d35;
-  --ifm-footer-color: #d4e5da;
-  --ifm-footer-link-color: #d4e5da;
+  --ifm-footer-background-color: #183c49;
+  --ifm-footer-color: #d4e5ef;
+  --ifm-footer-link-color: #d4e5ef;
   --ifm-footer-link-hover-color: #ffffff;
   background: var(--ifm-footer-background-color);
-  border-top: 4px solid #73aa90;
+  border-top: 4px solid #76a8bb;
 }
 .button {
   border-radius: 0.55rem;
@@ -314,12 +329,12 @@ html[data-theme="light"] .markdown h1 {
 }
 
 html[data-theme="light"] .markdown h2 {
-  border-bottom-color: #d4e2d7;
+  border-bottom-color: #cfdce6;
 }
 
 html[data-theme="light"] .markdown :is(p, li, td) > a {
   text-decoration: underline;
-  text-decoration-color: #7ba698;
+  text-decoration-color: #799fb1;
   text-underline-offset: 0.2em;
   text-decoration-thickness: 1px;
 }
@@ -347,8 +362,8 @@ html[data-theme="light"] .markdown .theme-code-block pre {
 }
 
 html[data-theme="light"] .markdown th {
-  background: #e1ece3;
-  color: #244e3b;
+  background: #dce7ef;
+  color: #244a61;
 }
 
 html[data-theme="light"] .markdown :is(th, td) {
@@ -356,9 +371,9 @@ html[data-theme="light"] .markdown :is(th, td) {
 }
 
 html[data-theme="light"] .markdown blockquote {
-  color: #5c4b2d;
-  background: #f6eedc;
-  border-left-color: #a97828;
+  color: #415c74;
+  background: #e3ebf3;
+  border-left-color: #6387a6;
   border-radius: 0 0.5rem 0.5rem 0;
   padding: 0.8rem 1.2rem;
 }
@@ -372,22 +387,22 @@ html[data-theme="light"] .alert {
 
 html[data-theme="light"] .alert--primary,
 html[data-theme="light"] .alert--success {
-  --ifm-alert-background-color: #e7f1e7;
-  --ifm-alert-border-color: #5b9270;
-  color: #244d34;
+  --ifm-alert-background-color: #deedf0;
+  --ifm-alert-border-color: #568e97;
+  color: #24525d;
   background: var(--ifm-alert-background-color);
 }
 
 html[data-theme="light"] .alert--info {
-  --ifm-alert-background-color: #eaf1f8;
+  --ifm-alert-background-color: #e3ebf3;
   --ifm-alert-border-color: #688fb5;
   color: #304f6c;
 }
 
 html[data-theme="light"] .alert--warning {
-  --ifm-alert-background-color: #faf0dc;
-  --ifm-alert-border-color: #b78631;
-  color: #675026;
+  --ifm-alert-background-color: #ece6f3;
+  --ifm-alert-border-color: #8a70a9;
+  color: #594474;
 }
 
 html[data-theme="light"] .alert--danger {
@@ -397,7 +412,7 @@ html[data-theme="light"] .alert--danger {
 }
 
 html[data-theme="light"] .pagination-nav__link {
-  background: #ffffff;
+  background: var(--ifm-background-surface-color);
   border-radius: 0.75rem;
   box-shadow: var(--site-shadow);
 }

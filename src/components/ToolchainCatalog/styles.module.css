@@ -59,9 +59,9 @@
 }
 
 :global(html[data-theme="light"]) .card {
-  --card-accent: #146b5d;
-  --card-tint: #e5f0e4;
-  border-color: #d4dfd7;
+  --card-accent: #126d78;
+  --card-tint: #deedf1;
+  border-color: #d1dce5;
   border-top: 3px solid var(--card-accent);
   border-radius: 0.9rem;
   box-shadow: var(--site-shadow);
@@ -75,8 +75,8 @@
 
 :global(html[data-theme="light"]) .card[data-component="xresconv-gui"],
 :global(html[data-theme="light"]) .card[data-component="xres-code-generator"] {
-  --card-accent: var(--site-accent-amber);
-  --card-tint: var(--site-accent-amber-soft);
+  --card-accent: var(--site-accent-violet);
+  --card-tint: var(--site-accent-violet-soft);
 }
 
 :global(html[data-theme="light"]) .role {
@@ -102,17 +102,17 @@
   width: fit-content;
   max-width: 100%;
   padding: 0.55rem 0.8rem;
-  border: 1px solid #b5cdbc;
+  border: 1px solid #b5cddb;
   border-radius: 0.45rem;
-  color: #245743;
-  background: #edf5e9;
+  color: #245566;
+  background: #e3eef3;
   font-weight: 600;
   text-decoration: none;
 }
 
 :global(html[data-theme="light"]) .downloads > a:hover {
-  background: #d9ead4;
-  border-color: #146b5d;
+  background: #d6e7ef;
+  border-color: #126d78;
 }
 
 @container (min-width: 680px) {

@@ -150,26 +150,26 @@ const config = {
     },
     prism: {
       theme: {
-        plain: { color: "#34443f", backgroundColor: "#edf2f5" },
+        plain: { color: "#354655", backgroundColor: "#e7edf3" },
         styles: [
           {
             types: ["comment", "prolog", "doctype", "cdata"],
-            style: { color: "#596d64", fontStyle: "italic" },
+            style: { color: "#596d7d", fontStyle: "italic" },
           },
           {
             types: ["namespace", "punctuation", "operator"],
-            style: { color: "#34443f" },
+            style: { color: "#354655" },
           },
           {
             types: ["string", "attr-value"],
-            style: { color: "#86501b" },
+            style: { color: "#66508d" },
           },
           {
             types: [
               "entity", "url", "symbol", "number", "boolean", "variable",
               "constant", "property", "regex", "inserted",
             ],
-            style: { color: "#17695c" },
+            style: { color: "#176978" },
           },
           {
             types: ["atrule", "keyword", "attr-name", "selector"],
