@@ -1,9 +1,10 @@
 .home {
-  --surface: #fff;
-  --muted: #586777;
-  --line: #dce4e9;
-  --soft: #f1f6f6;
-  --ink: #152f3d;
+  --surface: #fafbf7;
+  --card: #fff;
+  --muted: #53655e;
+  --line: #d4dfd7;
+  --soft: #e7efe7;
+  --ink: #183c34;
   color: var(--ink);
   background: var(--surface);
 }
@@ -34,7 +35,7 @@
   align-items: start;
   gap: 0.6rem;
   padding: 1.6rem;
-  background: var(--soft);
+  background: var(--card);
   border: 1px solid var(--line);
   border-radius: 0.8rem;
   min-width: 0;
@@ -78,14 +79,13 @@
 .hero {
   padding: clamp(3rem, 6vw, 6rem) 0;
   background:
-    radial-gradient(ellipse at 88% 15%, #dcefeb 0, transparent 48%),
-    linear-gradient(180deg, #f5f8f7, var(--surface));
+    linear-gradient(110deg, #e5efe2 0%, #edf3e8 55%, #dcece3 100%);
   border-bottom: 1px solid var(--line);
 }
 .heroGrid {
   display: grid;
   grid-template-columns: 1.1fr 1fr;
-  gap: 4rem;
+  gap: clamp(2rem, 4vw, 5rem);
   align-items: center;
 }
 .heroCopy {
@@ -122,6 +122,7 @@
   font-size: 1.08rem;
   line-height: 1.9;
   margin-bottom: 1.8rem;
+  max-width: 42rem;
 }
 .actions {
   display: flex;
@@ -153,6 +154,7 @@
   font-size: 0.9rem;
   font-weight: 600;
   margin-bottom: 1.6rem;
+  flex-wrap: wrap;
 }
 .pipelineBadge {
   font-size: 0.68rem;
@@ -170,9 +172,10 @@
 }
 .sources > div {
   display: grid;
-  grid-template-columns: 38px auto;
+  grid-template-columns: 38px minmax(0, 1fr);
   align-items: center;
   column-gap: 0.7rem;
+  min-width: 0;
 }
 .sources strong {
   font-size: 0.9rem;
@@ -533,6 +536,7 @@
   border: 1px solid var(--line);
   border-radius: 0.65rem;
   color: var(--ink);
+  background: var(--card);
 }
 
 .referenceCard:hover {
@@ -555,8 +559,178 @@
 .referenceCard > span {
   color: var(--ifm-color-primary);
 }
+
+/* Strong color blocks frame the lighter, quieter reading surfaces. */
+:global(html[data-theme="light"]) .hero .eyebrow {
+  width: fit-content;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid #b9d3bc;
+  border-radius: 0.45rem;
+  background: #f5f9ef;
+  color: #325d43;
+}
+
+:global(html[data-theme="light"]) .actions a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.35rem;
+  box-shadow: 0 3px 0 #164e3d12;
+}
+
+:global(html[data-theme="light"]) .actions a:nth-child(2) {
+  background: #f9fcf5;
+  border-color: #a6bfaf;
+  color: #245743;
+}
+
+:global(html[data-theme="light"]) .actions a:nth-child(2):hover {
+  background: #dfeddd;
+  border-color: #146b5d;
+}
+
+:global(html[data-theme="light"]) .pipeline {
+  --muted: #c0d7cb;
+  --line: #527568;
+  --soft: #284f43;
+  --ifm-color-primary: #a8e2bc;
+  color: #f2f8ef;
+  background: #193f34;
+  border-color: #2d5748;
+  border-top: 4px solid #83b992;
+  box-shadow: 0 18px 40px #163d351a;
+}
+
+:global(html[data-theme="light"]) .pipelineHeader {
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid #3d6153;
+}
+
+:global(html[data-theme="light"]) .pipelineBadge {
+  background: #d9edce;
+  color: #28573b;
+}
+
+:global(html[data-theme="light"]) .sourceIcon {
+  background: #d9edce;
+  color: #28573b;
+}
+
+:global(html[data-theme="light"]) .protoIcon {
+  background: #f8dfae;
+  color: #724817;
+}
+
+:global(html[data-theme="light"]) .engine {
+  background: #daeccf;
+  border-color: #daeccf;
+  color: #234a35;
+  padding-block: 1.2rem;
+}
+
+:global(html[data-theme="light"]) .engine strong {
+  font-size: 1.3rem;
+  letter-spacing: -0.025em;
+}
+
+:global(html[data-theme="light"]) .engine span {
+  color: #3f6549;
+}
+
+:global(html[data-theme="light"]) .outputs span {
+  background: #2a5043;
+  color: #eef6e8;
+}
+
+:global(html[data-theme="light"]) .command {
+  background: #102e27;
+  border: 1px solid #456958;
+}
+
+:global(html[data-theme="light"]) .featureCard {
+  --feature-accent: #146b5d;
+  --feature-tint: #e5f0e4;
+  border-top: 3px solid var(--feature-accent);
+  box-shadow: var(--site-shadow);
+}
+
+:global(html[data-theme="light"]) .featureCard:nth-child(3n + 2) {
+  --feature-accent: var(--site-accent-blue);
+  --feature-tint: var(--site-accent-blue-soft);
+}
+
+:global(html[data-theme="light"]) .featureCard:nth-child(3n) {
+  --feature-accent: var(--site-accent-amber);
+  --feature-tint: var(--site-accent-amber-soft);
+}
+
+:global(html[data-theme="light"]) .featureNumber {
+  background: var(--feature-tint);
+  color: var(--feature-accent);
+  border-color: transparent;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+:global(html[data-theme="light"]) .featureCard a {
+  font-weight: 600;
+}
+
+:global(html[data-theme="light"]) .startBand {
+  --muted: #d2e3d6;
+  --ifm-heading-color: #f3f8ef;
+  --line: #638273;
+  background: #214d3e;
+  color: #f3f8ef;
+  border: 0;
+  border-block: 4px solid #93b394;
+}
+
+:global(html[data-theme="light"]) .startBand .eyebrow {
+  color: #c2e4a7;
+}
+
+:global(html[data-theme="light"]) .startBand a {
+  color: #234a35;
+  background: #deedc9;
+  border-color: #deedc9;
+}
+
+:global(html[data-theme="light"]) .startBand a:hover {
+  background: #f0f7e2;
+  border-color: #f0f7e2;
+}
+
+:global(html[data-theme="light"]) .startBand a:focus-visible {
+  outline-color: #ffffff;
+}
+
+:global(html[data-theme="light"]) .steps li > span {
+  background: #365e48;
+  color: #e0eecd;
+  font-weight: 700;
+}
+
+:global(html[data-theme="light"]) .screenshot {
+  padding: 0.8rem;
+  background: #e8eff3;
+  border-color: #c7d7de;
+  box-shadow: 0 12px 32px #234d3910;
+}
+
+:global(html[data-theme="light"]) .referenceCard > span {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--soft);
+}
+
 :global(html[data-theme="dark"]) .home {
   --surface: #131d25;
+  --card: #1a2a32;
   --muted: #a8b9c5;
   --line: #31414c;
   --soft: #1a2a32;
@@ -597,7 +771,7 @@
   }
 
   .hero h1 {
-    font-size: 3rem;
+    font-size: clamp(2.15rem, 7.5vw, 3rem);
   }
 
   .toolGrid {

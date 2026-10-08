@@ -149,7 +149,42 @@ const config = {
       copyright: `版权所有 © ${new Date().getFullYear()} owent & xresloader contributors.`,
     },
     prism: {
-      theme: themes.github,
+      theme: {
+        plain: { color: "#34443f", backgroundColor: "#edf2f5" },
+        styles: [
+          {
+            types: ["comment", "prolog", "doctype", "cdata"],
+            style: { color: "#596d64", fontStyle: "italic" },
+          },
+          {
+            types: ["namespace", "punctuation", "operator"],
+            style: { color: "#34443f" },
+          },
+          {
+            types: ["string", "attr-value"],
+            style: { color: "#86501b" },
+          },
+          {
+            types: [
+              "entity", "url", "symbol", "number", "boolean", "variable",
+              "constant", "property", "regex", "inserted",
+            ],
+            style: { color: "#17695c" },
+          },
+          {
+            types: ["atrule", "keyword", "attr-name", "selector"],
+            style: { color: "#285f8f" },
+          },
+          {
+            types: ["function", "deleted", "tag"],
+            style: { color: "#984650" },
+          },
+          {
+            types: ["function-variable"],
+            style: { color: "#6f4894" },
+          },
+        ],
+      },
       darkTheme: themes.dracula,
       additionalLanguages: [
         "protobuf",

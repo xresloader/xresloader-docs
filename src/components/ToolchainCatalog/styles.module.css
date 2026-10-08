@@ -57,6 +57,64 @@
 .note {
   margin: 1rem 0 0;
 }
+
+:global(html[data-theme="light"]) .card {
+  --card-accent: #146b5d;
+  --card-tint: #e5f0e4;
+  border-color: #d4dfd7;
+  border-top: 3px solid var(--card-accent);
+  border-radius: 0.9rem;
+  box-shadow: var(--site-shadow);
+}
+
+:global(html[data-theme="light"]) .card[data-component="xresconv-cli"],
+:global(html[data-theme="light"]) .card[data-component="xresloader-dump-bin"] {
+  --card-accent: var(--site-accent-blue);
+  --card-tint: var(--site-accent-blue-soft);
+}
+
+:global(html[data-theme="light"]) .card[data-component="xresconv-gui"],
+:global(html[data-theme="light"]) .card[data-component="xres-code-generator"] {
+  --card-accent: var(--site-accent-amber);
+  --card-tint: var(--site-accent-amber-soft);
+}
+
+:global(html[data-theme="light"]) .role {
+  align-self: flex-start;
+  padding: 0.25rem 0.6rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.35rem;
+  color: var(--card-accent);
+  background: var(--card-tint);
+}
+
+:global(html[data-theme="light"]) .card h3 {
+  color: var(--ifm-heading-color);
+  letter-spacing: -0.02em;
+}
+
+:global(html[data-theme="light"]) .links a {
+  font-weight: 600;
+}
+
+:global(html[data-theme="light"]) .downloads > a {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid #b5cdbc;
+  border-radius: 0.45rem;
+  color: #245743;
+  background: #edf5e9;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+:global(html[data-theme="light"]) .downloads > a:hover {
+  background: #d9ead4;
+  border-color: #146b5d;
+}
+
 @container (min-width: 680px) {
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

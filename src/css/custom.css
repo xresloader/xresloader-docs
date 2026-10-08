@@ -2,21 +2,64 @@
   --ifm-font-family-base:
     "更纱黑体 SC", "Sarasa SC", "Noto Sans SC", "Roboto", "Microsoft YaHei",
     system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --ifm-color-primary: #14796b;
-  --ifm-color-primary-dark: #126d60;
-  --ifm-color-primary-darker: #11675b;
-  --ifm-color-primary-darkest: #0e554b;
-  --ifm-color-primary-light: #168576;
-  --ifm-color-primary-lighter: #178b7b;
-  --ifm-color-primary-lightest: #1a9d8b;
+  --ifm-color-primary: #146b5d;
+  --ifm-color-primary-dark: #126054;
+  --ifm-color-primary-darker: #115b4f;
+  --ifm-color-primary-darkest: #0e4b41;
+  --ifm-color-primary-light: #167666;
+  --ifm-color-primary-lighter: #177b6b;
+  --ifm-color-primary-lightest: #1a8b79;
   --ifm-code-font-size: 0.9rem;
   --ifm-leading: 1.8;
   --md-elevation-1:
     0 10px 15px -3px rgba(60, 60, 60, 0.1),
     0 4px 6px -2px rgba(60, 60, 60, 0.05);
-  --md-strong-color: #183f42;
-  --md-em-color: #b45309;
-  --md-strong-em-color: #c026d3;
+  --md-strong-color: #193d36;
+  --md-em-color: #935012;
+  --md-strong-em-color: #8c3870;
+}
+
+/* Warm reading surfaces and shared accents for the light theme. */
+html[data-theme="light"] {
+  --ifm-background-color: #fafbf7;
+  --ifm-background-surface-color: #ffffff;
+  --ifm-font-color-base: #34443f;
+  --ifm-font-color-secondary: #53655e;
+  --ifm-heading-color: #183c34;
+  --ifm-color-emphasis-100: #edf2ed;
+  --ifm-color-emphasis-200: #dce5de;
+  --ifm-color-emphasis-300: #c8d5cc;
+  --ifm-color-emphasis-600: #627269;
+  --ifm-color-emphasis-700: #53655e;
+  --ifm-color-emphasis-800: #34443f;
+  --ifm-color-emphasis-900: #203e33;
+  --ifm-navbar-background-color: #fafbf7;
+  --ifm-navbar-link-color: #34443f;
+  --ifm-navbar-search-input-background-color: #e7eee6;
+  --ifm-navbar-search-input-color: #34443f;
+  --ifm-navbar-search-input-placeholder-color: #53655e;
+  --ifm-menu-color: #53655e;
+  --ifm-menu-color-background-hover: #e0ebe3;
+  --ifm-menu-color-background-active: #d6e9dd;
+  --ifm-toc-border-color: #d1ded5;
+  --ifm-code-background: #e9eff2;
+  --ifm-table-border-color: #d4dfd7;
+  --ifm-table-stripe-background: #f0f5ef;
+  --ifm-breadcrumb-color-active: #146b5d;
+  --ifm-breadcrumb-item-background-active: #e3eee4;
+  --ifm-pagination-nav-color-hover: #146b5d;
+  --site-surface-muted: #edf2ed;
+  --site-accent-blue: #345f89;
+  --site-accent-blue-soft: #e8eff8;
+  --site-accent-amber: #86501b;
+  --site-accent-amber-soft: #f8edd8;
+  --site-shadow: 0 6px 20px #1d453608;
+  --search-local-muted-color: #53655e;
+  --search-local-input-active-border-color: #146b5d;
+  --search-local-modal-background: #edf2ed;
+  --search-local-modal-shadow: 0 12px 36px #183c3426;
+  --search-local-hit-background: #ffffff;
+  --search-local-hit-color: #34443f;
 }
 
 html[data-theme="dark"] {
@@ -171,6 +214,49 @@ html[data-theme="dark"] {
 .navbar__logo {
   height: 2.2rem;
 }
+
+html[data-theme="light"] .navbar {
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  box-shadow: 0 2px 12px #1d453605;
+}
+
+html[data-theme="light"] .theme-doc-sidebar-container,
+html[data-theme="light"] .navbar-sidebar {
+  background: var(--site-surface-muted);
+}
+
+html[data-theme="light"] .menu__link {
+  padding-block: 0.55rem;
+}
+
+html[data-theme="light"] .menu__link--active:not(.menu__link--sublist) {
+  color: #164e3d;
+  box-shadow: inset 3px 0 #146b5d;
+  font-weight: 700;
+}
+
+html[data-theme="light"] .table-of-contents__link--active {
+  font-weight: 700;
+}
+
+html[data-theme="light"] .theme-doc-toc-desktop .table-of-contents {
+  padding-block: 0.75rem;
+  border-left: 2px solid var(--ifm-color-emphasis-200);
+}
+
+html[data-theme="light"] .dropdown__menu {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  box-shadow: 0 12px 36px #183c3414;
+}
+
+html[data-theme="light"] .footer--dark {
+  --ifm-footer-background-color: #163d35;
+  --ifm-footer-color: #d4e5da;
+  --ifm-footer-link-color: #d4e5da;
+  --ifm-footer-link-hover-color: #ffffff;
+  background: var(--ifm-footer-background-color);
+  border-top: 4px solid #73aa90;
+}
 .button {
   border-radius: 0.55rem;
   text-transform: none;
@@ -216,6 +302,104 @@ html[data-theme="dark"] {
 .theme-code-block {
   box-shadow: none;
   border: 1px solid var(--ifm-color-emphasis-200);
+}
+
+html[data-theme="light"] .theme-doc-markdown {
+  line-height: 1.85;
+}
+
+html[data-theme="light"] .markdown h1 {
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  letter-spacing: -0.035em;
+}
+
+html[data-theme="light"] .markdown h2 {
+  border-bottom-color: #d4e2d7;
+}
+
+html[data-theme="light"] .markdown :is(p, li, td) > a {
+  text-decoration: underline;
+  text-decoration-color: #7ba698;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+
+html[data-theme="light"] .markdown :is(p, li, td) > a:hover {
+  text-decoration-color: currentColor;
+}
+
+html[data-theme="light"] .markdown :not(pre) > code {
+  color: #315876;
+  border: 1px solid #d5e0e5;
+  border-radius: 0.3rem;
+  padding: 0.1em 0.35em;
+}
+
+html[data-theme="light"] .markdown .theme-code-block {
+  border-color: #d3dfe5;
+  border-radius: 0.7rem;
+  box-shadow: none;
+}
+
+html[data-theme="light"] .markdown .theme-code-block pre {
+  margin: 0;
+  line-height: 1.7;
+}
+
+html[data-theme="light"] .markdown th {
+  background: #e1ece3;
+  color: #244e3b;
+}
+
+html[data-theme="light"] .markdown :is(th, td) {
+  padding: 0.8rem 1rem;
+}
+
+html[data-theme="light"] .markdown blockquote {
+  color: #5c4b2d;
+  background: #f6eedc;
+  border-left-color: #a97828;
+  border-radius: 0 0.5rem 0.5rem 0;
+  padding: 0.8rem 1.2rem;
+}
+
+html[data-theme="light"] .alert {
+  box-shadow: none;
+  border-radius: 0.6rem;
+  border: 1px solid var(--ifm-alert-border-color);
+  border-left-width: 4px;
+}
+
+html[data-theme="light"] .alert--primary,
+html[data-theme="light"] .alert--success {
+  --ifm-alert-background-color: #e7f1e7;
+  --ifm-alert-border-color: #5b9270;
+  color: #244d34;
+  background: var(--ifm-alert-background-color);
+}
+
+html[data-theme="light"] .alert--info {
+  --ifm-alert-background-color: #eaf1f8;
+  --ifm-alert-border-color: #688fb5;
+  color: #304f6c;
+}
+
+html[data-theme="light"] .alert--warning {
+  --ifm-alert-background-color: #faf0dc;
+  --ifm-alert-border-color: #b78631;
+  color: #675026;
+}
+
+html[data-theme="light"] .alert--danger {
+  --ifm-alert-background-color: #faeae6;
+  --ifm-alert-border-color: #ba6b58;
+  color: #7c4034;
+}
+
+html[data-theme="light"] .pagination-nav__link {
+  background: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: var(--site-shadow);
 }
 a:focus-visible,
 button:focus-visible,
